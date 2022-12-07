@@ -1,0 +1,170 @@
+\documentclass[letterpaper,oneside,12pt]{report}
+% Package loading---------------------------------
+\usepackage{fitthesis}
+\usepackage{epsfig}
+\usepackage{graphicx}
+
+\usepackage{algorithm2e}
+\usepackage{setspace}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage[a-1b]{pdfx}
+
+
+\usepackage{subfig}
+\usepackage[subfigure]{tocloft} % no number for Vita in ToC
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{footmisc}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{booktabs}
+\usepackage{epstopdf}
+
+
+\graphicspath{{figures/}}  % Location of the graphics files
+
+
+% To get single-space, (for drafts only!) use:
+% \singlespacing
+
+% To consistently get dotted lines in the Table of Contents
+\makeatletter
+\renewcommand*\l@part[2]{%
+	\ifnum \c@tocdepth >-2\relax
+	\addpenalty{-\@highpenalty}%
+	\addvspace{2.25em \@plus\p@}%
+	\setlength\@tempdima{3em}%
+	\begingroup
+	\parindent \z@ \rightskip \@pnumwidth
+	\parfillskip -\@pnumwidth
+	{\leavevmode
+		\large \bfseries #1\nobreak\normalfont\leaders\hbox{$\m@th
+			\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+			mu$}\hfill\nobreak \hb@xt@\@pnumwidth{\hss #2}}\par
+	\nobreak
+	\global\@nobreaktrue
+	\everypar{\global\@nobreakfalse\everypar{}}%
+	\endgroup
+	\fi}
+\renewcommand*\l@chapter[2]{%
+	\ifnum \c@tocdepth >\m@ne
+	\addpenalty{-\@highpenalty}%
+	\vskip 1.0em \@plus\p@
+	\setlength\@tempdima{1.5em}%
+	\begingroup
+	\parindent \z@ \rightskip \@pnumwidth
+	\parfillskip -\@pnumwidth
+	\leavevmode \bfseries
+	\advance\leftskip\@tempdima
+	\hskip -\leftskip
+	#1\nobreak\normalfont\leaders\hbox{$\m@th
+		\mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+		mu$}\hfill\nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+	\penalty\@highpenalty
+	\endgroup
+	\fi}
+\makeatother
+
+
+\title{Title of Document\\ Second Line Example}
+\author{Braidan Duffy}
+
+% \GradDocumentType can be of the following: thesis, dissertation, design project, doctoral research project
+\GradDocumentType{thesis}
+
+% Change this to be the college or school you are part of. For Example \CollegeOrSchoolName{College of Engineering and Science}
+\CollegeOrSchoolName{College of Engineering and Sciences}
+
+% Degree you are applying for, defaults to Master of Engineering
+\degree{Masters of Science}
+\dept{Ocean Engineering}
+
+% Your Previous Degree \\ University, year
+\authordegree{Bachelor of Science \\Ocean Engineering\\ Florida Institute of Technology\\ 2021}
+% Month and Year document is turned in or graduation
+\copyrightmonth{December}
+\copyrightyear{2022}
+
+% Define Committee Information
+\directorname{Dr. Stephen Wood, Ph.D., P.E.}
+\directortitle{Program Chair}
+\directordept{Ocean Engineering and Marine Sciences}
+
+% Third Committee Member
+\secondreadername{Dr. Hector Gutierrez, Ph. D., P.E.}
+\secondreadertitle{Professor}
+\secondreaderdept{Mechanical Engineering}
+
+% Second Committee Member / Outside Member
+\thirdreadername{Dr. Robert Weaver, Ph. D}
+\thirdreadertitle{Associate Proffesor}
+\thirdreaderdept{Ocean Engineering and Marine Sciences}
+
+% Forth Committee Member
+\toggletrue{useforthreader}
+\forthreadername{Dr. Marius Silaghi, Ph.D.}
+\forthreadertitle{Professor}
+\forthreaderdept{Comupter Engineering and Sciences}
+
+% Use Academic Unit Head
+\toggletrue{useacademicunithead}
+\academicunitheadname{Dr. Richard Aronson, Ph.D.}
+\academicunitheadtitle{Department Head}
+\academicunitheaddept{Ocean Engineering and Marine Sciences}
+
+
+% The following page is optional, to disable please use \togglefalse{usecopyrightpage}
+\toggletrue{usecopyrightpage}
+
+\begin{document}
+	
+	%For MS students
+	\makethesistitle
+
+	
+	%This abstract maintains the same look as all other sections.
+	%include Abstract Text
+	\include{abstract}
+	\makeumiabstract
+	
+	\pagebreak
+	%Optional
+	%\prefacesection{Preface}
+	\setcounter{secnumdepth}{6}
+	\setcounter{tocdepth}{4}
+	\newpage
+	\maketableofcontents
+	%\listoftables
+%	\newpage
+	\makelistoffigures
+	%Uncomment following line if you have 4 or more tables
+%	\newpage
+	\makelistoftables
+	
+%%-----------Abbreviations-------------------------
+\include{abbreviations}
+%%-----------Acknowledgments-----------------------
+\include{acknowledgments}
+%%-----------Dedication----------------------------
+\include{dedication}
+%%-----------change single space to double space---
+\doublespacing \pagenumbering{arabic}
+
+%%-----------Main Matter---------------------------
+\include{./chapters/chapter1}
+\include{./chapters/chapter2}
+\include{./chapters/chapter3}
+\include{./chapters/chapter4}
+%%-----------Back Matter---------------------------
+%%-----------Bibliography--------------------------
+\nocite{*}
+% Do not split a reference between two pages, this should be taken care of in the style
+\bibliographystyle{plain}
+\bibliography{mybibliography}
+%%-----------Appendices----------------------------
+\include{./chapters/appendices}
+
+
+\end{document}

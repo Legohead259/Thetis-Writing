@@ -120,50 +120,54 @@
 
 \begin{document}
 	
-	%For MS students
+	% For MS students
 	\makethesistitle
 
 	
-	%This abstract maintains the same look as all other sections.
-	%include Abstract Text
+	% This abstract maintains the same look as all other sections.
+	% Include Abstract Text
 	\include{abstract}
 	\makeumiabstract
 	
 	\pagebreak
-	%Optional
-	%\prefacesection{Preface}
+	% Optional
+	% \prefacesection{Preface}
 	\setcounter{secnumdepth}{6}
 	\setcounter{tocdepth}{4}
 	\newpage
 	\maketableofcontents
-	%\listoftables
-%	\newpage
+	% \listoftables
+	% \newpage
 	\makelistoffigures
 	%Uncomment following line if you have 4 or more tables
-%	\newpage
+	% \newpage
 	\makelistoftables
 	
-%%-----------Abbreviations-------------------------
+%% -----------Abbreviations-------------------------
 \include{abbreviations}
-%%-----------Acknowledgments-----------------------
+
+%% -----------Acknowledgments-----------------------
 \include{acknowledgments}
-%%-----------Dedication----------------------------
+
+%% -----------Dedication----------------------------
 \include{dedication}
-%%-----------change single space to double space---
+
+%% -----------change single space to double space---
 \doublespacing \pagenumbering{arabic}
 
-%%-----------Main Matter---------------------------
+%% -----------Main Matter---------------------------
 \include{./chapters/chapter1}
 \include{./chapters/chapter2}
 \include{./chapters/chapter3}
 \include{./chapters/chapter4}
-%%-----------Back Matter---------------------------
-%%-----------Bibliography--------------------------
+
+%% -----------Back Matter---------------------------
+%% -----------Bibliography--------------------------
 \nocite{*}
 % Do not split a reference between two pages, this should be taken care of in the style
 \bibliographystyle{plain}
 \bibliography{mybibliography}
-%%-----------Appendices----------------------------
+%% -----------Appendices----------------------------
 \include{./chapters/appendices}
 
 

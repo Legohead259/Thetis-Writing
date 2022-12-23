@@ -1,26 +1,103 @@
 %%----------Chapter 2------------------------------------------
-\chapter{Another Chapter}\label{chap:oc}
+\chapter{Background}\label{chap:background}
+Measuring the movement of bodies in three dimensional space is not a new field of study.
+Especially in our current age of electronics, one can simply grab an accelerometer and microcontroller off of Amazon, have it delivered in 48 hours, and know the experiences felt by a racetrack car or be able to orient a 3D rendering of a bunny \footnote[1]{https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview}.
+What makes today exciting is that improvements in manufacturing and computational density have drastically increased the capabilities of small embedded systems.
+Now, every cell phone has a sophisticated suite of sensors built into them and they have the simple task of detecting whether the phone is in a landscape or portrait mode. 
+Some applications, like Google Maps, have gone further and fused the sensor data, along with GPS information, into a robust navigation system.
 
-\section{Problem Description}
-Lorem ipsum dolor sit amet, idque apeirian mnesarchum vix ea, usu no mandamus constituam comprehensam, cum cu vero definitionem. Fabulas probatus ne pro, eleifend hendrerit adipiscing at vim. Usu eu facilisis persecuti. Ne has vidit principes efficiantur, has liber euripidis no. Vide sapientem salutandi per at. 
+\section{Inertial Measurement Units} \label{sec:bkg_imu}
+Inertial Measurement Units (IMU) are devices that measure the inertial characteristics of a moving body and can report that data to a processor.
+The come in a variety of form factors from massive mechanical meters, to microscopic moving machinations.
+These sensors come in various grades that each of different use cases and standards associated with them.
 
-\subsection{First Interpretation}\label{sec:fi}
+The cheapest, least precise, and least accurate IMUs are considered "consumer-grade".
+Every day smartphones, cheap commercial breakout boards, and even shipping crates have these devices on-board.
+Consumer-grade IMUs can be bought for cents, dollars, or tens of dollars per unit in bulk and are ideal for mass production spaces where quantity is king over quality.
+A step up from these sensors are "automotive-grade" IMUs. 
+These are tens to hundreds of dollars per unit but are much more accurate and precise than their consumer counter parts.
+This makes them desirable for the automotive and industrial sectors as they can assist in automation, control, and monitoring of expensive systems.
+The "military-grade" sensors are even more robust and accurate than the previous tiers and have an appropriate military-industrial complex price tag to match. 
+These devices will typically be used in applications where friendly war fighters need to know their targets will be impacted or they are going in the right direction in a harsh environment.
+Finally, the last major tier is the "navigation-grade" sensors. These sensors are extremely precise, extremely accurate, and cost more than some middle-class families will make in a year.
+Primarily, these will be used in survey missions or on underwater vehicles where absolute precision and knowledge of their location is needed.
 
-Einstein's result (see~\cite{ConcreteMath}) is
+IMUs are also defined by their measurement Degrees of Freedom (DOF). 
+Each measurement axis for each sensor in the IMU contributes a DOF to the sensor.
+The common definitions are below in Table \ref{tab:imu_dofs}
 
-\begin{equation}
-E=mc^2 \label{eq:mc2}
-\end{equation}
+\begin{table}[h]
+    \caption{Common definitions for IMUs of varying degrees of freedom.}
+    \label{tab:imu_dofs}
+    \centering
+    \begin{tabular}{| c | c | c | c | c |}
+        \hline
+        DOFs & Accelerometer & Gyroscope & Magnetometer & Barometer \\
+        \hline
+        3-DOF & 3-axis\footnote[2]{can be either or} & 3-axis\footnote[2] & --- & --- \\
+        6-DOF & 3-axis & 3-axis & --- & --- \\
+        9-DOF & 3-axis & 3-axis & 3-axis & --- \\
+        10-DOF & 3-axis & 3-axis & 3-axis & 1-axis \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\section{Other Problem description}
-Lorem ipsum dolor sit amet, idque apeirian mnesarchum vix ea, usu no mandamus constituam comprehensam, cum cu vero definitionem. Fabulas probatus ne pro, eleifend hendrerit adipiscing at vim. Usu eu facilisis persecuti. Ne has vidit principes efficiantur, has liber euripidis no. Vide sapientem salutandi per at. 
+[INSERT ASIDE ON MEMS-BASED TECHNOLOGIES HERE]
 
-\begin{figure}[!th]
-\begin{center}
-\begin{tabular}{|c|c|}
-\epsfig{file=signature-2line.eps, width=1cm}&\epsfig{file=signature-2line.eps, width=1cm}\\
-a)&b)
-\end{tabular}
-\end{center}
-\caption{This is my nice figure.}\label{fig:mf}
-\end{figure}
+\subsection{Accelerometer} \label{ssec:bkg_accelerometer}
+Accelerometers measure a change in velocity over time (acceleration).
+An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant.
+The displacement of the mass along the axis, imparted by a force is correlated to a sensitivity scale.
+Typically, this scale is electrically resistive and creates an analog change in a driving (exciting) voltage.
+
+[INSERT DRAWINGS OF ACCELEROMETER MASSES HERE]
+
+\subsection{Gyroscope} \label{ssec:bkg_gyroscope}
+A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.
+MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass.
+
+[INSERT FIGURE OF GYROSCOPES HERE]
+
+As shown in Figure \ref{fig:bkg_gyroscope}, an oscillation is induced on the x-axis using a driving circuit.
+While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$.
+The proof for this relationship can be found in Appendix \ref{app:gyroscope_proof}.
+
+\subsection{Magnetometer} \label{ssec:bkg_magnetometer}
+Magnetometers use magnetoresistive elements that change their effective resistance in the presence of a magnetic field.
+Atoms within a magnetoresistive element change their orientations with the magnetic field.
+The new orientation can hinder or aid the path of free electrons moving through the element, thus changing the resistance.
+By measuring this value and correlating it to a measurement scale, the local magnetic field can be determined.
+
+[INSERT MAGNETOMETER DRAWING HERE]
+
+\section{Global Positioning System} \label{sec:bkg_gps}
+
+\section{Attitude and Heading Reference System} \label{sec:bkg_ahrs}
+An Attitude and Heading Reference System (AHRS) is a 6- or 9-DOF IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
+The data streams from the sensors can be fused together to estimate a body's inertial orientation in three dimensional space.
+The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.
+
+[INSERT AHRS BLOCK DIAGRAM HERE]
+
+\subsection{Orientation and Rotation} \label{ssec:bkg_orientation}
+A body can be rotated in 3D space along the x-, y-, and z-axis.
+\textbf{Roll ($\phi$)} defines rotation about the x-axis; \textbf{pitch ($\theta$)} defines rotation about the y-axis; and \textbf{yaw ($\psi$)} defines rotation about the z-axis.
+These three rotations are known as Euler angles.
+They are easy to conceptually understand and model, but they are not mathematically pure.
+
+[INSERT FIGURE ON BODY ROTATIONS]
+
+A body can be rotated around all three axes to change its orientation.
+The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
+This is simple to do so long as two of the rotation axes are not parallel to each other.
+When two axes are parallel, they lock together in a condition called, "gimbal lock". 
+We can overcome gimbal lock by adding a fourth dimension that can drive each axis independently.
+This moves the rotation from the typical three dimensional space to the four dimensional, Hamiltonian, space.
+We can represent this orientation as a four dimensional vector called a "quaternion".
+This vector is more prevalent in modern AHRS design as it is more mathematically pure and means you do not have to determine if you need to change a rotation sequence to avoid or get out of gimbal lock.
+
+It is possible to freely switch between Euler and quaternion vectors using trigonometric operations inside of a matrix multiplication operation.
+
+[INSERT ASIDE ON GIMBAL LOCK]
+
+\section{Filters} \label{sec:bkg_filters}

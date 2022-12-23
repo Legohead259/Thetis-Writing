@@ -22,6 +22,11 @@
 \usepackage{booktabs}
 \usepackage{epstopdf}
 
+\usepackage[]{pdflscape}
+\usepackage[]{longtable}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{colortbl}
 
 \graphicspath{{figures/}}  % Location of the graphics files
 
@@ -156,10 +161,10 @@
 \doublespacing \pagenumbering{arabic}
 
 %% -----------Main Matter---------------------------
-\include{./chapters/chapter1}
-\include{./chapters/chapter2}
-\include{./chapters/chapter3}
-\include{./chapters/chapter4}
+\include{chapters/chapter1}
+\include{chapters/chapter2}
+\include{chapters/chapter3}
+% \include{chapters/chapter4}
 
 %% -----------Back Matter---------------------------
 %% -----------Bibliography--------------------------
@@ -168,7 +173,7 @@
 \bibliographystyle{plain}
 \bibliography{mybibliography}
 %% -----------Appendices----------------------------
-\include{./chapters/appendices}
+\include{chapters/appendices}
 
 
 \end{document}

@@ -1,31 +1,84 @@
 %%--------------------Chapter 3------------------------
-\chapter{Best Algorithm}
+\chapter{Thetis Design} \label{chap:thetis_design}
 
-As we have shown in Chapter~\ref{chap:oc}, Section~\ref{sec:fi}, he got the result in Equation~\ref{eq:mc2}. But we get $\prod_{i=x^2}^{N_1}\log_3 x^{y^{z^{k_6}}}$.
+\section{Design Rationale} \label{sec:design_rationale}
 
-{\tt
-\begin{verbatim}
+\subsection{Feasibility and Risk Identification} \label{ssec:feasibility_risk}
+The following tables provide the supporting documentation to the requirement feasibility assessment for technical, cost and schedule, organizational, and political and operational. The conclusion is that all requirements have been proven feasible with current technology.
 
-for (int counter=1; counter < size; counter++){
-   printf(``%d\n'', counter);
+\begin{landscape}
+% ==================================
+% === STAKEHOLDER REQUIREMENT XX ===
+% ==================================
+
+% \paragraph{S.R. XX} - The requirement
+
+% {\fontsize{10pt}{11pt}\selectfont
+% \begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+%     \hline \endlastfoot
+	
+%     \hline
+%     \rowcolor[gray]{0.8}
+%     \multicolumn{6}{|c|}{ } \\
+%     \hline
+%     \textbf{Stakeholder:} & \multicolumn{5}{|l|}{Wilford Erasmus, POC of the three-letter agency} \\
+%     \hline
+%     \textbf{Rationale:} & \multicolumn{5}{|L{0.8\linewidth}|}{s} \\
+%     \hline
+%     \textbf{Fit Criterion:} & \multicolumn{5}{|L{0.8\linewidth}|}{} \\
+%     \hline
+%     \rowcolor[gray]{0.8}
+%     \multicolumn{6}{|c|}{ } \\
+%     \hline
+%     \textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After Mitigation} \\
+%     \hline
+%     Technical \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{} \\
+%     \hline
+%     Cost and Schedule \newline Assessment &  &  & \cellcolor{}  & & \cellcolor{}  \\
+%     \hline
+%     Organizational assessment &  &  & \cellcolor{}  &  & \cellcolor{}  \\
+%     \hline
+%     Political and Operational Assessment &  &  & \cellcolor{}  &  & \cellcolor{} 
+%     \label{tab:srXX_feasibility}
+% \end{longtable}
+% }
+
+% \newpage
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 01 ===
+% ==================================
+
+\textbf{SR 01} - The system shall be able to record acceleration, rotation rate, orientation, and position
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Wilford Erasmus, POC of the three-letter agency} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|l|}{The system will need to detect, identify, and track human activity both day and night.} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{This will be done by using at least 10 spatial resolution cells across the observed object of interest under all imaging conditions.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After Mitigation} \\
+	\hline
+	Technical \newline Assessment & The imaging system will not be able to identify and detect humans as a function of stand-off distance and entrance pupil diameter. & Failure of project objective & \cellcolor{red} High & AUAV operator tasked with orienting the electro-optical imaging systems on the AUAV to view specific locations based on the AUAV's position \newline Use of slipstream sensors & \cellcolor{yellow} Medium \\
+	\hline
+	Cost and Schedule \newline Assessment & Could require new integration technology, as the imaging system is not yet fully defined & Project cost and schedule deploys while being resolved & \cellcolor{yellow} Medium & Good engineering practices for image processing and detection, identification, and tracking feasibility & \cellcolor{green} Low \\
+	\hline
+	Organizational assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can outsource through consultation or send job requests, as needed. \newline Proper documentation of progress and knowledge capture presentation events will be held & \cellcolor{green} Low \\
+	\hline
+	Political and Operational Assessment & AUAV becomes difficult to maintain. \newline AUAV may require intervention to fly mission & No cost savings, project fails objectives & \cellcolor{yellow} Medium & Reliability analysis required. \newline Components and software to be modeled to verify compatibility. \newline AI software package allows for programmable missions and more autonomy & \cellcolor{green} Low
+	\label{tab:sr01_feasibility}
+\end{longtable}
 }
 
-\end{verbatim}
-}
-
-\begin{table}[htb]
-	\caption{Summary of Results for Something}
-	\label{tab:websterdelay-summarized}
-	\centering
-	\begin{tabular}{ccccccc}
-		\toprule
-		Cycle& \multicolumn{2}{c}{Phase A} & \multicolumn{2}{c}{Phase B} & Phase C & Phase D\\
-		Time & \multicolumn{2}{c}{Lane} & \multicolumn{2}{c}{Lane} & Lane & Lane \\
-		Trail &  1 &  2 &  1 &  2 &  1 &  1\\
-		\midrule
-		120 sec & 44.8 & 42.7 & 44.4 & 44.4 & 68.8 & 69.4\\
-		55 sec & 23.5 & 21.8 & 23.1 & 23.1 & 42.2 & 42.7\\
-		30 sec & 59.7 & 35.9 & 52.2 & 52.2 & 529.2 & 539.9\\
-		\bottomrule
-	\end{tabular}
-\end{table}
+\end{landscape}

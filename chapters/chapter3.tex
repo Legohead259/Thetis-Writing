@@ -1,7 +1,43 @@
 %%--------------------Chapter 3------------------------
 \chapter{Thetis Design} \label{chap:thetis_design}
 
+\section{Stakeholders} \label{sec:stakeholders}
+As with any project, stakeholders are a crucial part of the design process.
+Stakeholders drive certain requirements that the device must achieve in order to be accepted for operation.
+On an individual level, the committee overseeing this thesis are the major stakeholders as they have a vested interest in the success or failure of the project.
+However, there are some organizational-level stakeholders that have also expressed interest in the project and provided some feedback for their requirements.
+A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
+
+\begin{table}
+	\caption{A summary of stakeholders of the Thetis device}
+	\label{tab:stakeholders}
+	\centering
+	\begin{tabular}{|p{0.3\linewidth} | p{0.6\linewidth}|}
+		\hline
+		\rowcolor[gray]{0.8}
+		\multicolumn{1}{|c|}{\textbf{Stakeholder}} & \multicolumn{1}{|c|}{\textbf{Description}} \\
+		\hline
+		Committee members & Individual professors who have expressed interest in the project and have agreed to assist in its development. Specifically, Dr. Wood and Dr. Weaver would like to deploy Thetis on university projects; Dr. Gutierrez has provided many requirements on the performance of the instrumentation; and Dr. Silaghi is interested in its application to autonomous navigation. \\
+		\hline
+		Florida Institute of \newline Technology & The university has several classes and projects where the Thetis design could be useful. The Instrumentation Design and Analysis class used Thetis as a demonstrator for designing PCBs and field experiments. Thetis was also designed with Surf Engineering Analysis in mind for students to have a new open source sensor to experiment with. \\
+		\hline
+		Maritime Tactical \newline Systems (MARTAC) & This corporation has expressed interest in using Thetis for research and characterizing the performance of their high speed catamarans in open-water testing \\
+		\hline
+		NSWC Carderock - \newline Combatant Craft Division (CCD) & This three-letter agency of the government has expressed interest in using Thetis as a testing and evaluation tool for small unmanned crafts \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Hands-On Users} \label{ssec:hands_on_users}
+
 \section{Design Rationale} \label{sec:design_rationale}
+
+\subsection{Problem Description} \label{ssec:problem_desc}
+
+\subsection{Mission Statement} \label{ssec:mission_statement}
+
+\subsection{Stakeholder Requirements} \label{ssec:stakeholder_reqs}
+
 
 \subsection{Feasibility and Risk Identification} \label{ssec:feasibility_risk}
 The following tables provide the supporting documentation to the requirement feasibility assessment for technical, cost and schedule, organizational, and political and operational. The conclusion is that all requirements have been proven feasible with current technology.
@@ -68,17 +104,35 @@ The following tables provide the supporting documentation to the requirement fea
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After Mitigation} \\
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
 	Technical \newline Assessment & The imaging system will not be able to identify and detect humans as a function of stand-off distance and entrance pupil diameter. & Failure of project objective & \cellcolor{red} High & AUAV operator tasked with orienting the electro-optical imaging systems on the AUAV to view specific locations based on the AUAV's position \newline Use of slipstream sensors & \cellcolor{yellow} Medium \\
 	\hline
 	Cost and Schedule \newline Assessment & Could require new integration technology, as the imaging system is not yet fully defined & Project cost and schedule deploys while being resolved & \cellcolor{yellow} Medium & Good engineering practices for image processing and detection, identification, and tracking feasibility & \cellcolor{green} Low \\
 	\hline
-	Organizational assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can outsource through consultation or send job requests, as needed. \newline Proper documentation of progress and knowledge capture presentation events will be held & \cellcolor{green} Low \\
+	Organizational Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can outsource through consultation or send job requests, as needed. \newline Proper documentation of progress and knowledge capture presentation events will be held & \cellcolor{green} Low \\
 	\hline
-	Political and Operational Assessment & AUAV becomes difficult to maintain. \newline AUAV may require intervention to fly mission & No cost savings, project fails objectives & \cellcolor{yellow} Medium & Reliability analysis required. \newline Components and software to be modeled to verify compatibility. \newline AI software package allows for programmable missions and more autonomy & \cellcolor{green} Low
+	Operational Assessment & AUAV becomes difficult to maintain. \newline AUAV may require intervention to fly mission & No cost savings, project fails objectives & \cellcolor{yellow} Medium & Reliability analysis required. \newline Components and software to be modeled to verify compatibility. \newline AI software package allows for programmable missions and more autonomy & \cellcolor{green} Low
 	\label{tab:sr01_feasibility}
 \end{longtable}
 }
 
 \end{landscape}
+
+\subsection{Quality Functional Deployment} \label{ssec:qfd}
+
+\section{Concept of Operations} \label{sec:conops}
+
+\section{Conceptual Design} \label{sec:conceptual_design}
+
+\subsection{Functional Block Diagram} \label{ssec:block_diagram}
+
+\subsection{Functional Flow Diagram} \label{ssec:flow_diagram}
+
+\subsection{Available Commercial Off the Shelf Products} \label{ssec:cots_products}
+
+\subsection{Analytical Hierarchy Process} \label{ssec:ahp}
+
+\subsubsection*{Inertial Measurement Unit} \label{sssec:ahp_imu}
+
+\subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}

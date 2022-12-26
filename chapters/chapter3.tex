@@ -31,12 +31,28 @@ A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 \subsection{Hands-On Users} \label{ssec:hands_on_users}
 
 \section{Design Rationale} \label{sec:design_rationale}
+Thetis is envisioned as an open-source all-in-one data logging solution for use in research projects.
+The device incorporates multiple sensors, GPS tracking, and a WiFi-capable microcontroller in order to enable as many features as can be envisioned by the end users.
+One of the driving considerations was the small footprint.
+Thetis Revision F is designed to fit into one of the smallest IP67-rated enclosures available on the market [LINK].  
+This tiny form factor allows it to be inconspicuously mounted to any floating body like surfboards, scale models, or wave buoys without upsetting their inertial characteristics or impeding nominal operation.
+
+Further discussions with stakeholders later in the design process envisioned a new iteration, Revision G, that had a larger footprint, but added more capabilities like CANbus integration and several connection ports for different communication protocols.
+This revision is meant for deployment on vessels that have a NMEA2000 communications bus.
+This bus allows the device to be powered from the boat's power supply and communicate data to a central controller.
+These features are extremely important for the final application where Thetis is meant to feed data into a navigation algorithm for the safe passage of unmanned vessels.
 
 \subsection{Problem Description} \label{ssec:problem_desc}
+Tracking the inertial movements of small floating bodies in-situ is difficult for small-scale or student-led experiments.
+The price of the measurement instruments and the data acquisition computers (DAQs) offers a high bar for entry for these projects.
+Also, the size of these instruments and DAQs can negatively impact the performance or operation of small floating bodies so they cannot be effectively used.
+This forces classrooms and organizations to either neglect collecting inertial data or using bulky, unreliable prototype setups using off-the-shelf components
 
 \subsection{Mission Statement} \label{ssec:mission_statement}
+Thetis aims to democratize the inertial measurement and tracking space for small scale experiments by implementing an open-source, feature-rich, all-in-one solution to monitoring the movements of floating bodies.
 
 \subsection{Stakeholder Requirements} \label{ssec:stakeholder_reqs}
+Interviews with the stakeholders occurred over several months and informed a set of requirements that they determined were necessary for the project's success.
 
 
 \subsection{Feasibility and Risk Identification} \label{ssec:feasibility_risk}
@@ -95,24 +111,26 @@ The following tables provide the supporting documentation to the requirement fea
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Wilford Erasmus, POC of the three-letter agency} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Stephen Wood} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|l|}{The system will need to detect, identify, and track human activity both day and night.} \\
+	\textbf{Rationale:} & \multicolumn{5}{|l|}{The system needs to be able to record the inertial characteristics of a floating body} \\
 	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{This will be done by using at least 10 spatial resolution cells across the observed object of interest under all imaging conditions.} \\
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{This will be accomplished using a 9-DOF IMU and GPS receiver with accuracies not to exceed one standard deviation of a reference source} \\
 	\hline
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & The imaging system will not be able to identify and detect humans as a function of stand-off distance and entrance pupil diameter. & Failure of project objective & \cellcolor{red} High & AUAV operator tasked with orienting the electro-optical imaging systems on the AUAV to view specific locations based on the AUAV's position \newline Use of slipstream sensors & \cellcolor{yellow} Medium \\
+	Technical \newline Assessment & The IMU and/or GPS will report measurements that have a high margin of error and little consistency & Worthless data for analysis & \cellcolor{yellow} Medium & Selection of sensors that have decent accuracy and low drift. \newline Use a \emph{tuned} Kalman filter to improve reported sensor accuracy & \cellcolor{green} Low \\
 	\hline
-	Cost and Schedule \newline Assessment & Could require new integration technology, as the imaging system is not yet fully defined & Project cost and schedule deploys while being resolved & \cellcolor{yellow} Medium & Good engineering practices for image processing and detection, identification, and tracking feasibility & \cellcolor{green} Low \\
+	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. & Unable to find appropriate components. \newline Any found components are prohibitively expensive & \cellcolor{yellow} Medium & Find components that are in stock and order in bulk. & \cellcolor{yellow} Medium \\
 	\hline
-	Organizational Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can outsource through consultation or send job requests, as needed. \newline Proper documentation of progress and knowledge capture presentation events will be held & \cellcolor{green} Low \\
+	Schedule \newline Assessment & Sensor fusion algorithms are difficult to implement and tune. & Schedule overrun trying to tune the algorithms. \newline Inaccuracies introduced through improper tuning. & \cellcolor{yellow} Medium & Good programming practices to make tuning easier during testing. & \cellcolor{green} Low \\
 	\hline
-	Operational Assessment & AUAV becomes difficult to maintain. \newline AUAV may require intervention to fly mission & No cost savings, project fails objectives & \cellcolor{yellow} Medium & Reliability analysis required. \newline Components and software to be modeled to verify compatibility. \newline AI software package allows for programmable missions and more autonomy & \cellcolor{green} Low
+	Organizational Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can reduce scope, as needed. \newline Proper documentation of progress and scheduled design reviews and consultations & \cellcolor{green} Low \\
+	\hline
+	Operational Assessment & Unreliable sensors. & Device fails and does not recover during testing; lost data & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
 	\label{tab:sr01_feasibility}
 \end{longtable}
 }

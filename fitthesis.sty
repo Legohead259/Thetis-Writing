@@ -410,11 +410,13 @@ fit.tex example.}}{}
 %Overrode Paragraph and subparagraph to continue the formating to look the same as other sections.
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
-                                     {1.5ex \@plus .2ex}%
-                                   {\normalfont\normalsize\bfseries}}
+                                    % {1.5ex \@plus .2ex} % Add one new line spacing (puts following text on below line)
+                                    {0ex} % Remove line spacing (keeps following text on same line as paragraph)
+                                    {\normalfont\normalsize\bfseries}}
 \renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
-                                     {1.5ex \@plus .2ex}%
-                                   {\normalfont\normalsize\bfseries}}
+                                    % {1.5ex \@plus .2ex} % Add one new line spacing (puts following text on below line)
+                                    {0ex} % Remove line spacing (keeps following text on same line as paragraph)
+                                    {\normalfont\normalsize\bfseries}}
 
 \pagestyle{plain}

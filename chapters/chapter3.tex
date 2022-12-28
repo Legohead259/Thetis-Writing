@@ -59,49 +59,55 @@ Interviews with the stakeholders occurred over several months and informed a set
 The following tables provide the supporting documentation to the requirement feasibility assessment for technical, cost and schedule, organizational, and political and operational. The conclusion is that all requirements have been proven feasible with current technology.
 
 \begin{landscape}
+
+
 % ==================================
 % === STAKEHOLDER REQUIREMENT XX ===
 % ==================================
 
-% \paragraph{S.R. XX} - The requirement
 
-% {\fontsize{10pt}{11pt}\selectfont
+% \paragraph*{SR XX} - 
+
+% {\fontsize{8pt}{8pt}\selectfont
 % \begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
-%     \hline \endlastfoot
+% 	\hline \endlastfoot
 	
-%     \hline
-%     \rowcolor[gray]{0.8}
-%     \multicolumn{6}{|c|}{ } \\
-%     \hline
-%     \textbf{Stakeholder:} & \multicolumn{5}{|l|}{Wilford Erasmus, POC of the three-letter agency} \\
-%     \hline
-%     \textbf{Rationale:} & \multicolumn{5}{|L{0.8\linewidth}|}{s} \\
-%     \hline
-%     \textbf{Fit Criterion:} & \multicolumn{5}{|L{0.8\linewidth}|}{} \\
-%     \hline
-%     \rowcolor[gray]{0.8}
-%     \multicolumn{6}{|c|}{ } \\
-%     \hline
-%     \textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After Mitigation} \\
-%     \hline
-%     Technical \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{} \\
-%     \hline
-%     Cost and Schedule \newline Assessment &  &  & \cellcolor{}  & & \cellcolor{}  \\
-%     \hline
-%     Organizational assessment &  &  & \cellcolor{}  &  & \cellcolor{}  \\
-%     \hline
-%     Political and Operational Assessment &  &  & \cellcolor{}  &  & \cellcolor{} 
-%     \label{tab:srXX_feasibility}
+% 	\hline
+% 	\rowcolor[gray]{0.8}
+% 	\multicolumn{6}{|c|}{ } \\
+% 	\hline
+% 	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{} \\
+% 	\hline
+% 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+% 	\hline
+% 	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+% 	\hline
+% 	\rowcolor[gray]{0.8}
+% 	\multicolumn{6}{|c|}{ } \\
+% 	\hline
+% 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+% 	\hline
+% 	Technical \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{} \\
+% 	\hline
+% 	Cost \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{} \\
+% 	\hline
+% 	Schedule \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{} \\
+% 	\hline
+% 	Organizational \newline Assessment &  &  & \cellcolor{}  &  & \cellcolor{}  \\
+% 	\hline
+% 	Operational \newline Assessment &  &  & \cellcolor{} &  & \cellcolor{}
+% 	\label{tab:sr01_feasibility}
 % \end{longtable}
 % }
-
 % \newpage
+
 
 % ==================================
 % === STAKEHOLDER REQUIREMENT 01 ===
 % ==================================
 
-\textbf{SR 01} - The system shall be able to record acceleration, rotation rate, orientation, and position
+
+\paragraph*{SR 01} - The system shall be able to record acceleration, rotation rate, orientation, and position
 
 {\fontsize{8pt}{8pt}\selectfont
 \begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
@@ -113,7 +119,7 @@ The following tables provide the supporting documentation to the requirement fea
 	\hline
 	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Stephen Wood} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|l|}{The system needs to be able to record the inertial characteristics of a floating body} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{The system needs to be able to record the inertial characteristics of a floating body} \\
 	\hline
 	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{This will be accomplished using a 9-DOF IMU and GPS receiver with accuracies not to exceed one standard deviation of a reference source} \\
 	\hline
@@ -128,12 +134,134 @@ The following tables provide the supporting documentation to the requirement fea
 	\hline
 	Schedule \newline Assessment & Sensor fusion algorithms are difficult to implement and tune. & Schedule overrun trying to tune the algorithms. \newline Inaccuracies introduced through improper tuning. & \cellcolor{yellow} Medium & Good programming practices to make tuning easier during testing. & \cellcolor{green} Low \\
 	\hline
-	Organizational Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can reduce scope, as needed. \newline Proper documentation of progress and scheduled design reviews and consultations & \cellcolor{green} Low \\
+	Organizational \newline Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can reduce scope, as needed. \newline Proper documentation of progress and scheduled design reviews and consultations & \cellcolor{green} Low \\
 	\hline
-	Operational Assessment & Unreliable sensors. & Device fails and does not recover during testing; lost data & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
+	Operational \newline Assessment & Unreliable sensors. & Device fails and does not recover during testing; lost data & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
 	\label{tab:sr01_feasibility}
 \end{longtable}
 }
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 02 ===
+% ==================================
+
+
+\paragraph*{SR 02} - The system shall be able to fit into a small IP67-rated, or better, enclosure
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis's electronics need to be independently sealed from the elements, including being temporarily submerged } \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The selected enclosure should have a UL-listing and have a verified IP rating that fits the requirement.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Unable to find a small enough IP-rated enclosure & Need to increase size that may violate size restrictions & \cellcolor{yellow} Medium & Extensive searching of online retailers of catalogs & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Small IP-67 rated enclosures are a niche item that may have to be custom-ordered and therefore expensive. & Enclosures may be prohibitively expensive and drive up program costs & \cellcolor{green} Low & Find reputable suppliers and order enclosures in bulk, if possible. & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & If the enclosures have to be custom ordered, there may be an extended lead time for delivery & Schedule orverruns & \cellcolor{yellow} Medium & Find reputable suppliers and order in bulk well ahead of time. \newline maintain a stock of several enclosures as spares. & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
+	\hline
+	Operational \newline Assessment & IP-rating is not valid. \newline Enclosure is not fully sealed. \newline Operation exceeds rated limits & Chamber floods, damaging equipment, causing a potential fire hazard and data loss. & \cellcolor{red} High & Reputable supplier and traceable IP-rating. \newline End user vigilence to ensure enclosure is fully closed and sealed. & \cellcolor{yellow} Medium
+	\label{tab:sr02_feasibility}
+\end{longtable}
+}
+\newpage
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 03 ===
+% ==================================
+
+
+\paragraph*{SR 03} - The system shall be able to be powered by battery for more than 4 hours continuously
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is expected to deploy for a minimum of 3 hours on a typical deployment. Need margin for battery chemistry and preparation time.} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The device shall be deployed for a long period and } \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Device is not turned off before battery voltage is critically low & Battery is damaged and needs to be replaced; fire hazard & \cellcolor{yellow} Medium & Build the power regulator such that the device auto turns off before battery is damaged & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Larger capacity batteries are more expensive. \newline Damaged batteries need to be replaced & Cost overruns & \cellcolor{green} Low & Order batteries in bulk and ensure spares are available & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & If there are no spares, there may be delays in testing schedule & Any critical testing may have to be delayed, resulting in program delays & \cellcolor{green} Low & Order batteries in bulk and ensure spares are available & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
+	\hline
+	Operational \newline Assessment & Battery does not have enough capacity to support a 4 hour deployment & Data is lost & \cellcolor{yellow} Medium & Conservative power analysis and choosing an oversized battery. & \cellcolor{green} Low
+	\label{tab:sr03_feasibility}
+\end{longtable}
+}
+\newpage
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 04 ===
+% ==================================
+
+
+\paragraph*{SR 04} - The system shall be cheaper than \$200 per unit
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is designed to be a cheap, expendable unit so that, when damaged by students, it is financially feasible to replace it. It needs to be cheaper than comparable devices} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The Bill of Materials for Thetis shall not exceed the required threshold.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Cheaper components (sensors) that are not as precise or accurate. & Less accurate data that may not be useful for analysis & \cellcolor{yellow} Medium & Use a \emph{tuned} Kalman filter to improve reported sensor accuracy & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. \newline Small IP-67 rated enclosures are a niche item that may have to be custom-ordered & Parts significantly inflate the Bill of Materials cost & \cellcolor{yellow} Meidum & Source from reputable suppliers and purchase in bulk & \cellcolor{yellow} Medium \\
+	\hline
+	Schedule \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
+	\hline
+	Organizational \newline Assessment & Bill of Materials cost exceeds requirement limit. \newline Development costs become too expensive & Invested stakeholders may pull support. \newline Hardware development slows or stops & \cellcolor{red} High & Purchase materials in bulk, when possible. \newline Use proper development techniques and analysis to reduce the number of hardware iterations and cost  & \cellcolor{yellow} Medium \\
+	\hline
+	Operational \newline Assessment & Cheaper, not as reliable parts. & Unexpected and unrecoverable failures during deployments & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
+	\label{tab:sr04_feasibility}
+\end{longtable}
+}
+\newpage
 
 \end{landscape}
 

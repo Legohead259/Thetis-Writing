@@ -55,8 +55,31 @@ Thetis aims to democratize the inertial measurement and tracking space for small
 Interviews with the stakeholders occurred over several months and informed a set of requirements that they determined were necessary for the project's success.
 
 
-\subsection{Feasibility and Risk Identification} \label{ssec:feasibility_risk}
-The following tables provide the supporting documentation to the requirement feasibility assessment for technical, cost and schedule, organizational, and political and operational. The conclusion is that all requirements have been proven feasible with current technology.
+\subsection{Risk Identification} \label{ssec:risk_identification}
+The following tables explore some of the larger risks associated with each of the stakeholder requirements.
+Risks are categorized into several types: Technical, Cost, Schedule, Organizational, and Operational.
+Each risk has an associated consequence on the project's development and a severity rating from "Low" to "High".
+With every risk, we can apply a mitigation to it to reduce the severity of the consequence.
+
+\paragraph*{Technical Risks } These are risks that pose a technical challenge to the project such as sensor accuracies, programming difficulty, or component specifications. 
+These risks are likely to impede the development of Thetis by showing up during testing and forcing workarounds after the fact, rather than before.
+
+\paragraph*{Cost Risks } These risks pose a threat to Thetis's development budget.
+They are more likely to manifest in the supply chain of Thetis, especially in the after effects of the COVID-19 pandemic and the chaos of the chip shortage.
+More often, mitigating these risks requires some careful planning and a larger budget and will typically not impede the development process.
+
+\paragraph*{Schedule Risks } By delaying the program's development, Schedule Risks are the most notorious and costly of them all.
+These risks manifest as delays in development or the supply chain and can significantly impact the expected delivery time of the device.
+They also are prominent across all phases of the design process from planning to testing and are only mitigated, but never eliminated during the design spiral.
+
+\paragraph*{Organization Risks } The stakeholders represent various organizations that have an interest in Thetis.
+This risk type poses a problem for the specific stakeholder organization and their interests.
+This can be viewed from the political, economical, or schedule points of view as these are important considerations for the stakeholders.
+
+\paragraph*{Operational Risks } These risks challenge end users of the device while they are testing.
+Most of them can be mitigated in the design process by working directly with the end users and ensuring their concerns are met.
+However, the majority of them will only manifest during testing and must be mitigated after the fact.
+This could mean substantial cost increases and schedule delays depending on the severity of the risk.
 
 \begin{landscape}
 
@@ -259,6 +282,128 @@ The following tables provide the supporting documentation to the requirement fea
 	\hline
 	Operational \newline Assessment & Cheaper, not as reliable parts. & Unexpected and unrecoverable failures during deployments & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
 	\label{tab:sr04_feasibility}
+\end{longtable}
+}
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 05 ===
+% ==================================
+
+
+\paragraph*{SR 05} - The system shall use components that are readily available COTS
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Stephen Wood} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Using commercial off the shelf parts will reduce development time and costs. COTS parts will also make repair and maintenance easier} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{All parts used on Thetis must be available from commercial suppliers and catalogs.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
+	\hline
+	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. \newline Small IP-67 rated enclosures are a niche item that may have to be custom-ordered & Parts significantly inflate the Bill of Materials cost & \cellcolor{yellow} Medium & Source from reputable suppliers and purchase in bulk & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & Parts are not available. \newline Small enclosure may have a long lead time & Development schedule should be delayed & \cellcolor{yellow} Medium & Order parts in bulk and ensure spares are available & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & The small enclosure may no longer be available from a commercial supplier & Forces a new design iteration to fit a new enclosure. \newline Forces end users to adapt to a new enclosure & \cellcolor{green} Low & Work with supplier to ensure supply chain; order in bulk. \newline 3D print older enclosure, if COTS is no longer available & \cellcolor{green} Low \\
+	\hline
+	Operational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8}
+	\label{tab:sr05_feasibility}
+\end{longtable}
+}
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 06 ===
+% ==================================
+
+
+\paragraph*{SR 06} - The system designs shall be open source for modification by students
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will need to be maintained while students use it for class projects. Therefore, they will need to have the ability to directly modify the hardware and software.} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{All of the code and hardware will be published open source in GitHub repositories under an MIT license.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Designs are modified by students who unknowingly break functionality & Disabling or "bricking" Thetis, making it useless. \newline Loss of development history/"good" designs & \cellcolor{green} Low & GitHub tracks all commits and history. \newline "Good" designs are published as release snapshots and cannot be lost. & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & New design modifications require more investment & Program cost increases as students change the design & \cellcolor{green} Low & Ensure that any design modifications go through a design review and adds substantial value to Thetis & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & New designs may require additional development time & New additions may not be ready in time for when students need them & \cellcolor{green} Low & Ensure a ready supply of spare parts. \newline Proper design practices to ensure students can easily add features & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & Thetis design may not be patentable and commercialized & Thetis cannot be patented since it is published open source & \cellcolor{red} High & Thetis can still be commercialized by providing board assembly and support services & \cellcolor{green} Low \\
+	\hline
+	Operational \newline Assessment & Vulnerabilities are found and exploited by bad actors & User data can be compromised \newline WiFi capability opens an attack vector to local network & \cellcolor{green} Low & Avoid implementation of OTA software updates \newline Use proper security techniques for FTP username and password & \cellcolor{green} Low
+	\label{tab:sr06_feasibility}
+\end{longtable}
+}
+\newpage
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 07 ===
+% ==================================
+
+
+\paragraph*{SR 07} - The system shall communicate intra-device using known IEEE standards (e.g. SPI/I2C/UART/etc) 
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Hector Gutierrez} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Using standard communication busses to send to data between ICs on the device makes development and integration easier.} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Development time will need to be spent on a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
+	\hline
+	Schedule \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Development time will need to be spent on a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Future developers will have to study the custom protocol layer in order to understand how to add features & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	\hline
+	Operational \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Unintended bugs or data mistakes may be introduced by using a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low
+	\label{tab:sr07_feasibility}
 \end{longtable}
 }
 \newpage

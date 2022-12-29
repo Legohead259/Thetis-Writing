@@ -408,15 +408,16 @@ fit.tex example.}}{}
  %                                    {\normalfont\normalsize\bfseries}}
  
 %Overrode Paragraph and subparagraph to continue the formating to look the same as other sections.
+% See: https://tex.stackexchange.com/questions/219676/how-to-change-spacing-before-and-after-paragraph-command
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
-                                    {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                    {-3.25ex\@plus -1ex \@minus -.2ex} % Control white space above paragraph
                                     % {1.5ex \@plus .2ex} % Add one new line spacing (puts following text on below line)
-                                    {0ex} % Remove line spacing (keeps following text on same line as paragraph)
+                                    {-1em} % Add space after the paragraph header
                                     {\normalfont\normalsize\bfseries}}
 \renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}%
                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
                                     % {1.5ex \@plus .2ex} % Add one new line spacing (puts following text on below line)
-                                    {0ex} % Remove line spacing (keeps following text on same line as paragraph)
+                                    {-1em} % Add space after the paragraph header
                                     {\normalfont\normalsize\bfseries}}
 
 \pagestyle{plain}

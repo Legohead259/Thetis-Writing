@@ -408,6 +408,129 @@ This could mean substantial cost increases and schedule delays depending on the 
 }
 \newpage
 
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 08 ===
+% ==================================
+
+
+\paragraph*{SR 08} - The system shall communicate extra-device using WiFi and USB 
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{A physical USB connection is crucial for programming and debugging Thetis. A WiFi connection would allow for wireless programming and data off-loading} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The microcontroller shall have a USB-compatible PHY and WiFi capability.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & WiFi performance (speed/range) is too low and unacceptable & Data offloading is cumbersome. \newline Unable to monitor device while deployed & \cellcolor{yellow} Medium & Select microcontroller with known good WiFi-performance. \newline Select an appropriate antenna for the situation & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & WiFi is not useful and not fully utilized & Cost per microcontroller is needlessly increased; inflated bill of materials cost & \cellcolor{yellow} Medium & Verify that WiFi functionality is desired by Stakeholders and end-users & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & Implementing WiFi functionality is difficult and increases complexity; feature creep. & Increased time to develop front end interface; schedule overruns & \cellcolor{red} High & Agile management to limit feature creep & \cellcolor{yellow} Medium \\
+	\hline
+	Organizational \newline Assessment & Some stakeholders may have electromagnetic emissions restrictions & To comply, WiFi functionality will need to be able to be disabled & \cellcolor{green} Low & Allow WiFi features to be disabled by uploading new firmware without those features, or allow users to toggle this function on/off in runtime using a configuration file. & \cellcolor{green} Low \\
+	\hline
+	Operational \newline Assessment & Operators may not have device that can connect to the device over WiFi & Data cannot be offloaded easily in-situ. \newline Wireless monitoring not possible & \cellcolor{green} Low & Ensure that there is always a physical backup for offloading data. \newline Physical lights or other indictors to display system status & \cellcolor{green} Low
+	\label{tab:sr08_feasibility}
+\end{longtable}
+}
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 09 ===
+% ==================================
+
+
+\paragraph*{SR 09} - They system shall have enough on-board storage for 4 hours of continuously logging at 64 Hz
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Logger is not able to consistently achieve 64 Hz rate & Significant data loss on higher frequency oscillations & \cellcolor{yellow} Medium & Utilize fast storage mediums. \newline Increase microcontroller and communication clock speeds & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Small flash chips will not be sufficient to store the amount of data & More expensive data storage devices (micro SD cards) will have to be used; increase bill of materials cost & \cellcolor{yellow} & Find cheapest storage devices that can be used & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & Optimizing the logging functionality will take significant development time to be consistently as fast as possible & Schedule overruns & \cellcolor{red} High & Proper programming practices to optimize code wherever possible; reduce refactors & \cellcolor{yellow} Medium \\
+	\hline
+	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8}  & N/A & \cellcolor[gray]{0.8}  \\
+	\hline
+	Operational \newline Assessment & Inertial movements and oscillations will occur at higher frequencies than can be reasonably measured (>16 Hz) & Significant decrease in data accuracy and correlation to real-world motions & \cellcolor{red} High & Log as fast as possible. \newline Perform careful characterization to validate requirement is sufficient for expected motion environment. & \cellcolor{yellow} Medium
+	\label{tab:sr09_feasibility}
+\end{longtable}
+}
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT XX ===
+% ==================================
+
+
+\paragraph*{SR 10} - Revision G devices shall be capable of communicating extra-device over CANbus 2.0b
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{MARTAC, CCD} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Data from Thetis must be able to be reported to a main computer, without a USB or WiFi connection, using the NMEA2000 protocol} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will be able to communicate with another computer using the NMEA2000 protocol} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Microcontroller does not support CANbus communication natively. \newline Adds significant processing overhead to handle messages & Additional devices needed onboard. \newline Logging or WiFi performance degraded & \cellcolor{red} High & Utilize external drivers for CANbus protocol. \newline Add options to enable/disable WiFi for increased performance & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Microcontroller does not support CANbus communication natively. \newline Component shortage due to COVID-19 pandemic & Additional devices needed onboard; inflated bill of materials cost & \cellcolor{yellow} Medium & Purchase components in bulk. \newline Research CANbus controllers and implementations carefully. & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & Need to implement CANbus support; feature creep. \newline Another SKU to develop and maintain & Schedule & \cellcolor{red} High & Agile management and proper programming practices & \cellcolor{yellow} Medium \\
+	\hline
+	Organizational \newline Assessment & Not all stakeholder organizations require this feature. \newline Another SKU to develop and maintain & Increased development time. \newline Need to add ability to switch on/off features. & \cellcolor{red} High & Proper management techniques and work with stakeholders and end users to ensure feature is properly implemented & \cellcolor{yellow} Medium \\
+	\hline
+	Operational \newline Assessment & Not all end users will need to use this feature & Need to add ability to switch on/off features & \cellcolor{yellow} Medium & Proper management techniques and work with stakeholders and end users to ensure feature is properly implemented & \cellcolor{yellow} Medium
+	\label{tab:sr10_feasibility}
+\end{longtable}
+}
+\newpage
+
 \end{landscape}
 
 \subsection{Quality Functional Deployment} \label{ssec:qfd}

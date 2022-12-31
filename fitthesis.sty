@@ -30,6 +30,8 @@
 \RequirePackage{setspace}
 \RequirePackage{geometry}
 \RequirePackage{etoolbox}
+\RequirePackage[usenames,dvipsnames,table]{xcolor} % Colours
+
 % Add hyperlinks. You can comment out this line if its giving you
 % problems.  float.sty and algorithm.sty have to be loaded *before*
 % hyperref.  Note that later in \hypersetup{} we make links invisible
@@ -421,3 +423,42 @@ fit.tex example.}}{}
                                     {\normalfont\normalsize\bfseries}}
 
 \pagestyle{plain}
+
+%----------------------------------------------------------------------------------------
+%	SIMPLE BOXED ENVIRONMENT
+%----------------------------------------------------------------------------------------
+
+% kaobox (while tcolorbox may be more rich, I find it too complicated so I prefer mdframed)
+\RequirePackage{tikz}
+\RequirePackage[framemethod=TikZ]{mdframed}
+
+%\mdfsetup{skipabove=\topskip,skipbelow=0pt}
+\mdfdefinestyle{fitboxstyle}{
+	skipabove=1.5\topskip,
+	skipbelow=.5\topskip,
+	rightmargin=0pt,
+	leftmargin=0pt,
+	%innertopmargin=3pt,
+	%innerbottommargin=3pt,
+	innerrightmargin=7pt,
+	innerleftmargin=7pt,
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	leftline=false,
+	%linewidth=1pt,
+	%roundcorner=0pt,
+	%font={},
+	%frametitlefont={},
+	frametitlerule=true,
+	linecolor=black,
+	%backgroundcolor=LightBlue,
+	fontcolor=black,
+	%frametitlebackgroundcolor=LightBlue,
+}
+
+\newmdenv[
+	style=fitboxstyle,
+	backgroundcolor=RoyalBlue!25!White,
+	frametitlebackgroundcolor=RoyalBlue!25!White,
+]{fitbox}

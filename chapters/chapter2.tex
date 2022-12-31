@@ -42,15 +42,23 @@ The common definitions are below in Table \ref{tab:imu_dofs}
     \end{tabular}
 \end{table}
 
-[INSERT ASIDE ON MEMS-BASED TECHNOLOGIES HERE]
+\begin{fitbox}[frametitle=Aside: MEMS Technology]
+    Test
+\end{fitbox}
 
 \subsection{Accelerometer} \label{ssec:bkg_accelerometer}
 Accelerometers measure a change in velocity over time (acceleration).
 An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant.
-The displacement of the mass along the axis, imparted by a force is correlated to a sensitivity scale.
+The displacement of the mass along the axis, imparted by a force, is correlated to a sensitivity scale.
 Typically, this scale is electrically resistive and creates an analog change in a driving (exciting) voltage.
+A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
 
-[INSERT DRAWINGS OF ACCELEROMETER MASSES HERE]
+\begin{figure}
+    \caption[Accelerometer block diagram]{Basic block diagram of a three-axis accelerometer where the masses are suspended from springs.}
+    \label{fig:accelerometers}
+    \centering
+    \includegraphics[width=4.5in]{accelerometers.png}
+\end{figure}
 
 \subsection{Gyroscope} \label{ssec:bkg_gyroscope}
 A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.

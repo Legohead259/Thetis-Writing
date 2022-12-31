@@ -54,6 +54,20 @@ Thetis aims to democratize the inertial measurement and tracking space for small
 \subsection{Stakeholder Requirements} \label{ssec:stakeholder_reqs}
 Interviews with the stakeholders occurred over several months and informed a set of requirements that they determined were necessary for the project's success.
 
+\begin{itemize}
+	\item[\textbf{SR 01}] - The system shall be able to record acceleration, rotation rate, orientation, and position
+	\item[\textbf{SR 02}] - The system shall be able to fit into a small IP67-rated, or better, enclosure
+	\item[\textbf{SR 03}] - The system shall be able to fit into a small IP67-rated, or better, enclosure
+	\item[\textbf{SR 04}] - The system shall be cheaper than \$200 per unit
+	\item[\textbf{SR 05}] - The system shall use components that are readily available COTS
+	\item[\textbf{SR 06}] - The system designs shall be open source for modification by students
+	\item[\textbf{SR 07}] - The system shall communicate intra-device using known IEEE standards (e.g. SPI/I2C/UART/etc)
+	\item[\textbf{SR 08}] - The system shall communicate extra-device using WiFi and USB
+	\item[\textbf{SR 09}] - They system shall have enough on-board storage for 4 hours of continuously logging at 64 Hz
+	\item[\textbf{SR 10}] - Thetis Revision G shall be able to communicate extra-device using CANbus
+	\item[\textbf{SR 11}] - The system shall have redundant storage for device and communication events
+\end{itemize}
+
 
 \subsection{Risk Identification} \label{ssec:risk_identification}
 The following tables explore some of the larger risks associated with each of the stakeholder requirements.
@@ -61,22 +75,22 @@ Risks are categorized into several types: Technical, Cost, Schedule, Organizatio
 Each risk has an associated consequence on the project's development and a severity rating from "Low" to "High".
 With every risk, we can apply a mitigation to it to reduce the severity of the consequence.
 
-\paragraph*{Technical Risks } These are risks that pose a technical challenge to the project such as sensor accuracies, programming difficulty, or component specifications. 
+\paragraph*{Technical Risks} These are risks that pose a technical challenge to the project such as sensor accuracies, programming difficulty, or component specifications. 
 These risks are likely to impede the development of Thetis by showing up during testing and forcing workarounds after the fact, rather than before.
 
-\paragraph*{Cost Risks } These risks pose a threat to Thetis's development budget.
+\paragraph*{Cost Risks} These risks pose a threat to Thetis's development budget.
 They are more likely to manifest in the supply chain of Thetis, especially in the after effects of the COVID-19 pandemic and the chaos of the chip shortage.
 More often, mitigating these risks requires some careful planning and a larger budget and will typically not impede the development process.
 
-\paragraph*{Schedule Risks } By delaying the program's development, Schedule Risks are the most notorious and costly of them all.
+\paragraph*{Schedule Risks} By delaying the program's development, Schedule Risks are the most notorious and costly of them all.
 These risks manifest as delays in development or the supply chain and can significantly impact the expected delivery time of the device.
 They also are prominent across all phases of the design process from planning to testing and are only mitigated, but never eliminated during the design spiral.
 
-\paragraph*{Organization Risks } The stakeholders represent various organizations that have an interest in Thetis.
+\paragraph*{Organization Risks} The stakeholders represent various organizations that have an interest in Thetis.
 This risk type poses a problem for the specific stakeholder organization and their interests.
 This can be viewed from the political, economical, or schedule points of view as these are important considerations for the stakeholders.
 
-\paragraph*{Operational Risks } These risks challenge end users of the device while they are testing.
+\paragraph*{Operational Risks} These risks challenge end users of the device while they are testing.
 Most of them can be mitigated in the design process by working directly with the end users and ensuring their concerns are met.
 However, the majority of them will only manifest during testing and must be mitigated after the fact.
 This could mean substantial cost increases and schedule delays depending on the severity of the risk.
@@ -467,9 +481,9 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will be deployed for several hours and needs to continuously record data. Data rate should be as fast as possible to capture higher frequency oscillations.} \\
 	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Storage devices shall be large enough to support a full-length deployment and record all data as fast as possible (>64 Hz)} \\
 	\hline
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
@@ -492,7 +506,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 
 
 % ==================================
-% === STAKEHOLDER REQUIREMENT XX ===
+% === STAKEHOLDER REQUIREMENT 10 ===
 % ==================================
 
 
@@ -527,6 +541,47 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Operational \newline Assessment & Not all end users will need to use this feature & Need to add ability to switch on/off features & \cellcolor{yellow} Medium & Proper management techniques and work with stakeholders and end users to ensure feature is properly implemented & \cellcolor{yellow} Medium
 	\label{tab:sr10_feasibility}
+\end{longtable}
+}
+\newpage
+
+
+% ==================================
+% === STAKEHOLDER REQUIREMENT 11 ===
+% ==================================
+
+
+\paragraph*{SR 11} - The system shall have redundant storage for device and communication events
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
+	\hline \endlastfoot
+	
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{MARTAC, CCD} \\
+	\hline
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will need to be able to log CANbus commands as a part of the data analysis process. Also will need to record device events separately over a long deployment.} \\
+	\hline
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Implement a separate, smaller storage device that is different than the main storage.} \\
+	\hline
+	\rowcolor[gray]{0.8}
+	\multicolumn{6}{|c|}{ } \\
+	\hline
+	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
+	\hline
+	Technical \newline Assessment & Microcontroller cannot handle two separate file systems simultaneously & Significant performance decrease due to buffer flushing. \newline Microcontroller crashes due to buffer overflow. & \cellcolor{yellow} Medium & Proper programming practices to manage and minimize memory usage & \cellcolor{green} Low \\
+	\hline
+	Cost \newline Assessment & Additional components required. \newline Parts shortage due to the COVID-19 pandemic. & Inflated bill of materials cost & \cellcolor{yellow} Medium & Find cheap, but reliable flash storage chips. \newline Purchase parts in bulk & \cellcolor{green} Low \\
+	\hline
+	Schedule \newline Assessment & Implementing redundant storage adds complexity & Potential schedule overruns & \cellcolor{red} High & Proper programming and management practices & \cellcolor{green} Low \\
+	\hline
+	Organizational \newline Assessment & Not all stakeholders require redundant storage. \newline Message logging may inadvertently log sensitive data. & Reduced performance due to increased processor overhead. \newline Unintended data leakages. & \cellcolor{yellow} Medium & Add feature to enable/disable redundant storage features. \newline Work closely with stakeholders and end users to ensure feature is used properly & \cellcolor{green} Low \\
+	\hline
+	Operational \newline Assessment & Higher capacity storage device fails and data is stored on secondary device & Reduced max deployment time. \newline Potential data loss. & \cellcolor{yellow} Medium & Ensure that firmware can handle seamless transition between storage devices. \newline Ensure that secondary storage device is large enough to fulfill SR 03. & \cellcolor{green} Low
+	\label{tab:sr11_feasibility}
 \end{longtable}
 }
 \newpage

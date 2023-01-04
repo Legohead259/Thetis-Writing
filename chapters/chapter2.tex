@@ -53,7 +53,7 @@ The displacement of the mass along the axis, imparted by a force, is correlated 
 Typically, this scale is electrically resistive and creates an analog change in a driving (exciting) voltage.
 A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
 
-\begin{figure}
+\begin{figure}[h!]
     \caption[Accelerometer block diagram]{Basic block diagram of a three-axis accelerometer where the masses are suspended from springs.}
     \label{fig:accelerometers}
     \centering
@@ -64,11 +64,16 @@ A basic representation of a three-axis accelerometer is shown in Figure \ref{fig
 A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.
 MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass.
 
-[INSERT FIGURE OF GYROSCOPES HERE]
+\begin{figure}[h!]
+    \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
+    \label{fig:gyroscopes}
+    \centering
+    \includegraphics[width=4.5in]{gyroscopes.png}
+\end{figure}
 
-As shown in Figure \ref{fig:bkg_gyroscope}, an oscillation is induced on the x-axis using a driving circuit.
+As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
 While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$.
-The proof for this relationship can be found in Appendix \ref{app:gyroscope_proof}.
+The proof for this relationship can be found in [CITE PROOF].
 
 \subsection{Magnetometer} \label{ssec:bkg_magnetometer}
 Magnetometers use magnetoresistive elements that change their effective resistance in the presence of a magnetic field.
@@ -76,7 +81,12 @@ Atoms within a magnetoresistive element change their orientations with the magne
 The new orientation can hinder or aid the path of free electrons moving through the element, thus changing the resistance.
 By measuring this value and correlating it to a measurement scale, the local magnetic field can be determined.
 
-[INSERT MAGNETOMETER DRAWING HERE]
+\begin{figure}[h!]
+    \caption[Magnetometer block diagram]{Basic block diagram of a single-axis magnetometer where electrons are flowing through the magnetoresistive material. The left diagram shows the condition when the magnetic field is aligned (minimal resistance); the right shows the non-aligned magnetic field condition which increases the resistance the electrons face passing through the material.}
+    \label{fig:magnetometer}
+    \centering
+    \includegraphics[width=4.5in]{magnetometer.png}
+\end{figure}
 
 \section{Global Positioning System} \label{sec:bkg_gps}
 
@@ -95,7 +105,7 @@ They are easy to conceptually understand and model, but they are not mathematica
 
 [INSERT FIGURE ON BODY ROTATIONS]
 
-A body can be rotated around all three axes to change its orientation.
+A body can be rotated around all three axes to change its orientation and represented as the vector, $<\phi, \theta, \psi>$.
 The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
 This is simple to do so long as two of the rotation axes are not parallel to each other.
 When two axes are parallel, they lock together in a condition called, "gimbal lock". 
@@ -106,6 +116,18 @@ This vector is more prevalent in modern AHRS design as it is more mathematically
 
 It is possible to freely switch between Euler and quaternion vectors using trigonometric operations inside of a matrix multiplication operation.
 
-[INSERT ASIDE ON GIMBAL LOCK]
+\begin{fitbox}[frametitle=Aside: Gimbal Lock]
+    When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
+    When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
+    This can create stange pathways for the body and cause unexpected behavior.
+    
+    The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
+    First, it is pitched 90 degrees upwards to align the roll and yaw axes, $<0, 90, 0>$.
+    If we then want to rotate it such that it's orientation is $<90, 0, 0>$, it would be rolled left 90 degrees and pitched down 90 degrees.
+    However, due to gimbal lock, the body ended up in the orientation $<0, 0, 90>$!
+    To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
+    
+    [INSERT FIGURE ON GIMBAL LOCK]
+\end{fitbox}
 
 \section{Filters} \label{sec:bkg_filters}

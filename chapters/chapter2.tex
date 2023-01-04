@@ -92,10 +92,17 @@ By measuring this value and correlating it to a measurement scale, the local mag
 
 \section{Attitude and Heading Reference System} \label{sec:bkg_ahrs}
 An Attitude and Heading Reference System (AHRS) is a 6- or 9-DOF IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
-The data streams from the sensors can be fused together to estimate a body's inertial orientation in three dimensional space.
+The data streams from the sensors can be fused together with external information like GPS data and mathematical models to estimate a body's inertial orientation in three dimensional space.
 The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.
 
-[INSERT AHRS BLOCK DIAGRAM HERE]
+\begin{figure}[h!]
+    \caption[AHRS block diagram]{Basic block diagram of an AHRS. 
+    The acceleration, rotation rates, and magnetic field readings are fused together in the IMU. 
+    The AHRS can then apply a bias from the GPS course and corrections from a mathematical model of the system.}
+    \label{fig:ahrs_design}
+    \centering
+    \includegraphics[width=4.5in]{ahrs.png}
+\end{figure}
 
 \subsection{Orientation and Rotation} \label{ssec:bkg_orientation}
 A body can be rotated in 3D space along the x-, y-, and z-axis.
@@ -129,5 +136,32 @@ It is possible to freely switch between Euler and quaternion vectors using trigo
     
     [INSERT FIGURE ON GIMBAL LOCK]
 \end{fitbox}
+
+\subsection{Mahony Filter}
+A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].
+This algorithm estimates the rotation rate, $\omega'$ of the body given the instantaneous rotation rate, $\omega$ and acceleration vector.
+The error, $e$, is calculated as the cross-product between the current acceleration vector and the expected gravitational acceleration vector from the previous estimate.
+The filter uses a Proportional-Integral (PI) controller to determine the filter error from the previous estimate and apply a bias, $\delta\omega$ to the current estimate.
+By integrating $\omega'$, the estimated attitude can be determined.
+The equation for a basic Mahony figure is given below:
+
+\begin{gather}
+    \label{eq:mahony_filter}
+    \vec{\omega}' = \vec{\omega} + \left(K_p + K_i\frac{1}{s}\right) \vec{a} \times \vec{d} \\
+    \begin{aligned}
+        \text{where } & \vec{\omega} \text{ is the instantaneous rotation rate vector} \\
+        & K_p \text{ is the proportional controller constant} \\
+        & K_i \text{ is the integral controller constant} \\
+        & \vec{a} \text{ is the instantaneous acceleration vector} \\
+        & \vec{d} \text{ is the estimated gravity vector from the previous estimate} \\
+    \end{aligned} \notag
+\end{gather}
+
+This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation cannot be known or calculated; it also does not account for gyroscopic drift which decreases its accuracy over time.
+Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
+
+\subsection{Madgewick Filter}
+To address the issues of the Mahony filter, Madgewick [CITE] proposed a different orientation filter, based on Mahony's work, that used quaternions throughout the calculations and could integrate magnetometer data for yaw estimation.
+
 
 \section{Filters} \label{sec:bkg_filters}

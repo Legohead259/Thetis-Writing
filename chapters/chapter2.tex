@@ -43,7 +43,10 @@ The common definitions are below in Table \ref{tab:imu_dofs}
 \end{table}
 
 \begin{fitbox}[frametitle=Aside: MEMS Technology]
-    Test
+    Microelectromechanical Systems (MEMS) are microscopic devices that perform an electromechanical function.
+    They are the most common technology in modern sensor development and revolutionized the technology space by shrinking components down to the micro- and nanometer scales.
+    The the advent of MEMS technology, devices such as accelerometers, magnetometers, gyroscopes, barometers, hygrometers, etc. could be shrunk down from large mechanical masterpieces to mass-producible products that fit within a few square millimeters of epoxy.
+    This dramatically cheapened these devices and allowed more and more products to integrate smart sensors into their designs.
 \end{fitbox}
 
 \subsection{Accelerometer} \label{ssec:bkg_accelerometer}
@@ -89,6 +92,13 @@ By measuring this value and correlating it to a measurement scale, the local mag
 \end{figure}
 
 \section{Global Positioning System} \label{sec:bkg_gps}
+The Global Position System, or GPS, is a constellation of high-altitude satellites that service most of the globe [CITE].
+First developed by the US military for large scale maneuvers on the battlefield, GPS is a ubiquitous technology that is available in almost every device from smartphones to cars.
+Each GPS satellite in orbit transmits the current time measured by their internal atomic clocks.
+A GPS receiver on the ground can synchronize its own internal clock to the GPS time and wait for a satellite's transmission.
+When the satellite time is received, the device can determine the difference between its clock and the satellite's report called the Time of Flight.
+Since the Time of Flight can be assumed to be the constant speed of light, the GPS receiver can determine its distance to a satellite in a known orbit.
+Repeat for at least three satellites, and a GPS receiver can triangulate its position to a reasonable circle of error of about 3-meters.
 
 \section{Attitude and Heading Reference System} \label{sec:bkg_ahrs}
 An Attitude and Heading Reference System (AHRS) is a 6- or 9-DOF IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
@@ -101,7 +111,7 @@ The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.
     The AHRS can then apply a bias from the GPS course and corrections from a mathematical model of the system.}
     \label{fig:ahrs_design}
     \centering
-    \includegraphics[width=4.5in]{ahrs.png}
+    \includegraphics[height=1.3in]{ahrs.png}
 \end{figure}
 
 \subsection{Orientation and Rotation} \label{ssec:bkg_orientation}
@@ -112,7 +122,7 @@ They are easy to conceptually understand and model, but they are not mathematica
 
 [INSERT FIGURE ON BODY ROTATIONS]
 
-A body can be rotated around all three axes to change its orientation and represented as the vector, $<\phi, \theta, \psi>$.
+A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
 The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
 This is simple to do so long as two of the rotation axes are not parallel to each other.
 When two axes are parallel, they lock together in a condition called, "gimbal lock". 
@@ -126,20 +136,20 @@ It is possible to freely switch between Euler and quaternion vectors using trigo
 \begin{fitbox}[frametitle=Aside: Gimbal Lock]
     When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
     When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
-    This can create stange pathways for the body and cause unexpected behavior.
+    This can create strange pathways for the body and cause unexpected behavior.
     
     The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
-    First, it is pitched 90 degrees upwards to align the roll and yaw axes, $<0, 90, 0>$.
-    If we then want to rotate it such that it's orientation is $<90, 0, 0>$, it would be rolled left 90 degrees and pitched down 90 degrees.
-    However, due to gimbal lock, the body ended up in the orientation $<0, 0, 90>$!
+    First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
+    If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
+    However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
     To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
     
     [INSERT FIGURE ON GIMBAL LOCK]
 \end{fitbox}
 
-\subsection{Mahony Filter}
+\subsection{Mahony Filter} \label{ssec:bkg_mahony_filter}
 A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].
-This algorithm estimates the rotation rate, $\omega'$ of the body given the instantaneous rotation rate, $\omega$ and acceleration vector.
+This algorithm estimates the rotation rate, $\pmb{\omega}'$ of the body given the instantaneous rotation rate, $\pmb{\omega}$ and acceleration vector, \pmb{a}.
 The error, $e$, is calculated as the cross-product between the current acceleration vector and the expected gravitational acceleration vector from the previous estimate.
 The filter uses a Proportional-Integral (PI) controller to determine the filter error from the previous estimate and apply a bias, $\delta\omega$ to the current estimate.
 By integrating $\omega'$, the estimated attitude can be determined.
@@ -147,21 +157,68 @@ The equation for a basic Mahony figure is given below:
 
 \begin{gather}
     \label{eq:mahony_filter}
-    \vec{\omega}' = \vec{\omega} + \left(K_p + K_i\frac{1}{s}\right) \vec{a} \times \vec{d} \\
+    \pmb{\omega}' = \pmb{\omega} + \left(K_p + K_i\frac{1}{s}\right) \pmb{a} \times \pmb{d} \\
     \begin{aligned}
-        \text{where } & \vec{\omega} \text{ is the instantaneous rotation rate vector} \\
+        \text{where } & \pmb{\omega} \text{ is the instantaneous rotation rate vector} \\
         & K_p \text{ is the proportional controller constant} \\
         & K_i \text{ is the integral controller constant} \\
-        & \vec{a} \text{ is the instantaneous acceleration vector} \\
-        & \vec{d} \text{ is the estimated gravity vector from the previous estimate} \\
+        & \pmb{a} \text{ is the instantaneous acceleration vector} \\
+        & \pmb{d} \text{ is the estimated gravity vector from the previous estimate} \\
     \end{aligned} \notag
 \end{gather}
 
 This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation cannot be known or calculated; it also does not account for gyroscopic drift which decreases its accuracy over time.
 Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
 
-\subsection{Madgewick Filter}
+\subsection{Madgewick Filter} \label{ssec:bkg_madgewick_filter}
 To address the issues of the Mahony filter, Madgewick [CITE] proposed a different orientation filter, based on Mahony's work, that used quaternions throughout the calculations and could integrate magnetometer data for yaw estimation.
+The use of quaternions throughout the entire filter eliminates the Eulerian singularities and improves performance.
+Additionally, Madgewick's implementation considers the estimation bias to be an optimization problem solved by gradient-descent.
+The gradient-descent approach allows the algorithm to have a much higher performance at lower sample rates and incorporate online magnetic distortion and gyroscopic drift compensation.
 
+The filter uses accelerometer and magnetometer measurements to estimate the body's tilt and yaw relative to the geodetic frame of reference.
+This gives an estimate of the direction vector for the error vector.
+The magnitude of the error is determined via gradient-descent and subtracted from the gyroscope readings along the direction vector.
+This computes an accurate rate of change vector, $\pmb{\dot{q}_t}$, that can be numerically integrated to yield the estimated orientation vector, $\pmb{q_t}$.
 
-\section{Filters} \label{sec:bkg_filters}
+\subsection{Kalman Filter} \label{ssec:kalman_filter}
+The Kalman Filter is a recursive algorithm introduced in the 1960's as a method to track, estimate, and predict the state of a system and corresponding uncertainties [CITE].
+This filter integrates a dynamic (linear) model of the system, control inputs, measurements, and biases/uncertainties into a single algorithm.
+This effectively fuses together system inputs and responses and extrapolates what the system is currently doing and expected to do.
+One key advantage of this algorithm is that it only requires the guess of the previous state to estimate the current state. 
+This massively decreases the memory and processing costs as the history of inputs, measurements, and uncertainties does not need to be remembered or analyzed.
+However, it does have some limitations when the sensor data is noisy or the control inputs cannot be linearly mapped to the system state.
+Random errors in the sensor data may cause the filter to behave unpredictably and non-linearity prevents proper fusion entirely.
+
+The algorithm works by taking uncertainties from sensor measurements and using those to determine the Kalman Gain factor, $K_n$.
+This gain is the magnitude of the uncertainties from the previous estimate and measurement sources.
+
+\begin{equation} \label{eq:kalman_gain}
+    \begin{aligned}
+        K_n &= \frac{\text{Estimate Uncertainty}}{\text{Estimate Uncertainty + Measurement Uncertainty}} \\
+            &= \frac{p_{n,n-1}}{p_{n,n-1} + r_n}
+    \end{aligned}
+\end{equation}
+
+The gain is then applied to a state update equation where the current estimate of the sensor values is determined.
+
+\begin{equation} \label{eq:kalman_state_update_eq}
+    \begin{aligned}
+        \hat{x}_{n,n} &= \hat{x}_{n,n-1} + K_n(z_n - \hat{x}_{n,n-1}) \\
+                      &= (1-K_n)\hat{x}_{n,n-1} + K_n z_n \\
+    \end{aligned}
+\end{equation}
+
+On the first run of the algorithm, an initial state guess and uncertainty are introduced as a starting point for the state prediction equation.
+This equation is the mathematical model of the system and, for example, can be the Newtonian equations of motion for a moving body.
+This creates a prediction for the next state.
+The algorithm can then output the current state, predicted next state, and associated uncertainties with reasonably high accuracy - assuming the filter is tuned.
+Tuning the filter can be done by better quantifying the measurement errors and by tuning hyperparameter called "process noise variables".
+These variables control how much the algorithm depends on the measurement or the previous estimate to make the current and future estimates.
+
+\begin{figure}[h!]
+    \caption[Kalman filter block diagram]{Basic block diagram of a Kalman filter.}
+    \label{fig:kalman_filter}
+    \centering
+    \includegraphics[width=6in]{KalmanFilter.png}
+\end{figure}

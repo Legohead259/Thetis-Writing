@@ -1,0 +1,58 @@
+<mxfile host="65bd71144e">
+    <diagram id="MgquPYGHLPYUjZGtZBUo" name="Page-1">
+        <mxGraphModel dx="1704" dy="775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="endArrow=classic;html=1;exitX=0.25;exitY=0.7;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="5">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="384" y="547.5" as="sourcePoint"/>
+                        <mxPoint x="690" y="360" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="" style="html=1;whiteSpace=wrap;shape=isoCube2;backgroundOutline=1;isoAngle=15;" vertex="1" parent="1">
+                    <mxGeometry x="286" y="351.5" width="294" height="245.00000000000003" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="433" y="425" as="sourcePoint"/>
+                        <mxPoint x="433" y="229" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="" style="endArrow=classic;html=1;exitX=0.75;exitY=0.7;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="5">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="384" y="547.5" as="sourcePoint"/>
+                        <mxPoint x="702.5" y="645.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9" value="X" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="701.5" y="640" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Y" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="690.25" y="351.5" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Z" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="418" y="200" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;shape=mxgraph.lean_mapping.physical_pull;pointerEvents=1;fontFamily=Helvetica;fontSize=16;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="384" y="278" width="98" height="49" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="&lt;span style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-style: normal ; letter-spacing: normal ; text-align: center ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none ; background-color: rgb(255 , 255 , 255)&quot;&gt;&lt;b&gt;Yaw&lt;/b&gt;&lt;br&gt;&lt;b&gt;(&lt;/b&gt;&lt;span style=&quot;color: rgb(33 , 37 , 41) ; font-family: , , &amp;#34;segoe ui&amp;#34; , &amp;#34;roboto&amp;#34; , &amp;#34;helvetica neue&amp;#34; , &amp;#34;noto sans&amp;#34; , &amp;#34;liberation sans&amp;#34; , &amp;#34;arial&amp;#34; , sans-serif , &amp;#34;apple color emoji&amp;#34; , &amp;#34;segoe ui emoji&amp;#34; , &amp;#34;segoe ui symbol&amp;#34; , &amp;#34;noto color emoji&amp;#34; ; background-color: rgb(248 , 249 , 250)&quot;&gt;&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;ψ)&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;br&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=16;fontFamily=Helvetica;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="469.75" y="247" width="40.25" height="51" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;shape=mxgraph.lean_mapping.physical_pull;pointerEvents=1;fontFamily=Helvetica;fontSize=16;fontColor=#000000;rotation=-165;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="362" width="50.25" height="63" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="&lt;span style=&quot;color: rgb(0 , 0 , 0) ; font-family: &amp;#34;helvetica&amp;#34; ; font-style: normal ; letter-spacing: normal ; text-align: center ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none ; background-color: rgb(255 , 255 , 255)&quot;&gt;&lt;b&gt;Pitch&lt;br&gt;(&lt;/b&gt;&lt;span style=&quot;color: rgb(75 , 79 , 88) ; font-family: , &amp;#34;blinkmacsystemfont&amp;#34; , &amp;#34;segoe ui&amp;#34; , &amp;#34;roboto&amp;#34; , , &amp;#34;ubuntu&amp;#34; , &amp;#34;cantarell&amp;#34; , &amp;#34;helvetica neue&amp;#34; , sans-serif ; font-size: 15px&quot;&gt;&lt;b&gt;θ&lt;/b&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(33 , 37 , 41) ; font-family: , , &amp;#34;segoe ui&amp;#34; , &amp;#34;roboto&amp;#34; , &amp;#34;helvetica neue&amp;#34; , &amp;#34;noto sans&amp;#34; , &amp;#34;liberation sans&amp;#34; , &amp;#34;arial&amp;#34; , sans-serif , &amp;#34;apple color emoji&amp;#34; , &amp;#34;segoe ui emoji&amp;#34; , &amp;#34;segoe ui symbol&amp;#34; , &amp;#34;noto color emoji&amp;#34; ; background-color: rgb(248 , 249 , 250)&quot;&gt;&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;)&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;br&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=16;fontFamily=Helvetica;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="661.25" y="374" width="40.25" height="51" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;strokeWidth=1;shape=mxgraph.lean_mapping.physical_pull;pointerEvents=1;fontFamily=Helvetica;fontSize=16;fontColor=#000000;rotation=-165;" vertex="1" parent="1">
+                    <mxGeometry x="580" y="550" width="50.25" height="63" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&lt;span style=&quot;font-family: &amp;#34;helvetica&amp;#34; ; font-style: normal ; letter-spacing: normal ; text-align: center ; text-indent: 0px ; text-transform: none ; word-spacing: 0px ; display: inline ; float: none&quot;&gt;&lt;b&gt;&lt;span style=&quot;background-color: rgb(255 , 255 , 255)&quot;&gt;Roll&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: rgb(255 , 255 , 255)&quot;&gt;(&lt;/span&gt;&lt;/b&gt;&lt;span style=&quot;font-family: &amp;#34;courier new&amp;#34; , &amp;#34;courier&amp;#34; , monospace ; font-weight: 700&quot;&gt;&lt;font style=&quot;font-size: 16px&quot;&gt;ϕ&lt;/font&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(33 , 37 , 41) ; background-color: rgb(248 , 249 , 250)&quot;&gt;&lt;font style=&quot;font-size: 16px&quot;&gt;&lt;b&gt;)&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;br&gt;&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;fontSize=16;fontFamily=Helvetica;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="640" y="550" width="40.25" height="46.5" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

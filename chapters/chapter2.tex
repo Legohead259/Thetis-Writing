@@ -120,7 +120,12 @@ A body can be rotated in 3D space along the x-, y-, and z-axis.
 These three rotations are known as Euler angles.
 They are easy to conceptually understand and model, but they are not mathematically pure.
 
-[INSERT FIGURE ON BODY ROTATIONS]
+\begin{figure}[h!]
+    \caption[Body rotations]{Basic look at a 3D body and the axes of rotation in the body reference frame.}
+    \label{fig:body_rotations}
+    \centering
+    \includegraphics[height=2.5in]{body_rotations.png}
+\end{figure}
 
 A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
 The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
@@ -133,19 +138,30 @@ This vector is more prevalent in modern AHRS design as it is more mathematically
 
 It is possible to freely switch between Euler and quaternion vectors using trigonometric operations inside of a matrix multiplication operation.
 
-\begin{fitbox}[frametitle=Aside: Gimbal Lock]
-    When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
-    When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
-    This can create strange pathways for the body and cause unexpected behavior.
-    
-    The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
-    First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
-    If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
-    However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
-    To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
-    
-    [INSERT FIGURE ON GIMBAL LOCK]
-\end{fitbox}
+\begin{figure}
+    \begin{fitbox}[frametitle=Aside: Gimbal Lock]
+        When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
+        When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
+        This can create strange pathways for the body and cause unexpected behavior.
+        
+        The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
+        First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
+        If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
+        However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
+        To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
+        \begin{center}
+            \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{ship_000000}\label{subfig:ship_000000}}\hskip3ex
+            \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{ship_009000}\label{subfig:ship_009000}}\hskip10ex
+            \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{ship_909000}\label{subfig:ship_909000}}\hskip5ex
+            \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{ship_000090}\label{subfig:ship_000090}}
+            \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
+            Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
+            This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
+            In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
+            \textit{3D model courtesy of "printable models" from Free3D.com.}}
+        \end{center}
+    \end{fitbox}
+\end{figure}
 
 \subsection{Mahony Filter} \label{ssec:bkg_mahony_filter}
 A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].

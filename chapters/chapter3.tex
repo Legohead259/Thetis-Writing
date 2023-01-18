@@ -662,7 +662,189 @@ This provides a quick breakdown of each product through the lense of the enginee
 \subsection{Available Commercial Off the Shelf Products} \label{ssec:cots_products}
 
 \subsection{Analytical Hierarchy Process} \label{ssec:ahp}
+The goal of the Analytic Hierarchy Process (AHP) is to determine an alternative from a given objective and set of criteria. This method is described in (Saaty, 2005) and allows alternatives to be relatively ranked to each other, providing the best alternative for the given criteria and objective. This study details the decision for an Inertial Measurement Unit (IMU).
 
+The criteria and alternatives in an AHP analysis are ranked by the following metrics: \\
+\begin{table}
+\centering
+\begin{tabular}{|c|c|}
+\hline
+    \textbf{Importance Scale} & \textbf{Definition of Importance of Scale} \\
+    \hline
+    1 & Equally important \\ \hline
+    3 & Moderately important \\ \hline
+    5 & Strongly important \\ \hline
+    7 & Very strongly important \\ \hline
+    9 & Extremely important \\
+    \hline
+\end{tabular}
+\caption{Definition of importance in AHP analysis}
+\label{tab:ahp_importance_scale}
+\end{table}
+In the analysis, there can be intermediate values (i.e. 2, 4, etc.) that can be between the main values.
+
+\subsection{Inertial Measurement Unit}
+For this analysis, three alternatives were chosen, as specified in Table \ref{tab:imu_alternatives}. This analysis will compare each alternative with six criteria. The weightings of importance were provided by the stakeholders and FIT specialists
+
+\begin{table}[]
+	\caption{Alternatives for the IMU.}
+    \label{tab:imu_alternatives}
+	\centering
+    \begin{tabular}{|
+		>{\centering\arraybackslash}m{0.25\linewidth}|
+		>{\centering\arraybackslash}m{0.25\linewidth}|
+		>{\centering\arraybackslash}m{0.25\linewidth}|
+		>{\centering\arraybackslash}m{0.25\linewidth}|}
+        \hline
+		\multicolumn{1}{|c|}{\textbf{Alternative A}} & \multicolumn{1}{|c|}{\textbf{Alternative B}} & \multicolumn{1}{|c|}{\textbf{Alternative C}} & \multicolumn{1}{|c|}{\textbf{Alternative D}}\\
+		\hline
+		Bosch BNO055/BNO085 & ST LSM6DSO32 & Xsens MTi-3 & ST iNEMO module \\ 
+		\hline
+    \end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+         & \textbf{\shortstack{Maintenance \& \\ Support}} & \textbf{Reliability} & \textbf{\shortstack{Material \\ Discrimination}} & \textbf{Cost} & \textbf{\shortstack{Spatial \\ Resolution}} & \textbf{Weight} \\
+         \hline
+         \textbf{\shortstack{Maintenance \& \\ Support}} & $1$ & $\frac{1}{4}$ & $2$ & $\frac{1}{2}$ & $\frac{1}{3}$ & $2$ \\ \hline
+         \textbf{Reliability} & $4$ & $1$ & $8$ & $6$ & $4$ & $7$ \\ \hline
+         \textbf{\shortstack{Material \\ Discrimination}} & $\frac{1}{2}$ & $\frac{1}{8}$ & $1$ & $\frac{1}{4}$ & $\frac{1}{3}$ & $\frac{1}{2}$ \\ \hline
+         \textbf{Cost} & $2$ & $\frac{1}{6}$ & $4$ & $1$ & $\frac{1}{3}$ & $4$ \\ \hline
+         \textbf{\shortstack{Spatial \\ Resolution}} & $3$ & $\frac{1}{4}$ & $3$ & $3$ & $1$ & $2$ \\ \hline
+         \textbf{Weight} & $\frac{1}{2}$ & $\frac{1}{7}$ & $2$ & $\frac{1}{4}$ & $\frac{1}{2}$ & $1$ \\ \hline
+    \end{tabular}
+    \caption{EO/IR criteria preference matrix}
+    \label{tab:eoir_preference_matrix}
+\end{table}
+
+When we find the Eigen vector of this matrix, we end up with the following priority vector:
+
+\[
+\left[ {\begin{array}{cc}
+0.090 \\
+0.478 \\
+0.044 \\
+0.142 \\
+0.183 \\
+0.063
+\end{array} } \right]
+\]
+
+There is a clear preference here for the reliability of the sensor, followed by the spatial resolution and cost. We can then compare each alternative with each other with respect to each criterion to get a consolidated alternative matrix shown below, where each row is an alternative and each column is a criterion:
+
+\[ 
+\left[ {\begin{array}{cccccc}
+0.537 & 0.620 & 0.198 & 0.633 & 0.286 & 0.297 \\
+0.195 & 0.156 & 0.312 & 0.261 & 0.143 & 0.164 \\
+0.268 & 0.224 & 0.491 & 0.106 & 0.571 & 0.539 \\
+\end{array} } \right]
+\]
+
+By multiplying the alternative matrix and the criterion priority matrices together, we can get a decision matrix shown in the table below. Here, we can see that Alternative A, the High spatial resolution camera is the best of the three proposed alternatives. The consistency ratio for this analysis is 0.068 which is below the 0.10 threshold indicating that this is a valid analysis.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Alternative} & \textbf{Value} & \textbf{Rank} \\
+        \hline
+        A & 0.514 & 1 \\ \hline
+        B & 0.179 & 3 \\ \hline
+        C & 0.307 & 2 \\ \hline
+    \end{tabular}
+    \caption{Results from the AHP for the EO/IR sensor showing value and rank}
+    \label{tab:eoir_ahp_results}
+\end{table}
+
+\subsection{General Purpose Parallel Processing Unit}
+The General Purpose Parallel Processing (GPPP) unit is a device that will perform the complex calculations on the EO/IR sensor's video feed to account for atmospheric turbulence and detect TOIs and OOIs. Six criteria were chosen and five alternatives analyzed. It was difficult to gather a consensus from the various stakeholders and FIT specialists on the weighting of the different criterion relative to each other. This introduces some error in the form of a high consistency ratio. However, the analysis is still believed to be valid.
+
+We can start by defining the five alternatives explored for this analysis as well as the six criteria.
+
+\begin{table}[h!]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+            \textbf{Criteria} & \textbf{Alternative A} & \textbf{Alternative B} & \textbf{Alternative C} & \textbf{Alternative D} & \textbf{Alternative E} \\
+            \hline
+            & \shortstack{Nvidia \\ RTX 4090} & \shortstack{Nvidia \\ RTX 3090 Ti} & \shortstack{Nvidia \\ RTX A100} & \shortstack{Nvidia \\ RTX A6000} & \shortstack{Nvidia \\ RTX A5000} \\ \hline
+            \textbf{\shortstack{FP32 \\ Performance}} & 83 & 40 & 20 & 39 & 28 \\ \hline
+            \textbf{\shortstack{Processor \\ Speed}} & 2235 & 1560 & 765 & 1410 & 1170 \\ \hline
+            \textbf{Cost} & \$1,600 & \$1,100 & \$10,000 & \$4,000 & \$2.500 \\ \hline
+            \textbf{\shortstack{Core \\ Count}} & 16384 & 10752 & 6912 & 10572 & 8192 \\ \hline
+            \textbf{\shortstack{Power \\ Consumption}} & 450 & 450 & 400 & 300 & 230 \\ \hline
+            \textbf{Memory} & 24 & 24 & 80 & 48 & 24 \\ \hline
+        \end{tabular}
+        \caption{Alternatives for the GPPP unit}
+        \label{tab:gppp_alternatives}
+\end{table}
+
+Then, we can tabulate how the criteria compare with each other in terms of importance as rated by the stakeholders and specialists:
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+         & \textbf{\shortstack{FP32 \\ Performance}} & \textbf{\shortstack{Processor \\ Speed}} & \textbf{Cost} & \textbf{\shortstack{Core \\ Count}} & \textbf{\shortstack{Power \\ Consumption}} & \textbf{Memory} \\
+         \hline
+         \textbf{\shortstack{FP32 \\ Performance}} & $1$ & $\frac{1}{3}$ & $7$ & $\frac{1}{3}$ & $5$ & $1$ \\ \hline
+         \textbf{\shortstack{Processor \\ Speed}} & $3$ & $1$ & $5$ & $\frac{1}{3}$ & $3$ & $1$ \\ \hline
+         \textbf{Cost} & $\frac{1}{7}$ & $\frac{1}{5}$ & $1$ & $\frac{1}{5}$ & $3$ & $\frac{1}{5}$ \\ \hline
+         \textbf{\shortstack{Core \\ Count}} & $3$ & $3$ & $5$ & $1$ & $3$ & $1$ \\ \hline
+         \textbf{\shortstack{Power \\ Consumption}} & $\frac{1}{5}$ & $\frac{1}{3}$ & $\frac{1}{3}$ & $\frac{1}{3}$ & $1$ & $\frac{1}{7}$ \\ \hline
+         \textbf{Memory} & $1$ & $1$ & $5$ & $1$ & $7$ & $1$ \\ \hline
+    \end{tabular}
+    \caption{GPPP criteria preference matrix}
+    \label{tab:gppp_preference_matrix}
+\end{table}
+
+The Eigen vector of this matrix gets us the following criteria priority vector:
+
+\[
+\left[ {\begin{array}{cc}
+0.169 \\
+0.212 \\
+0.053 \\
+0.304 \\
+0.044 \\
+0.218
+\end{array} } \right]
+\]
+
+Since their comparative weights are so relatively small to the other criteria, we can eliminate C3 (cost) and C5 (power) to reduce computational costs. When we perform the calculations to find the alternative priority vectors with respect to each criterion, we get the following matrix - again, each row is the alternative and each column is the criterion:
+
+\[ 
+\left[ {\begin{array}{cccccc}
+0.390 & 0.312 & 0.331 & 0.120 \\
+0.180 & 0.219 & 0.191 & 0.120 \\
+0.097 & 0.106 & 0.129 & 0.407 \\
+0.179 & 0.185 & 0.179 & 0.231 \\
+0.155 & 0.178 & 0.170 & 0.122 \\
+\end{array} } \right]
+\]
+
+When we multiply the two above matrices, we calculate the decision matrix shown below. Based off of this analysis, the project should proceed to use the Nvidia RTX 4090 as its GPPP unit followed by the RTX 3090 Ti and RTX A6000.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Alternative} & \textbf{Value} & \textbf{Rank} \\
+        \hline
+        A & 0.238 & 1 \\ \hline
+        B & 0.140 & 2 \\ \hline
+        C & 0.096 & 5 \\ \hline
+        C & 0.134 & 3 \\ \hline
+        C & 0.121 & 4 \\ \hline
+    \end{tabular}
+    \caption{Results from the AHP for the GPPP unit showing value and rank}
+    \label{tab:gppp_ahp_results}
+\end{table}        
 \subsubsection*{Inertial Measurement Unit} \label{sssec:ahp_imu}
 
 \subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}

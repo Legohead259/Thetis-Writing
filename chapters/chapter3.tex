@@ -652,6 +652,27 @@ This provides a quick breakdown of each product through the lense of the enginee
 \end{landscape}
 
 \section{Concept of Operations} \label{sec:conops}
+Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of vessel orientation and position in real-time at a low cost.
+In a normal operating case, Thetis will be placed near the center of gravity of a floating vessel and turned on to begin recording.
+The user can then connect Thetis to the ship network or use its local WiFi access point to monitor the system and adjust configuration settings.
+These configuration settings include different modes that change how Thetis behaves and what data it records.
+
+\paragraph*{9DOF AHRS Mode} When placed into the 9DOF AHRS mode, Thetis will record the vessel acceleration, rotation rate, magnetic heading, and attitude at a set interval according to the user.
+This mode is the most verbose recording method and can provide a lot of information on how the vessel is reacting to the current sea conditions. 
+Users can specify if they want to record the filtered and fused data as well as the raw data from the sensors.
+This option gives them the ability to run their own analysis in post using different software filtering techniques that may increase accuracy relative to what Thetis could achieve in-situ.
+
+\paragraph*{9DOF INS Mode} When placed into the 9DOF INS mode, Thetis incorporates the built-in GPS to its recording functionality.
+The GPS module provides real-time position, velocity, course, and error at up to 10 Hz.
+This provides a more accurate estimate of the vessel's current position and how it changes over time.
+This mode can also provide basic waypoint navigation services to an automated controller for low-cost basic autonomy applications.
+Thetis Revision G is specifically designed for this application as its dual independent CAN busses can transmit data to a central controller over the NMEA2000 protocol, making it easier to integrate with unmanned vessels or manned vessels with electronic helms.
+
+\paragraph*{WEAVE Mode} The Wave Estimator Algorithm for VEssels (WEAVE) mode is a special mode that allows Thetis to predict the wave heights encountered by the vessel in real-time.
+The algorithm is explained more in depth in Section \ref{sec:weave}.
+This mode allows Thetis to communicate the estimated current sea conditions to a central controller or operator so that they make the appropriate decisions with the operation of the vessel.
+The biggest application of this algorithm in the unmanned technology sector where the unmanned vessel can integrate these estimates into its world model and make better decisions about the best course and speed it should pursue.
+Again, the inclusion of dual independent CAN busses on Revision G makes this feature easier to integrate on electronically-driven vessels.
 
 \section{Conceptual Design} \label{sec:conceptual_design}
 
@@ -659,7 +680,7 @@ This provides a quick breakdown of each product through the lense of the enginee
 
 \subsection{Functional Flow Diagram} \label{ssec:flow_diagram}
 
-\subsection{Available Commercial Off the Shelf Products} \label{ssec:cots_products}
+% \subsection{Available Commercial Off the Shelf Products} \label{ssec:cots_products}
 
 \subsection{Analytical Hierarchy Process} \label{ssec:ahp}
 The goal of the Analytic Hierarchy Process (AHP) is to determine an alternative from a given objective and set of criteria. This method is described in (Saaty, 2005) and allows alternatives to be relatively ranked to each other, providing the best alternative for the given criteria and objective. This study details the decision for an Inertial Measurement Unit (IMU).

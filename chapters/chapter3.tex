@@ -675,27 +675,65 @@ The biggest application of this algorithm in the unmanned technology sector wher
 Again, the inclusion of dual independent CAN busses on Revision G makes this feature easier to integrate on electronically-driven vessels.
 
 \section{Conceptual Design} \label{sec:conceptual_design}
+The general design of the Thetis instrumentation package was built around the principles of capability, manufacturability, and affordability.
+The parts selected for the design had to offer a suite of capabilities that would enable a wide range of projects.
+While Thetis was designed primarily for monitoring the movement of floating bodies, it can be adapted for use in general robotics, embedded AI research, and other datalogging tasks.
+Thetis is also envisioned to be continued by other endeavoring students, so it has to be easily manufacturable with a single-sided design that can be assembled by hand using tweezers and a hot-air gun.
+All of this had to be designed with low-cost readily-available components in mind.
+Thetis was originally designed at the start of the global chip shortage in 2020, so parts were limited in choice, especially the IMU.
+It is also assumed that Thetis will be lost at some point during testing.
+This is just an inevitability during field work, so keeping the cost down would also reduce the impact of such a loss on a project's budget.
 
 \subsection{Functional Block Diagram} \label{ssec:block_diagram}
+Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
+This block diagram shows the data sharing relationships in blue and the power relationships in warm colors.
+Labels on the specific lines indicate the specific communication protocol or voltage level being used by the line.
+Explanations for these protocols and acronyms can be found in the Appendix.
+
+\begin{figure}
+	\label{fig:thetis_block_diagram}
+	\caption[Thetis RevF5 Block Diagram]{A block diagram representation of the Thetis RevF5 instrumentation board.}
+	\centering
+	\includegraphics[width=5in]{design/block_diagram.png}
+\end{figure}
 
 \subsection{Functional Flow Diagram} \label{ssec:flow_diagram}
+Based off the block diagram and interviews with potential end users, a notional flow diagram for the firmware was created.
+The code was designed to be modular and allow for new features to be quickly added or removed with separate libraries.
+Additionally, any functions that need to be called, can be executed at specific times to increase computational efficiency and reduce the chance of race conditions occurring.
+Note that this block diagram only includes the base firmware.
+Breakdowns for the algorithmic flows for different operating modes will be given in their respective sections.
+
+\begin{figure}
+	\label{fig:thetis_flow_diagram}
+	\caption[Base Firmware Flow Diagram]{A flow diagram representation of the base firmware of the Thetis instrumentation board.}
+	\centering
+	\includegraphics[width=5in]{design/flow_diagram.png}
+\end{figure}
 
 \subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}
+Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
+Each potential flaw is given a weighting from 0 to 1 inclusive for both the probability that they will occur, as well as the failure severity if they do. By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
+
+\paragraph*{LOW} These are RPNs with a value below 0.25 and represent little risk to the system. 
+These are denoted with green highlights in the FMECA chart below.
+
+\paragraph*{MEDIUM} These are RPN's between 0.25 and 0.5 that are represented with yellow highlights below.
+Typically, these failure modes represent a noticeable threat to the system and the mitigations should be carefully implemented.
+
+\paragraph*{HIGH} These are the highest risk RPNs between 0.5 and 1 and are represented with red highlights.
+They are the most severe and should be mitigated at all cost during and after the product development cycle.
+
+The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
+However, since Thetis is using hobby-grade materials and failures are not generally well-documented for the parts, the probabilities represented herein are the best guess of the author based of his experience and best guess.
+The same applies for the criticality score for each potential failure.
 
 \section{Final Design} \label{sec:final_design}
 
 \subsection{Schematic} \label{ssec:schematic}
 
-\subsubsection{Revision F} \label{sssec:rev_f_sch}
-
-\subsubsection{Revision G} \label{sssec:rev_g_sch}
-
 \subsection{PCB Design} \label{sec:pcb}
-
-\subsubsection{Revision F} \label{sssec:rev_f_pcb}
-
-\subsubsection{Revision G} \label{sssec:rev_g_pcb}
 
 \subsection{Assembly Techniques} \label{ssec:assembly_techniques}
 
-\subsection{Unit Testing} \label{ssec:unit_testing}
+% \subsection{Unit Testing} \label{ssec:unit_testing}

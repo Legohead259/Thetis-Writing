@@ -60,7 +60,7 @@ A basic representation of a three-axis accelerometer is shown in Figure \ref{fig
     \caption[Accelerometer block diagram]{Basic block diagram of a three-axis accelerometer where the masses are suspended from springs.}
     \label{fig:accelerometers}
     \centering
-    \includegraphics[width=4.5in]{accelerometers.png}
+    \includegraphics[width=4.5in]{background/accelerometers.png}
 \end{figure}
 
 \subsection{Gyroscope} \label{ssec:bkg_gyroscope}
@@ -71,7 +71,7 @@ MEMS-based gyroscopes measure this value by applying the Coriolis effect on a mi
     \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
     \label{fig:gyroscopes}
     \centering
-    \includegraphics[width=4.5in]{gyroscopes.png}
+    \includegraphics[width=4.5in]{background/gyroscopes.png}
 \end{figure}
 
 As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
@@ -88,7 +88,7 @@ By measuring this value and correlating it to a measurement scale, the local mag
     \caption[Magnetometer block diagram]{Basic block diagram of a single-axis magnetometer where electrons are flowing through the magnetoresistive material. The left diagram shows the condition when the magnetic field is aligned (minimal resistance); the right shows the non-aligned magnetic field condition which increases the resistance the electrons face passing through the material.}
     \label{fig:magnetometer}
     \centering
-    \includegraphics[width=4.5in]{magnetometer.png}
+    \includegraphics[width=4.5in]{background/magnetometer.png}
 \end{figure}
 
 \section{Global Positioning System} \label{sec:bkg_gps}
@@ -111,7 +111,7 @@ The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.
     The AHRS can then apply a bias from the GPS course and corrections from a mathematical model of the system.}
     \label{fig:ahrs_design}
     \centering
-    \includegraphics[height=1.3in]{ahrs.png}
+    \includegraphics[height=1.3in]{background/ahrs.png}
 \end{figure}
 
 \subsection{Orientation and Rotation} \label{ssec:bkg_orientation}
@@ -124,7 +124,7 @@ They are easy to conceptually understand and model, but they are not mathematica
     \caption[Body rotations]{Basic look at a 3D body and the axes of rotation in the body reference frame.}
     \label{fig:body_rotations}
     \centering
-    \includegraphics[height=2.5in]{body_rotations.png}
+    \includegraphics[height=2.5in]{background/body_rotations.png}
 \end{figure}
 
 A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
@@ -150,10 +150,10 @@ It is possible to freely switch between Euler and quaternion vectors using trigo
         However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
         To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
         \begin{center}
-            \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{ship_000000}\label{subfig:ship_000000}}\hskip3ex
-            \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{ship_009000}\label{subfig:ship_009000}}\hskip10ex
-            \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{ship_909000}\label{subfig:ship_909000}}\hskip5ex
-            \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{ship_000090}\label{subfig:ship_000090}}
+            \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
+            \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
+            \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
+            \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
             \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
             Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
             This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
@@ -236,5 +236,5 @@ These variables control how much the algorithm depends on the measurement or the
     \caption[Kalman filter block diagram]{Basic block diagram of a Kalman filter.}
     \label{fig:kalman_filter}
     \centering
-    \includegraphics[width=6in]{KalmanFilter.png}
+    \includegraphics[width=6in]{background/KalmanFilter.png}
 \end{figure}

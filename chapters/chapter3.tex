@@ -647,6 +647,7 @@ This provides a quick breakdown of each product through the lense of the enginee
 	\begin{table}
 		\caption[House of Quality]{The House of Quality matrix for the Thetis instrumentation package.}
 		\label{tab:hoq}
+		\centering
 		\includegraphics[height=\textwidth-24pt]{../include/ThetisHOQ.pdf}
 	\end{table}
 \end{landscape}
@@ -683,6 +684,8 @@ All of this had to be designed with low-cost readily-available components in min
 Thetis was originally designed at the start of the global chip shortage in 2020, so parts were limited in choice, especially the IMU.
 It is also assumed that Thetis will be lost at some point during testing.
 This is just an inevitability during field work, so keeping the cost down would also reduce the impact of such a loss on a project's budget.
+
+\subsection{System Requirements} \label{ssec:system_requirements}
 
 \subsection{Functional Block Diagram} \label{ssec:block_diagram}
 Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
@@ -727,6 +730,15 @@ They are the most severe and should be mitigated at all cost during and after th
 The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
 However, since Thetis is using hobby-grade materials and failures are not generally well-documented for the parts, the probabilities represented herein are the best guess of the author based of his experience and best guess.
 The same applies for the criticality score for each potential failure.
+
+\begin{landscape}
+	\begin{table}
+		\caption[Failure Mode, Effect, and Criticality Analysis]{A summary of all possible failure modes and their expected effects, likelihoods, criticalities, and mitigations on the Thetis system.}
+		\label{tab:fmeca}
+		\centering
+		\includegraphics[height=6.75in]{../include/ThetisFMECA.pdf}
+	\end{table}
+\end{landscape}
 
 \section{Final Design} \label{sec:final_design}
 

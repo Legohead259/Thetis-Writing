@@ -716,15 +716,15 @@ Breakdowns for the algorithmic flows for different operating modes will be given
 
 \subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}
 Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
-Each potential flaw is given a weighting from 0 to 1 inclusive for both the probability that they will occur, as well as the failure severity if they do. By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
+Each potential flaw is given a weighting from 0 to 10 inclusive for both the probability that they will occur, as well as the failure severity if they do. By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
 
-\paragraph*{LOW} These are RPNs with a value below 0.25 and represent little risk to the system. 
+\paragraph*{LOW} These are RPNs with a value below 2.5 and represent little risk to the system. 
 These are denoted with green highlights in the FMECA chart below.
 
-\paragraph*{MEDIUM} These are RPN's between 0.25 and 0.5 that are represented with yellow highlights below.
+\paragraph*{MEDIUM} These are RPN's between 2.5 and 7.5 that are represented with yellow highlights below.
 Typically, these failure modes represent a noticeable threat to the system and the mitigations should be carefully implemented.
 
-\paragraph*{HIGH} These are the highest risk RPNs between 0.5 and 1 and are represented with red highlights.
+\paragraph*{HIGH} These are the highest risk RPNs between 7.5 and 10 and are represented with red highlights.
 They are the most severe and should be mitigated at all cost during and after the product development cycle.
 
 The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
@@ -732,12 +732,22 @@ However, since Thetis is using hobby-grade materials and failures are not genera
 The same applies for the criticality score for each potential failure.
 
 \begin{landscape}
-	\begin{table}
-		\caption[Failure Mode, Effect, and Criticality Analysis]{A summary of all possible failure modes and their expected effects, likelihoods, criticalities, and mitigations on the Thetis system.}
+	\begingroup
 		\label{tab:fmeca}
-		\centering
-		\includegraphics[height=6.75in]{../include/ThetisFMECA.pdf}
-	\end{table}
+		% \centering
+		\vspace*{-1in}\includegraphics[trim={0 0 0 0}, height=6.75in, page=1]{../include/ThetisFMECA.pdf}
+		\vspace*{-1in}\captionof{table}[Failure Mode, Effect, and Criticality Analysis, hypcap=true]{A summary of all possible failure modes and their expected effects, likelihoods, criticalities, and mitigations on the Thetis system.}
+		\newpage
+		\includegraphics[height=6.75in, page=2]{../include/ThetisFMECA.pdf}
+		\newpage
+		\includegraphics[height=6.75in, page=3]{../include/ThetisFMECA.pdf}
+		\newpage
+		\includegraphics[height=6.75in, page=4]{../include/ThetisFMECA.pdf}
+		\newpage
+		\includegraphics[height=6.75in, page=5]{../include/ThetisFMECA.pdf}
+		\newpage
+		\includegraphics[height=6.75in, page=6]{../include/ThetisFMECA.pdf}
+	\endgroup
 \end{landscape}
 
 \section{Final Design} \label{sec:final_design}

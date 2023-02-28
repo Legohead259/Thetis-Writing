@@ -686,6 +686,45 @@ It is also assumed that Thetis will be lost at some point during testing.
 This is just an inevitability during field work, so keeping the cost down would also reduce the impact of such a loss on a project's budget.
 
 \subsection{System Requirements} \label{ssec:system_requirements}
+To guide Thetis' design, a series of system requirements were generated that would need to be met in order to certify the design as "complete".
+These requirements were derived from the House of Quality (Table \ref{tab:hoq}) and the stakeholder requirements (Section \ref{ssec:stakeholder_reqs}).
+Each requirement is categorized into subsections and given a numerical designation.
+The requirement is then given as a clear statement of fact with only one consideration given per requirement.
+A comment may be associated with each requirement that provides additional context or relevant information.
+
+As the design matures, each requirement will need to be verified in the design. This can be done in four separate ways:
+
+\paragraph*{Inspection} The nondestructive examination of a product or system using one or more of the five senses (visual, auditory, olfactory, tactile, taste). 
+It may also include simple physical manipulation and measurements.
+
+\paragraph*{Demonstration} The manipulation of the product or system as it is intended to be used to verify that the results are as planned or expected.								
+
+\paragraph*{Test} The verification of a product or system using a controlled and predefined series of inputs, data, or stimuli to ensure that the product or system will produce a very specific and predefined output as specified by the requirements.								
+
+\paragraph*{Analysis} The verification of a product or system using models, calculations and testing equipment.
+Analysis allows someone to make predictive statements about the typical performance of a product or system based on the confirmed test results of a sample set or by combining the outcome of individual tests to conclude something new about the product or system.
+It is often used to predict the breaking point or failure of a product or system by using nondestructive tests to extrapolate the failure point.								
+
+For some requirements, there are specific tests that need to be performed in order to validate the requirement.
+These tests are detailed more thoroughly in Chapter \ref*{chap:testing_and_validation}.
+There is also a field that enables comments on the performance of the validation test for that specific requirement.
+
+The final column of this requirement table is the requirement status.
+There are multiple statuses a requirement can have:
+
+\begin{itemize}
+	\item \textbf{Under Review (UR)}: Requirement has been submitted and is under review,
+	\item \textbf{Accepted (A)}: Requirement has been reviewed and accepted into the document,
+	\item \textbf{Rejected (R)}: Requirement has been reviewed and rejected from the document,
+	\item \textbf{Testing in Progress (TIP)}: Requirement is currently being tested,
+	\item \textbf{Test Successful (TS)}: Requirement successfully passed testing, but is not yet delivered,				
+	\item \textbf{Test Failure (TF)}: Requirement failed testing and needs further development, and
+	\item \textbf{Delivered (D)}: Requirement has been fully realized and delivered.
+\end{itemize}
+
+Below is a table describing the system requirements for the Thetis instrumentation package.
+
+\includepdf[landscape=true, page=-, width=\textheight, offset=0 -0.25in, pagecommand={}]{../include/ThetisReqs.pdf}
 
 \subsection{Functional Block Diagram} \label{ssec:block_diagram}
 Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
@@ -693,7 +732,7 @@ This block diagram shows the data sharing relationships in blue and the power re
 Labels on the specific lines indicate the specific communication protocol or voltage level being used by the line.
 Explanations for these protocols and acronyms can be found in the Appendix.
 
-\begin{figure}
+\begin{figure}[h!]
 	\label{fig:thetis_block_diagram}
 	\caption[Thetis RevF5 Block Diagram]{A block diagram representation of the Thetis RevF5 instrumentation board.}
 	\centering
@@ -707,7 +746,7 @@ Additionally, any functions that need to be called, can be executed at specific 
 Note that this block diagram only includes the base firmware.
 Breakdowns for the algorithmic flows for different operating modes will be given in their respective sections.
 
-\begin{figure}
+\begin{figure}[h!]
 	\label{fig:thetis_flow_diagram}
 	\caption[Base Firmware Flow Diagram]{A flow diagram representation of the base firmware of the Thetis instrumentation board.}
 	\centering
@@ -751,11 +790,113 @@ The same applies for the criticality score for each potential failure.
 \end{landscape}
 
 \section{Final Design} \label{sec:final_design}
+After carefully considering all the design criteria from the stakeholder requirements and system requirements, Thetis began several design revisions.
+The first design revision, Rev F1, was a functional proof of concept.
+It incorporated many of the base design features of later Thetis revisions, but relied on a breakout board for the IMU mounted to the bottom of the board and had the battery placed on top.
+This forced the battery to be smaller than the desired capacity and overfilled the enclosure, causing excessive compression and stress when the enclosure was tightened and secured.
 
-\subsection{Schematic} \label{ssec:schematic}
+[INSERT IMAGE OF REVISION F1]
 
-\subsection{PCB Design} \label{sec:pcb}
+The next revision, F2, changed to a new microcontroller version that simplified the circuit while providing the same capability of the previous revision.
+This version also switched from a Micro SD card receptacle to a soldered SMD flash memory chip.
+This chip maintained the same capacity requirements from the stakeholders, but took up a fraction of the space on the board.
+However, since this chip was directly soldered to the board, the only way to offload date was through the microcontroller either through an FTP server, or through the USB interface.
+This is not ideal - especially in the early testing phases, as those features are more complex to implement programmatically and test data cannot be easily offloaded if there is an issue with the microcontroller.
+This revision also kept the breakout board for the IMU on the back, giving it the same space constraint problem as its predecessor.
 
-\subsection{Assembly Techniques} \label{ssec:assembly_techniques}
+[INSERT IMAGE OF REVISION F2]
+
+For Revision F3, some minor changes were made to the diagnostic LEDs and user inputs.
+Several discrete LEDs for logging, error notification, and low battery, were replaced by a single addressable RGB LED that could flash different colors and patterns to convey the system state or errors.
+The dedicated log enable button was also removed in favor of using the boot select button for both purposes.
+However, this method was entirely flawed as the log enable button relies on an interrupt input to trigger the system to begin recording.
+On the ESP32 microcontroller, an interrupt tied to GPIO 0 (the boot select pin) would cause the system to crash and force a reset.
+Therefore, the entire design had to be scrapped due to this design flaw.
+
+[INSERT IMAGE OF REVISION F3]
+
+Revision F4 was the most radical design change of the series.
+It marked a migration to all SMD components (no breakout board for the IMU) and incorporated all of the design lessons from the previous revision.
+However, the IMU that was used in previous revisions, the Bosch BNO055 was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
+So, this design had to adapt by incorporating a new, previously untested IMU, the STdevices LSM6DSO32.
+This new IMU does not have a magnetometer and at the time of its design, they were hard to find in stock at any distributors.
+So, in anticipation of the Chip Shortage ending, the BNO055 was incorporated to the design, but not populated, giving this board the unique opportunity of having either or both IMUs present - a useful feature for more accurate sensor fusion, but a terrible prospect for software integration.
+Additionally, this design reintroduced the micro SD card receptacle, but this time, the SMD flash chip was laid out beneath it.
+This provided the assembler to determine which storage system they wanted: easier to use micro SD, or more secure and reliable SMD flash.
+Programmatically, these devices work the same, so the software cost was minimal while providing some flexibility.
+However, this design was also doomed as the newly reintroduced log enable button was not integrated into the design properly and the chip select pin for the storage device was connected to an incorrect pin.
+This latter issue forced the microcontroller to crash and reset every time is tried to write to the external flash memory, necessitating a new board revision.
+
+[INSERT IMAGE OF REVISION F4 (BOTH RENDERED AND ACTUAL)]
+
+The final revision is the most refined version that full realizes all the features Thetis is meant to incorporate while being easy to assemble and use.
+The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL.
+By reorganizing some components, the SMD flash ship and micro SD card receptacle were placed side-by-side enabling both primary and secondary storage services, enabling backups and improving reliability.
+Then, to improve the battery monitoring capabilities, a battery gauge IC was added.
+The MAX17048 is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
+This data is reported to the microcontroller as the current battery percentage or life remaining - making this a crucial part of monitoring performance and operations of Thetis when deployed.
+Component types and placements were also streamlined to improve manufacturability and allow the potential for the device to be more easily assembled by a pick and place machine.
+This also allows students who have never assembled PCBs before to more easily take up the task and build these boards themselves.
+
+[INSERT IMAGE OF REVISION F5 (BOTH RENDERED AND ACTUAL)]
+
+The next sections detail the assembly process in more detail and provide the schematics and PCB layout for Revision F5.
+The schematics for the previous revisions can be found in the appendix.
+
+\subsection{Assembly Technique} \label{ssec:assembly_techniques}
+Thetis was designed with surface mount soldering as the primary assembly technique.
+This technique differs from traditional soldering as the components are so small that a soldering iron is ineffective in mounting components to the board.
+Many of the ICs used on the final Thetis revision do not have exposed legs or pads that can be touched with an iron, so solder paste and hot air are required.
+
+[INSERT COMPARISON SHOT OF THROUGH HOLE AND SURFACE MOUNT SOLDERING]
+
+\paragraph*{Solder Deposition} First, the bare PCB is placed beneath a stencil and secured with tape.
+It is important that all of the pads on the PCB are aligned with the cutouts in the stencil as the solder paste must be evenly and thoroughly distributed on the board.
+When the PCB is in place, a line of paste is placed on one side and smoothly dragged along the cutouts with even pressure applied throughout.
+When the stencil is removed, there should be a healthy deposit of solder paste on each pad as shown in the rightmost picture of Figure \ref{fig:stencil_process}
+
+[INSERT PICTURE SERIES SHOWING STENCIL LAYING, SOLDER PASTE APPLICATION, AND RESULTANT DEPOSIT]
+
+\paragraph*{Component Placement} From here, components can be placed onto the PCB carefully using tweezers.
+Some components measure in at tenths of an inch across and require placement tolerances of hundredths of an inch.
+Thankfully, in some areas, the surface tension of the solder when melting will forgive slightly misplaced components and drag them into the appropriate spots.
+However, it is important not to smear the solder as it may inadvertently bridge pads together and create shorts and undesired behavior.
+Throughout assembling these boards, this particular issue was the most common during the assembly process and occurred regularly on the USB-C receptacle, and IMU ICs where the pins are close together.
+
+\paragraph*{Reflow Soldering} When all of the components are placed, the PCB can be placed into a reflow oven for baking.
+The oven used for this process uses infrared radiation to evenly heat the board through a set profile.
+The temperature profile is specified by the solder paste manufacturer and gives ample time for the components to heat up and the paste to transform from a viscous mixture, to a solid metallic connection.
+The entire process from putting the board beneath the stencil to assembled and ready for inspection can take anywhere from 3 hours for a novice assembler, to 45 minutes for a more experienced one.
+
+[INSERT PICTURE SERIES SHOWING COMPONENT PLACEMENT, SOLDERING OVEN, AND FINAL RESULT]
+
+\paragraph*{Inspection} Following a successful reflow, the board must be inspected for defects.
+The most common are solder bridges between pads that create undesired shorts and can damage parts.
+The inspection will also check that parts are in the correct locations and orientations and that no shorts exist between power rails and ground.
+A microscope and good multimeter are crucial to this process.
+
+If a soldering defect is discovered, the board can be placed onto a small heating plate to melt the solder and remove the part.
+Then, the part can be removed and the pads on both the component and board are cleaned up using a soldering iron to ensure the proper amount of solder is present.
+Once the pads are cleaned, either hot air or the heating pad can be used to heat the afflicted area and remelt the solder so the part can be replaced on the board.
+The board is inspected again and if the issue is cleared, the board is ready for testing.
+
+[INSERT A PICTURE SERIES ON INSPECTING THE ASSEMBLED BOARD, REPLACING A COMPONENT, AND THEN REINSPECTING IT]
+
+\paragraph*{Testing} When the board passes a visual inspection and there are no power shorts present, the board is plugged into a programming computer via the USB port.
+The microcontroller is placed into the bootloader mode by holding the boot button and pressing the reset button.
+This should cause the microcontroller to show up as a USB device on the computer.
+From here, the latest Thetis firmware can be flashed to the new board.
+By default, when plugged into USB, the board enters a diagnostic testing mode that prints out the boot and initialization status.
+By opening a serial console, the assembler can see this process in real time.
+If there are any errors while initializing, the firmware will report which device is having a problem.
+The assembler will then need to do a deeper inspection to find the cause of the error and rectify it.
+
+[INSERT PICTURE SERIES OF BOOTING AND TESTING THE NEW BOARD]
+
+Once the new board boots without issue, the board is ready for deployment and can be used by operators and intended end users.
+
+\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \label{ssec:revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
+
+% \subsection{PCB Design} \label{ssec:revf5_pcb}
 
 % \subsection{Unit Testing} \label{ssec:unit_testing}

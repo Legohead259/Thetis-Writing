@@ -1,25 +1,26 @@
 %%----------Chapter 2------------------------------------------
-\chapter{Background}\label{chap:background}
+\chapter{How  It Works}\label{chap:background}
 Measuring the movement of bodies in three dimensional space is not a new field of study.
 Especially in our current age of electronics, one can simply grab an accelerometer and microcontroller off of Amazon, have it delivered in 48 hours, and know the experiences felt by a racetrack car or be able to orient a 3D rendering of a bunny \footnote[1]{https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview}.
 What makes today exciting is that improvements in manufacturing and computational density have drastically increased the capabilities of small embedded systems.
 Now, every cell phone has a sophisticated suite of sensors built into them and they have the simple task of detecting whether the phone is in a landscape or portrait mode. 
 Some applications, like Google Maps, have gone further and fused the sensor data, along with GPS information, into a robust navigation system.
 
-\section{Inertial Measurement Units} \label{sec:bkg_imu}
+\section{Sensing} \label{sec:bkg_imu}
 Inertial Measurement Units (IMU) are devices that measure the inertial characteristics of a moving body and can report that data to a processor.
 The come in a variety of form factors from massive mechanical meters, to microscopic moving machinations.
 These sensors come in various grades that each of different use cases and standards associated with them.
 
-The cheapest, least precise, and least accurate IMUs are considered "consumer-grade".
+According to VectorNav [CITE], a producer of industrial-grade IMUS, the cheapest, least precise, and least accurate IMUs are considered "consumer-grade".
 Every day smartphones, cheap commercial breakout boards, and even shipping crates have these devices on-board.
 Consumer-grade IMUs can be bought for cents, dollars, or tens of dollars per unit in bulk and are ideal for mass production spaces where quantity is king over quality.
-A step up from these sensors are "automotive-grade" IMUs. 
-These are tens to hundreds of dollars per unit but are much more accurate and precise than their consumer counter parts.
-This makes them desirable for the automotive and industrial sectors as they can assist in automation, control, and monitoring of expensive systems.
-The "military-grade" sensors are even more robust and accurate than the previous tiers and have an appropriate military-industrial complex price tag to match. 
-These devices will typically be used in applications where friendly war fighters need to know their targets will be impacted or they are going in the right direction in a harsh environment.
-Finally, the last major tier is the "navigation-grade" sensors. These sensors are extremely precise, extremely accurate, and cost more than some middle-class families will make in a year.
+A step up from these sensors are "industrial-grade" IMUs. 
+These are tens to hundreds of dollars per unit but are an order of magnitude more accurate and precise than their consumer counter parts.
+This makes them desirable for the automotive and industrial sectors as they can assist in automation, control, and monitoring of expensive unmanned systems.
+The "tactical-grade" sensors are even more robust and accurate than the previous tiers and have an appropriate military-industrial complex price tag to match. 
+These devices will typically be used in applications where war fighters need precise guidance for munitions, or need to navigate their way through hazardous and GNSS-denied terrain.
+Finally, the last major tier is the "navigation-grade" sensors. 
+These sensors are extremely precise, extremely accurate, and cost more than some middle-class families will make in a year.
 Primarily, these will be used in survey missions or on underwater vehicles where absolute precision and knowledge of their location is needed.
 
 IMUs are also defined by their measurement Degrees of Freedom (DOF). 
@@ -43,15 +44,15 @@ The common definitions are below in Table \ref{tab:imu_dofs}
 \end{table}
 
 \begin{fitbox}[frametitle=Aside: MEMS Technology]
-    Microelectromechanical Systems (MEMS) are microscopic devices that perform an electromechanical function.
+    Microelectromechanical Systems (MEMS) are microscopic devices that perform an electromechanical function [CITE - What is MEMS].
     They are the most common technology in modern sensor development and revolutionized the technology space by shrinking components down to the micro- and nanometer scales.
-    The the advent of MEMS technology, devices such as accelerometers, magnetometers, gyroscopes, barometers, hygrometers, etc. could be shrunk down from large mechanical masterpieces to mass-producible products that fit within a few square millimeters of epoxy.
-    This dramatically cheapened these devices and allowed more and more products to integrate smart sensors into their designs.
+    Due to the advent of MEMS technology, devices such as accelerometers, magnetometers, gyroscopes, barometers, hygrometers, etc. have been shrunk down from large mechanical masterpieces to mass-producible products that fit within a few square millimeters of epoxy.
+    This dramatically cheapened these devices and has allowed more products to integrate smart sensors into their designs.
 \end{fitbox}
 
 \subsection{Accelerometer} \label{ssec:bkg_accelerometer}
 Accelerometers measure a change in velocity over time (acceleration).
-An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant.
+An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant [CITE - Robotics, Vision and Control].
 The displacement of the mass along the axis, imparted by a force, is correlated to a sensitivity scale.
 Typically, this scale is electrically resistive and creates an analog change in a driving (exciting) voltage.
 A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
@@ -65,7 +66,7 @@ A basic representation of a three-axis accelerometer is shown in Figure \ref{fig
 
 \subsection{Gyroscope} \label{ssec:bkg_gyroscope}
 A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.
-MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass.
+MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass [CITE - Robotics, Vision and Control].
 
 \begin{figure}[h!]
     \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
@@ -76,7 +77,7 @@ MEMS-based gyroscopes measure this value by applying the Coriolis effect on a mi
 
 As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
 While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$.
-The proof for this relationship can be found in [CITE PROOF].
+The proof for this relationship can be found in Appendix [INSERT APPENDIX NUMBER].
 
 \subsection{Magnetometer} \label{ssec:bkg_magnetometer}
 Magnetometers use magnetoresistive elements that change their effective resistance in the presence of a magnetic field.

@@ -1,44 +1,185 @@
 %%----------Chapter 2------------------------------------------
 \chapter{How  It Works}\label{chap:background}
 Measuring the movement of bodies in three dimensional space is not a new field of study.
-Especially in our current age of electronics, one can simply grab an accelerometer and microcontroller off of Amazon, have it delivered in 48 hours, and know the experiences felt by a racetrack car or be able to orient a 3D rendering of a bunny \footnote[1]{https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview}.
+Especially in our current age of electronics, one can simply grab an accelerometer and microcontroller off of the Internet, have it delivered in less than 96 hours, and know the accelerations felt on a roller coaster or be able to orient a 3D rendering of a bunny \footnote[1]{https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/overview}.
 What makes today exciting is that improvements in manufacturing and computational density have drastically increased the capabilities of small embedded systems.
-Now, every cell phone has a sophisticated suite of sensors built into them and they have the simple task of detecting whether the phone is in a landscape or portrait mode. 
-Some applications, like Google Maps, have gone further and fused the sensor data, along with GPS information, into a robust navigation system.
+Now, every cell phone has a sophisticated suite of sensors built into them that have the simple task of detecting whether the phone is in a landscape or portrait mode. 
+Some applications, like Google Maps, have gone further and fused the sensor data, along with GPS information and computer vision, into a robust pedestrian navigation system \footnote[2]{https://gizmodo.com/i-tried-google-maps-experimental-walking-directions-of-1833225629}.
+
+\section{Electrical Basics} \label{sec:bkg_measurement}
+In order to create an electronic circuit for measurement, we have to understand some of the basics.
+Fundamentally, we want to connect a microcontroller and bridge the gap between human-understandable information and a natural phenomenon.
+For example, how can we measure the acceleration forces experienced by a rider on a roller coaster?
+As a rider, we can feel the negative G-force as the cart enters a free-fall at the very start;
+then, we can feel the centripetal acceleration as the cart rounds a corner at high speed;
+finally, we can feel it when the cart suddenly brakes right at the end of the ride.
+The rider can qualify these forces and accelerations, but for safety and scientific curiosity, we have to be able to quantify them.
+
+\subsection{Analog Measurement} \label{ssec:analog_measurement}
+In electronics, there are two different types of signals: digital and analog.
+Digital signals are either a "high" voltage, or a "low" voltage, representing either a logical 0 or logical 1.
+These signals are great for threshold measurements such as "is there a cart present at the start of the ride, yes or no?", but cannot express a range of values.
+Conversely, analog signals are better suited to expressing real-world values that naturally vary from a minimum to a maximum and can be any value in between.
+Thus, analog signals are prevalent for devices that measuring "real" things such as speed, acceleration, rotation rates, barometric pressures, etc.
+
+Most analog sensors are resistive types where their electrical resistance changes to scale with a real-world measurement range.
+Ohm's Law defines the relation between voltage, ($V$) resistance ($R$), and current ($I$) as $V=IR$.
+Therefore, if we can measure the voltage drop across a resistive sensor and correlate it with a manufacturer-provided equation or table, we can quantify a real-world phenomenon.
+The resistance is best measured using a Wheatstone Bridge and an amplifier which can generate a voltage that is directly proportional to the change in resistance, $\delta R$
+
+The Wheatstone Bridge is a configuration of four resistors in two legs as shown in Figure \ref{fig:wheatstone_bridge} below.
+Resistors $R_1$ and $R_2$ form the first leg and $R_3$ and $R_4$ form the second leg.
+The bridge has at least three different solutions, depending on the configuration and desired application.
+For applications where $R_1$, $R_2$, and $R_3$ are known to a high precision, then $R_4$ can be determined to an equally high precision by adjusting $R_3$ until the voltage potential between points $B$ and $D$ is near 0, i.e. the bridge is "balanced".
+However, for most embedded applications, like those described in further sections, $R_4$ cannot be determined by balancing the bridge, so either the general solution or linearization must be used.
+For simplicity, only the linearization solution will be examined here, the full derivation and explanation for all three solutions can be found in Appendix [APPENDIX].
+
+[TODO: INSERT GENERAL WHEATSTONE BRIDGE SCHEMATIC]
+
+For the linear solution, the circuit adds an operational amplifier between points $D$ and $B$ and assumes that $R_1+R_2=R_3=R_0$ and the op-amp is an ideal component ($R_{\text{amp}}$ = 0).
+Because of this, the voltage potential at Point $B$ will have a constant value of:
+
+\begin{equation*}
+    V_B = \frac{R_0 V_s}{R_0 + R_0} = \frac{V_s}{2}
+\end{equation*}
+
+[TODO: INSERT LINEARIZED WHEATSTONE BRIDGE SCHEMATIC]
+
+Likewise, the op-amp will force the voltage at Point $D$ to have the same voltage as $B$ such that, $V_D = V_B = \frac{V_s}{2} $.
+This forces a constant current of $\frac{V_s}{2R_0} $ through $R_3$ and into the sensor.
+By Ohm's law, the voltage across the sensor will therefore be:
+
+\begin{align*}
+    V_4 &= \frac{V_s}{2R_0} \cdot R_0(1+\Delta R) \\
+        &= \frac{V_s}{2} + \frac{V_s}{2} \Delta R
+\end{align*}
+
+By applying Kirchoff's voltage law, the potential between the amplifier output and ground, $V_{out} $, is:
+
+\begin{align*}
+    V_{out} &= -V_4 + V_D \\
+            &= -\left( \frac{V_s}{2} + \frac{V_s}{2} \Delta R\right) + V_D \\
+    V_{out} &= -\frac{V_s}{2} \Delta R
+\end{align*}
+
+The measured output voltage now linearly changes with the resistive sensor irregardless of if the sensor changes linearly itself.
+If the manufacturer of the sensor provides a table or equation that relates the sensor resistance to a real-world value, we can find the sensor resistance via:
+
+\begin{align*}
+    R_4 &= R_0 + \Delta R \\
+        &= R_0 - \frac{2V_{out}}{V_s}
+\end{align*}
+
+\subsection{Analog to Digital Conversion} \label{ssec:analog_to_digital_conversion}
+Now that we can get a sensor reading as an analog (changing) voltage, we need to find a way to translate it into a useful form.
+Decades ago, the analog voltage from a sensor was plotted onto a chart with respect to time and an analyst could run the conversion point by point.
+Following the roller coaster example from before, park security is very unlikely to allow you to bring a full chart plotter on the coaster with you, and its even less likely to survive the trip or print a good readout.
+We also want to work smarter and not harder, so we want a computer to perform the analysis for us. 
+What can we do?
+Since we live in the digital age, we can convert the analog signal to a digital one and then we can store it on a digital media device such as an SD card then load it directly into a computer program like Excel to analyze it.
+
+This process is done with an analog to digital converter circuit or ADC. 
+The ADC encodes an input voltage to a binary number based on the magnitude of the signal and the resolution of the ADC.
+The resolution determines the number of bins that correspond to a range of voltages from the input. 
+If the voltage across a bin exceeds its threshold value, that bin is encoded as a "1".
+Conversely, if the voltage across a bin does not exceed the threshold for the bin, that bin is encoded as a "0".
+For every bin in the ADC, the input voltage is reduced until 0V.
+
+This encoded binary number is expressed as "counts" which can be read by a microcontroller or other digital system.
+The number of counts recorded can be converted back to a voltage value at any time using the equation below.
+However, this conversion will lose some of the original precision of the analog signal, depending on the resolution of the ADC.
+A higher resolution will mean a more precise reading.
+
+[TODO: INSERT GRAPHIC ON ADC SHOWING BINS AND OUTPUTS, ETC.]
+
+\begin{equation*}
+    V = \frac{\text{counts}}{2^N}
+\end{equation*}
+
+\begin{figure}
+    \begin{fitbox}[frametitle=Aside: Registers]
+        Digital values are stored in memory as 1's and 0's.
+        Each bit of memory can be stored in a contiguous piece called a "register".
+        A digital system can access registers of memory to grab values and perform calculations on them.
+        For example, an 8-bit ADC will store the encoding of an input signal in an 8-bit register.
+        A microcontroller can then read this value from the ADC and convert it to a real-world value, or save it to non-volatile memory for logging.
+
+        [TODO: INSERT GRAPHIC OF GATED LATCH MEMORY REGISTER]
+    \end{fitbox}
+\end{figure}
+
+\subsection{Digital Communication Methods}
+Now that we have converted the analog sensor reading into the digital realm, we have to move the data around to use it.
+There are many communication methods that utilize a variety of protocols, but for simplicity we will be discussing three of the most common in small digital circuits.
+Each of these methods utilize "Transistor-Transistor-Logic" or TTL voltages, meaning the signals use 0V for a logical 0, and any other voltage above a threshold is considered a logical 1.
+Each method is also known as a serial communication method as each bit in the message is communicated in series.
+
+\subsubsection{Universal Asynchronous Receive and Transmit}
+The Universal Asynchronous Receive and Transmit (UART) bus is a full-duplex digital communication method where the receiver and transmitter of information can transmit asynchronously. 
+This is one of the simplest communication interfaces as a controller only needs to pull the data bus to the "low" state at certain intervals while transmitting.
+There is no addressing, or synchronization required, so the transmitter can just "shout" the bits down the line and does not care if the receiver gets them or not.
+Since its asynchronous, both the receiver and transmitter must agree on the baudrate, or bits-per-second, beforehand and will set their own internal clocks to the appropriate speed.
+By timing the arrival of "low" or "high" signals, the controllers can interpret data in the transmission packet.
+If the baudrates are not synchronized properly, the interval between the bits will be different and data will become corrupted at either end.
+
+[TODO: INSERT GRAPHIC OF UART PROTOCOL]
+
+\subsubsection{Inter-Integrated Circuit}
+The I2C, or Inter-Integrated Circuit, communication bus is most commonly used for slower speed transmissions between integrated circuits on a circuit board.
+
+\section{Orientation and Rotation} \label{sec:bkg_orientation}
+A body can be rotated in 3D space along the x-, y-, and z-axis.
+\textbf{Roll ($\phi$)} defines rotation about the x-axis; \textbf{pitch ($\theta$)} defines rotation about the y-axis; and \textbf{yaw ($\psi$)} defines rotation about the z-axis.
+These three rotations are known as Euler angles.
+They are easy to conceptually understand and model, but they are not mathematically pure.
+
+\begin{figure}[h!]
+    \caption[Body rotations]{Basic look at a 3D body and the axes of rotation in the body reference frame.}
+    \label{fig:body_rotations}
+    \centering
+    \includegraphics[height=2.5in]{background/body_rotations.png}
+\end{figure}
+
+A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
+The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
+This is simple to do so long as two of the rotation axes are not parallel to each other.
+When two axes are parallel, they lock together in a condition called, "gimbal lock". 
+We can overcome gimbal lock by adding a fourth dimension that can drive each axis independently.
+This moves the rotation from the typical three dimensional space to the four dimensional, Hamiltonian, space.
+We can represent this orientation as a four dimensional vector called a "quaternion".
+This vector is more prevalent in modern AHRS design as it is more mathematically pure and means you do not have to determine if you need to change a rotation sequence to avoid or get out of gimbal lock.
+
+It is possible to freely switch between Euler and quaternion vectors using trigonometric operations inside of a matrix multiplication operation.
+
+\begin{figure}
+    \begin{fitbox}[frametitle=Aside: Gimbal Lock]
+        When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
+        When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
+        This can create strange pathways for the body and cause unexpected behavior.
+        
+        The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
+        First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
+        If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
+        However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
+        To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
+        \begin{center}
+            \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
+            \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
+            \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
+            \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
+            \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
+            Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
+            This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
+            In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
+            \textit{3D model courtesy of "printable models" from Free3D.com.}}
+        \end{center}
+    \end{fitbox}
+\end{figure}
 
 \section{Sensing} \label{sec:bkg_imu}
 Sensing motion within a 3D environment is a key part of any body tracking problem.
 How can we compute the position, velocity, acceleration, and attitude of a body in space?
 In order to answer this question, we must first examine the different sensors that are available.
-
-\subsection{Accelerometer} \label{ssec:bkg_accelerometer}
-Accelerometers measure a change in velocity over time (acceleration).
-An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant [CITE - Robotics, Vision and Control].
-The displacement of the mass along the axis, imparted by a force, is correlated to a sensitivity scale.
-Typically, this scale is electrically resistive and creates an analog change in a driving (exciting) voltage.
-A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
-
-\begin{figure}[h!]
-    \caption[Accelerometer block diagram]{Basic block diagram of a three-axis accelerometer where the masses are suspended from springs.}
-    \label{fig:accelerometers}
-    \centering
-    \includegraphics[width=4.5in]{background/accelerometers.png}
-\end{figure}
-
-\subsection{Gyroscope} \label{ssec:bkg_gyroscope}
-A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.
-MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass [CITE - Robotics, Vision and Control].
-
-\begin{figure}[h!]
-    \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
-    \label{fig:gyroscopes}
-    \centering
-    \includegraphics[width=4.5in]{background/gyroscopes.png}
-\end{figure}
-
-As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
-While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$.
-The proof for this relationship can be found in Appendix [INSERT APPENDIX NUMBER].
 
 \subsection{Magnetometer} \label{ssec:bkg_magnetometer}
 Magnetometers use magnetoresistive elements that change their effective resistance in the presence of a magnetic field [CITE - Robotics, Vision and Control].
@@ -53,13 +194,42 @@ By measuring this value and correlating it to a measurement scale, the local mag
     \includegraphics[width=4.5in]{background/magnetometer.png}
 \end{figure}
 
-\subsection{Inertial Measurement Units}
-Now, with the basics of each inertial sensor in mind, we can combine them into a single package, called an inertial measurement unit (IMU).
-Each of the diagrams of the above sensors represent a single sensing axis, or Degree of Freedom (DOF).
-In order for our IMU to be useful in a 3D environment, we need to have three sensing axes 90 degrees to each other.
+\subsection{Gyroscope} \label{ssec:bkg_gyroscope}
+A gyroscope is an inertial sensor that measures the angular velocity of a rotating body.
+MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass [CITE - Robotics, Vision and Control].
+As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
+While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$ (Appendix [INSERT APPENDIX NUMBER]).
+Since the mass is suspended on springs, Newton's Second Law can be applied again to directly correlate the force experienced to a displacement and therefore a change in resistance or capacitance.
+
+\begin{figure}[h!]
+    \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
+    \label{fig:gyroscopes}
+    \centering
+    \includegraphics[width=4.5in]{background/gyroscopes.png}
+\end{figure}
+
+\subsection{Accelerometer} \label{ssec:bkg_accelerometer}
+Accelerometers measure a change in velocity over time (acceleration).
+An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant [CITE - Robotics, Vision and Control].
+From Newton's Second Law, as applied to a spring-mass system, $\frac{-K}{m}x=a$, we can directly correlate the displacement of the mass to the magnitude of the acceleration along the measurement axis.
+Typically, this scale is electrically resistive or capacitative and creates an analog change in a driving (exciting) voltage which can be measured in a circuit using a Wheatstone Bridge and microcontroller.
+A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
+
+\begin{figure}[h!]
+    \caption[Accelerometer block diagram]{Basic block diagram of a three-axis accelerometer where the masses are suspended from springs.}
+    \label{fig:accelerometers}
+    \centering
+    \includegraphics[width=4.5in]{background/accelerometers.png}
+\end{figure}
+
+\subsection{MARG Arrays and Inertial Measurement Units}
+Now, with the basics of each sensor in mind, we can combine them into a single package, called a Magnetic, Angular Rate, and Gravity (MARG) array.
+Each of the above diagrams represent a single sensing axis, or Degree of Freedom (DOF).
+In order for a MARG array to be useful in a 3D environment, it needs to have three sensing axes orthogonal to each other.
 Each DOF will measure the X-, Y-, and Z-axis, respectively with the positive sensing direction according to the right hand rule.
-By combining multiple tri-axial arrays, we can define different types of IMUs, as shown in Table \ref{tab:imu_dofs}.
-Typically, the more sensing axes, the more accurate the IMU will be (depending on the performance of the sensor fusion algorithm).
+By combining multiple tri-axial arrays, we can define different types of Inertial Measurement Units (IMUs), as shown in Table \ref{tab:imu_dofs}.
+Typically, the more sensing axes, the more accurate the array will be (depending on the performance of the sensor fusion algorithm).
+Note that a MARG array is an IMU with an integrated tri-axial magnetometer .
 
 \begin{table}[h]
     \caption{Common definitions for IMUs of varying degrees of freedom.}
@@ -90,7 +260,7 @@ Typically, the more sensing axes, the more accurate the IMU will be (depending o
             \caption[ST124-M Outline]{ST124-M inertial measurement unit courtesy of NASA via Wikimedia Commons [CITE - Wikimedia]}
         \end{center}
 
-        Modern manufacturing methods have introduced new technology called Microelectromechanical Systems, or MEMS.
+        Modern manufacturing methods have enabled a new technology called Microelectromechanical Systems, or MEMS.
         MEMS are microscopic devices that perform an electromechanical function such as sensing acceleration, rotation rate, or magnetic fields [CITE - What is MEMS].
         They are the most common technology in modern sensor development and revolutionized the technology space by shrinking components down to the micro- and nanometer scales.
         Due to the advent of MEMS technology, devices such as accelerometers, magnetometers, gyroscopes, barometers, hygrometers, etc. have been shrunk down from large mechanical masterpieces to mass-producible products that fit within a few square millimeters of epoxy.
@@ -108,7 +278,7 @@ The "tactical-grade" sensors are even more robust and accurate than the previous
 These devices will typically be used in applications where war fighters need precise guidance for munitions, or need to navigate their way through hazardous and GNSS-denied terrain.
 Finally, the last major tier is the "navigation-grade" sensors. 
 These sensors are extremely precise, extremely accurate, and cost more than some middle-class families will make in a year.
-Primarily, these will be used in survey missions or on underwater vehicles where absolute precision and knowledge of their location is needed.
+Primarily, these will be used in survey missions or on underwater vehicles where absolute precision and knowledge of their location is necessary.
 
 \subsection{Global Positioning System} \label{ssec:bkg_gps}
 The Global Position System, or GPS, is a constellation of high-altitude satellites that service most of the globe [CITE].
@@ -119,12 +289,20 @@ When the satellite time is received, the device can determine the difference bet
 Since the Time of Flight can be assumed to be the constant speed of light, the GPS receiver can determine its distance to a satellite in a known orbit.
 Repeat for at least three satellites, and a GPS receiver can triangulate its position to a reasonable circle of error of about 3-meters.
 
+\begin{figure}[h!]
+    \caption[GPS diagram]{Basic representation of how GPS communicates with a device to calculate its position on Earth.
+    GPS satellites in orbit broadcast a time and using trigonometry and algebra, a device can calculate the distance to various satellites and triangulate its position.}
+    \label{fig:gps}
+    \centering
+    \includegraphics[width=4.5in]{background/gps.png}
+\end{figure}
+
 \section{Sensor Fusion} \label{sec:bkg_sensor_fusion}
 While having each individual sensor will give some data, they offer an incomplete picture of a body's orientation and movement through space.
 An accelerometer can detect acceleration and determine pitch and roll using basic vector math, but it cannot determine yaw or heading.
 Data from a gyroscope can be integrated over time to determine the sensor's attitude, but this method will drift over time and accumulate errors, it also cannot detect movement.
 Magnetometers in a weak magnetic field, like Earth's, are not accurate enough to determine roll and pitch, but can easily provide heading.
-Finally, GPS readings will provide position and velocity vector, but typically update slowly and have a large circle of error and cannot determine attitude.
+Finally, GPS readings will provide position and velocity vectors, but typically update slowly and have a large circle of error and cannot determine attitude.
 In order to make these sensors more effective for an inertial sensing application, we need to fuse the data feeds into a unified output that emphasizes the strength of each sensor, while mitigating their limitations.
 
 \subsection{Attitude and Heading Reference System} \label{ssec:bkg_ahrs}
@@ -219,53 +397,3 @@ The magnitude of the error is determined via gradient-descent and subtracted fro
 This computes an accurate rate of change vector, $\pmb{\dot{q}_t}$, that can be numerically integrated to yield the estimated orientation vector, $\pmb{q_t}$.
 
 \subsection{Fast Complimentary Filter}
-
-
-\section{Orientation and Rotation} \label{ssec:bkg_orientation}
-A body can be rotated in 3D space along the x-, y-, and z-axis.
-\textbf{Roll ($\phi$)} defines rotation about the x-axis; \textbf{pitch ($\theta$)} defines rotation about the y-axis; and \textbf{yaw ($\psi$)} defines rotation about the z-axis.
-These three rotations are known as Euler angles.
-They are easy to conceptually understand and model, but they are not mathematically pure.
-
-\begin{figure}[h!]
-    \caption[Body rotations]{Basic look at a 3D body and the axes of rotation in the body reference frame.}
-    \label{fig:body_rotations}
-    \centering
-    \includegraphics[height=2.5in]{background/body_rotations.png}
-\end{figure}
-
-A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
-The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
-This is simple to do so long as two of the rotation axes are not parallel to each other.
-When two axes are parallel, they lock together in a condition called, "gimbal lock". 
-We can overcome gimbal lock by adding a fourth dimension that can drive each axis independently.
-This moves the rotation from the typical three dimensional space to the four dimensional, Hamiltonian, space.
-We can represent this orientation as a four dimensional vector called a "quaternion".
-This vector is more prevalent in modern AHRS design as it is more mathematically pure and means you do not have to determine if you need to change a rotation sequence to avoid or get out of gimbal lock.
-
-It is possible to freely switch between Euler and quaternion vectors using trigonometric operations inside of a matrix multiplication operation.
-
-\begin{figure}
-    \begin{fitbox}[frametitle=Aside: Gimbal Lock]
-        When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
-        When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
-        This can create strange pathways for the body and cause unexpected behavior.
-        
-        The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
-        First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
-        If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
-        However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
-        To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
-        \begin{center}
-            \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
-            \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
-            \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
-            \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
-            \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
-            Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
-            This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
-            In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
-            \textit{3D model courtesy of "printable models" from Free3D.com.}}
-        \end{center}
-    \end{fitbox}
-\end{figure}

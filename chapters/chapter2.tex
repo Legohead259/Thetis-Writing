@@ -333,7 +333,7 @@ This gain is the magnitude of the uncertainties from the previous estimate and m
     \end{aligned}
 \end{equation}
 
-The gain is then applied to a state update equation where the current estimate of the sensor values is determined.
+The gain is then applied to a state update equation where the current estimate of the sensor values is determined. S
 
 \begin{equation} \label{eq:kalman_state_update_eq}
     \begin{aligned}
@@ -380,12 +380,161 @@ This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation
 Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
 
 \subsection{Madgwick Filter} \label{ssec:madgewick_filter}
-To address the issues of the Mahony filter, Madgewick [CITE] proposed a different orientation filter, based on Mahony's work, that used quaternions throughout the calculations and could integrate magnetometer data for yaw estimation.
-The use of quaternions throughout the entire filter eliminates the Eulerian singularities and improves performance.
-Additionally, Madgewick's implementation considers the estimation bias to be an optimization problem solved by gradient-descent.
-The gradient-descent approach allows the algorithm to have a much higher performance at lower sample rates and incorporate online magnetic distortion and gyroscopic drift compensation.
 
-The filter uses accelerometer and magnetometer measurements to estimate the body's tilt and yaw relative to the geodetic frame of reference.
-This gives an estimate of the direction vector for the error vector.
-The magnitude of the error is determined via gradient-descent and subtracted from the gyroscope readings along the direction vector.
-This computes an accurate rate of change vector, $\pmb{\dot{q}_t}$, that can be numerically integrated to yield the estimated orientation vector, $\pmb{q_t}$.
+\subsection{Inertial Calibration}
+
+In order to calibrate an IMU, we need to create a model of the data. For the accelerometer and gyroscope, we can create an inertial model defined as:
+
+\begin{gather}
+    \vec{i}_c=MS(\vec{i}_u-\vec{b}) \\
+    \begin{aligned}
+        \text{where } & \vec{i}_C \text{ is the calibrated inertial measurements,} \\ 
+        & M \text{ is the misalignment matrix,} \\
+        & S \text{ is the sensitivity identity matrix,} \\
+        & \vec{i}_u \text{ is the uncalibrated inertial measurements, and} \\
+        & \vec{b} \text{ is the bias or offset vector}
+    \end{aligned} \notag
+\end{gather}
+
+The three calibration values, $M$, $S$, $b$, represent a set of correction factors that make the measured values more accurate. The inertial measurement is generalized here to represent either accelerometer or gyroscope data. Each sensor will have its own set of the calibration values.
+
+\paragraph*{Bias Vector} The bias, or offset, vector is the average of the inertial readings while the sensor is in a stable, known orientation. For example, when the gyroscope is at rest, we would expect the measurement output to be $[0,0,0] \text{ [deg/sec]}$. However, we may measure an average of $[0.89, -0.66, 0.31] \text{ [deg/sec]}$ instead. By subtracting this bias vector from the measurements, we eliminate any unintentional offset from our readings. The bias can be calculated using the equation below:
+
+\begin{gather}
+    \vec{b}_g = \frac{1}{N} \sum_{i=0}^N{\vec{g}_n} \\
+    \begin{aligned}
+        \text{where } & \vec{b}_g \text{ is the bias vector,} \\
+        & N \text{ is the number of collected samples to average, and} \\
+        & \vec{g}_n \text{ is the n-th uncalibrated gyroscope measurement vector in the dataset}
+    \end{aligned} \notag
+\end{gather}
+
+For accelerometers, the bias is calculated differently. Each measurement axis must be exposed to ±1g of acceleration by placing the instrument vertical on each of the measurement axes in both the positive and negative directions. The bias for each axis can then be determined by taking the average value as shown below:
+
+\begin{gather}
+    \vec{b}_a = \frac{1}{2} \left[ \frac{1}{N}\sum_{n=0}^N{\vec{a}_{n,+g}} + \frac{1}{M}\sum_{m=0}^M{\vec{a}_{m_-g}} \right] \\\
+    \begin{aligned}
+        \text{where } & b_a \text{ is the bias vector,} \\
+        & N \text{ is the number of samples taken in the +1g orientation,} \\
+        & a_{+g} \text{ is the average axis measurement when exposed to +1g, and}\\
+        & M \text{ is the number of samples taken in the -1g orientation,} \\
+        & a_{-g} \text{ is the average axis measurement when exposed to -1g}
+    \end{aligned} \notag
+\end{gather}
+
+\paragraph*{Sensitivity Matrix} The sensitivity matrix is a diagonal matrix that accounts for minor errors with variations in process and material. 
+This can make each uniaxial sensor in a triaxial array sense the environment slightly differently. 
+While bias covers this area when at rest or in specific orientations, the sensitivity error will change depending on the motion and orientation. 
+To account for this, we need to expose each sensor to a known reference stimulus and calculate a sensitivity value based on the average magnitude of the measurement vector during that time. 
+For a gyroscope, this value can be an arbitrary, but constant, rotation rate, $\omega$. 
+For an accelerometer, this value will be ±1g. The equations for each gyroscope and accelerometer axis are provided below:
+
+\begin{gather}
+    s_{g, \omega} = \frac{\lVert g_{+\omega}\rVert + \lVert g_{-\omega}\rVert}{2\omega} \\
+    \begin{aligned}
+        \text{where } & s_{g,\omega} \text{ is the sensitivity value for each gyroscope axis when exposed to } \omega , \\
+        & g_{+\omega } \text{ is the average gyroscope axis reading whe exposed to +} \omega ,\\
+        & g_{-\omega } \text{ is the average gyroscope axis reading whe exposed to -} \omega , \text{ and} \\
+        & \omega \text{ is the reference rotation rate}
+    \end{aligned} \notag
+\end{gather}
+
+\begin{gather}
+    s_{a, g} = \frac{\lVert a_{+g} \rVert + \lVert a_{-g} \rVert}{2} \\
+    \begin{aligned}
+        \text{where } & s_{a,g} \text{ is the sensitivity value for each axis when exposed to 1g,} \\
+        & a_{+g} \text{ is the average axis measurement when exposed to +1g, and} \\
+        & a_{-g} \text{ is the average axis measurement when exposed to -1g}
+    \end{aligned} \notag
+\end{gather}
+
+After calculating these values for each axis, we can form the sensitivity matrix for the gyroscope and accelerometer like so:
+
+\begin{equation*}
+    S_g = 
+    \begin{bmatrix}
+        s_{g,x} & 0 & 0 \\
+        0 & s_{g,y} & 0 \\
+        0 & 0 & s_{g,z}
+    \end{bmatrix} 
+\end{equation*}
+\begin{equation*}
+    S_a =
+    \begin{bmatrix}
+        s_{a,x} & 0 & 0 \\
+        0 & s_{a,y} & 0 \\
+        0 & 0 & s_{a,z}
+    \end{bmatrix}
+\end{equation*}
+
+While this calibration value accounts for some of the intrinsic sensor error, it does not account for axes misalignment or non-orthogonality within the sensor. To accomplish this, we must incorporate the misalignment matrix.
+
+\paragraph*{Misalignment Matrix}
+
+The misalignment matrix is the final, but most complex, calibration value that we can calculate for the inertial sensors. It reduces error from multiple sources such as non-orthogonality between the measurement axes, the misalignment from the measurement axes to the actual sensor packaging, and misalignment from the package onto the application board. In order to calculate the misalignment matrix, we must consider it as the solution to a non-linear problem. First, we must define an objective function for the solution space. Since the goal of the misalignment matrix is to reduce error, then we can define the objective function as the Root Mean Square Error (RMSE) of the measurement vector, the misalignment vector, and the reference vector:
+
+\begin{gather}
+    RMSE = \sqrt{\frac{1}{N}\sum_{n=0}^N{\|{\vec{i}_{n,u} \cdot M^* -\vec{i}_{n,ref}\|}^2}} \\
+    \begin{aligned}
+        \text{where } & N \text{ is the number of samples in the dataset,} \\
+        & \vec{i}_{n,u} \text{ is the n-th uncalibrated measurement vector with the bias removed,} \\
+        & M^* \text{ is the guessed 3-by-3 matrix that corrects $i_{n,u}$ to be near $i_{ref}$, and } \\
+        & \vec{i}_{ref} \text{ is the expected reference stimulus vector for the measurement}
+    \end{aligned} \notag
+\end{gather}
+
+Then, given a dataset of measurement vectors and their expected reference vectors, we can use a non-liner solver to determine the value of $M^*$. This can be done using toolboxes \footnote[4]{Like the \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html}{\lstinline{scipy.optimize.minimize} toolbox}}. 
+Assuming the sensitivity was not removed from the measurement signal, the $M^*$ matrix happens to include it as its diagonal. 
+By extracting the diagonal and normalizing the original matrix, we are left with the sensitivity and misalignment matrix calibration values.
+
+\begin{equation*}
+    S = \text{diag}(M^*) \\
+    M=M^* \cdot S^{-1}
+\end{equation*}
+
+We can now apply the misalignment matrix, sensitivity matrix, and bias vector to the sensor readings according to the model above. This should yield outputs that are close to the real values, which is examined in the next section.
+
+\subsection{Magnetic Calibration}
+The magnetometer in a MARG array needs a different sensor model than the inertial sensors because the ambient magnetic field introduces different errors. 
+There are two types: soft iron, $W$, and hard iron, $\vec{v}$. 
+A hard iron distortion is introduced by magnetic materials placed near the sensor. 
+This can occur when the sensor is placed in a casing with magnetic fasteners or a speaker, as shown in Tuupola [CITE - Tuupola]. 
+Soft iron distortion is typically less severe than hard iron distortion and is caused by materials near the sensor that distort the local magnetic field. 
+The soft iron distortion can also account for misalignment and sensitivity errors. 
+The sensor model for a calibrated magnetometer is given below:
+
+\begin{gather}
+    \vec{m}_c=W^{-1}(\vec{m}_u-\vec{v}) \\
+    \begin{aligned}
+        \text{where } &\vec{m}_c \text{ is the calibrated magnetometer vector,} \\
+        &W^{-1} \text{ is the inverse soft iron matrix,}\\
+        &\vec{m}_u \text{ is the uncalibrated magnetometer vector,} \\
+        &\vec{v} \text{ is the hard iron bias vector}
+    \end{aligned} \notag
+\end{gather}
+
+With a calibrated sensor in an ideal environment, we would expect a sphere centered on the origin with a radius equal to the magnitude of the local magnetic field. 
+Due to the hard and soft iron distortions, this will rarely be the case. 
+Hard iron distortion can be removed from the signal by determining the average of the minimum and maximum values of each axis, as shown below:
+
+\begin{equation*}
+    \vec{v}=\frac{1}{2}
+    \begin{bmatrix}
+        \max(v_x)+\min(v_x) \\
+        \max(v_y)+\min(v_y) \\
+        \max(v_z)+\min(v_z)
+    \end{bmatrix}
+\end{equation*}
+
+Once the hard iron distortion is removed from the signal, we should see the readings more closely adhere to the correct spherical shape. 
+Then, we can apply Li’s ellipsoid fitting algorithm[CITE - Li] to characterize the fit of the optimal ellipsoid for the data, expressed as the symmetrical matrix, $A$. 
+Ozyagcilar [CITE - AN4246] delves into the math and builds a relationship between the ellipsoid fit and the soft iron matrix, summarized by:
+
+\begin{equation*}
+    W^{-1}=A^{1/2}
+\end{equation*}
+
+With these calibration parameters calculated, they can be used in a sensor fusion algorithm to increase the accuracy of the magnetometer. 
+However, these parameters must be recalibrated whenever the sensor enters a new magnetic environment since either the hard or soft iron distortion could be different than previously calculated.
+
+[TODO: INSERT FIGURES OF MAGNETIC CALIBRATION AND DISTORTION]

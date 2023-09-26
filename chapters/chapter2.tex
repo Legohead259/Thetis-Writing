@@ -41,6 +41,8 @@ These are used for Eulerian transformations of vectors.
 The matrix is an $N \times N$ orthogonal matrix where $N$ is the number of dimensions in the vector;
 for a three dimensional vector, the rotation matrix to go from one coordinate frame to another would be a $3 \times 3$ matrix.
 
+[TODO: INSERT FIGURE ON FRAME ROTATIONS]
+
 In Figure \ref{fig:frame_rotation}, we can see a base coordinate frame, $A$, and a different coordinate frame, $B$ that is rotated relative to the base frame about the axis, $\vec{r}$.
 To express the rotation from the base to the local frame, we can borrow notation from Craig [CITE - Introduction to Robotics].
 The "from" or "base" frame is the preceding superscript while the "to" or "local" frame is the preceding subscript, as shown below:
@@ -118,12 +120,57 @@ To break the gimbal lock and get to the correct orientation, the rotation order 
     \textit{3D model courtesy of "printable models" from Free3D.com.}}
 \end{figure}
 
-\subsection{Quaternions}
+\subsection{Quaternions} \label{ssec:quaternions}
+In the 19th century, an Irish mathematician was contemplating the problem of Euler angles and analyzing three dimensional geometry.
+William Hamilton considered the problem from within the complex or imaginary space and found that a three dimensional vector could not be expressed with a complex triplet.
+Instead, Hamilton discovered that the problem could be solved with a complex quadruplet, called a quaternion [CITE - On Quaternions], which could be used as a more mathematically pure tool to understand three dimensional geometry.
+For more detailed notes, see Appendix \ref{chap:quaternions}.
 
+A quaternion exists in four dimensional Hamiltonian space and has three complex and one real component in its vector. 
+Like a rotation matrix, it describes the rotation from one reference frame to another about some axis, $\vec{r}$, as shown in Figure \ref{fig:frame_rotation}.
+But, the quaternion is not susceptible to gimbal lock as when two of its axes align, it still retains three degrees of freedom.
+Additionally, it is not limited to the range of 0 to 360 (or -180 to 180) like Euler angles and therefore has no discontinuities.
+We can express the quaternion from frame $A$ to frame $B$ as:
+
+\begin{equation*}
+    {}^A_B \vec{q} = \left[
+        \begin{matrix}
+            q_1 & q_2 & q_3 & q_4
+        \end{matrix}
+    \right] = 
+    \left[
+        \begin{matrix}
+            w & x & y & z
+        \end{matrix}
+    \right] = 
+    w + x\hat{i} + y\hat{j} + z\hat{k}
+\end{equation*}
+
+Since the quaternion is just a vector, this drastically simplifies any rotation calculations and improves computational performance.
+In order to rotate a vector using a quaternion, we need to set the quaternion to be a unit quaternion by:
+
+\begin{equation*}
+    q = \frac{q}{|q|}
+\end{equation*}
+
+Then, we can calculate the inverse quaternion, ${q}^{-1}$ (or conjugate $q^*=q^{-1}, \text{ if } |q|=1)$, using:
+
+\begin{equation*}
+    q^{-1} = \frac{q_0 - q_1\hat{i} - q_2\hat{j} - q_3\hat{k}}{|q|^2}
+\end{equation*}
+
+Then, we can rotate the vector using the equation:
+
+\begin{equation*}
+    {}^A \vec{v}_B = {}^A_Bq \vec{v}_A {}^A_Bq^{-1}
+\end{equation*}
+
+In an inertial measurement unit or attitude and heading reference system, we will need to rotate freely between readings taken in the body's local frame to that in the global frame, such as determining linear acceleration.
+Using the quaternion method above we can also relate body measurements to the global frame, which can be useful for other analyses.
 
 \section{Sensing} \label{sec:sensing}
-Sensing motion within a 3D environment is a key part of any body tracking problem.
-How can we compute the position, velocity, acceleration, and attitude of a body in space?
+Now that we have a basic understanding of some of the mathematical relationships present in inertial tracking, we need to start sensing our environment.
+So, how can we compute the position, velocity, acceleration, and attitude of a body in space?
 In order to answer this question, we must first examine the different sensors that are available.
 
 \subsection{Magnetometer} \label{ssec:magnetometer}

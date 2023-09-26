@@ -17,7 +17,6 @@ Each of their appendages could be considered at some orientation relative to the
 At rest and in their local coordinate frame, the person's body may not be considered moving or rotating.
 But, when the scope is expanded to encompass the entire body and the Earth's frame, that person is now rotating about the Earth coordinate frame at almost 17,000 MPH.
 
-
 \begin{figure}[h!]
     \caption[Body rotations]{Basic look at a 3D body and the axes of rotation in the body reference frame.}
     \label{fig:body_rotations}
@@ -39,34 +38,88 @@ But, when the scope is expanded to encompass the entire body and the Earth's fra
 \subsection{Rotation Matrices}
 A rotation matrix is a mathematical model for translating one body's inertial reference frame to another, e.g. local body to the global body.
 These are used for Eulerian transformations of vectors.
+The matrix is an $N \times N$ orthogonal matrix where $N$ is the number of dimensions in the vector;
+for a three dimensional vector, the rotation matrix to go from one coordinate frame to another would be a $3 \times 3$ matrix.
 
-\subsubsection{Gimbal Lock}
-A body can be rotated around all three axes to change its orientation and represented as the vector, $\langle\phi, \theta, \psi\rangle$.
-The rotation can occur in a certain sequence, e.g. roll 45 degrees, pitch 45 degrees, then yaw 45 degrees.
-This is simple to do so long as two of the rotation axes are not parallel to each other.
-When two axes are parallel, they lock together in a condition called, "gimbal lock". 
+In Figure \ref{fig:frame_rotation}, we can see a base coordinate frame, $A$, and a different coordinate frame, $B$ that is rotated relative to the base frame about the axis, $\vec{r}$.
+To express the rotation from the base to the local frame, we can borrow notation from Craig [CITE - Introduction to Robotics].
+The "from" or "base" frame is the preceding superscript while the "to" or "local" frame is the preceding subscript, as shown below:
 
-When two axes become parallel, eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
-When in gimbal lock, rotations and plotting yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
+\begin{equation*}
+    {}^A_B R = \left[
+        \begin{matrix}
+            r_{11} & r_{12} & r_{13} \\
+            r_{21} & r_{22} & r_{23} \\
+            r_{31} & r_{32} & r_{33}
+        \end{matrix}
+    \right] = \left[
+        \begin{matrix}
+            {}^Ax_b & {}^Ay_B & {}^Az_B
+        \end{matrix}\right]
+\end{equation*}
+
+When we want to rotate a vector between frames, we must choose an order in which to do so.
+For example, if we wanted to rotate from frame $A$ to frame $B$ using a yaw-pitch-roll rotation order, we can construct the following rotation matrix from Appendix \ref{sec:3d_rot_mat}:
+
+\begin{align*}
+    {}^A_B R = R_z(\psi) R_y(\theta) R_x(\phi) &= \left[
+        \begin{matrix}
+            \cos\psi & -\sin\psi & 0 \\
+            \sin\psi & \cos\psi & 0 \\
+            0 & 0 & 1
+        \end{matrix}\right]
+        \left[\begin{matrix}
+            \cos\theta & 0 & \sin\theta \\
+            0 & 1 & 0 \\
+            -\sin\theta & 0 & \cos\theta
+        \end{matrix}\right]
+        \left[\begin{matrix}
+            1 & 0 & 0 \\
+            0 & \cos\phi & -\sin\phi \\
+            0 & \sin\phi & \cos\phi 
+        \end{matrix}\right] \\ \\
+        &= \left[\begin{matrix}
+            \cos\psi\cos\theta & \cos\psi\sin\theta\sin\phi-\sin\psi\cos\theta & \cos\psi\sin\theta\cos\phi+\sin\psi\sin\phi \\
+            \sin\psi\cos\theta & \sin\psi\sin\theta\sin\phi+\cos\psi\cos\phi & \sin\psi\sin\theta\cos\phi-\cos\psi\sin\phi \\
+            -\sin\theta & \cos\theta\sin\phi & \cos\theta\cos\phi
+        \end{matrix}\right]
+\end{align*}
+
+Then, we can rotate the vector from $A$ to $B$ via:
+
+\begin{equation*}
+    {}^A\vec{v}_B = {}^A_B R \cdot \vec{v}_A
+\end{equation*}
+
+\paragraph*{Gimbal Lock} \label{par:gimbal_lock}
+When two axes become parallel, Eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
+This condition is called "gimbal lock".
+When in gimbal lock, rotations yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
 This can create strange pathways for the body and cause unexpected behavior.
+Monitoring for and breaking gimbal lock are also computationally expensive as the program must perform multiple matrix multiplications and then have logic to determine if a) it is in a gimbal lock condition and b) what rotation order would be required to break the condition.
 
-The figure below shows a body's rotation while in gimbal lock. The rotation order is roll, pitch, then yaw.
-First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$.
-If we then want to rotate it such that it's orientation is $\langle90, 0, 0\rangle$, it would be rolled left 90 degrees and pitched down 90 degrees.
-However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$!
-To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch, yaw, roll, or the roll and yaw axes driven simultaneously.
+The figure below shows a body's rotation while in gimbal lock. The rotation order is roll-pitch-yaw.
+First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$ (Figure \ref{subfig:ship_009000}).
+If we then want it's orientation to be $\langle90, 0, 0\rangle$ (Figure \ref{subfig:ship_900000}), the body would be rolled left 90 degrees and pitched down 90 degrees.
+However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$ (Figure \ref{subfig:ship_000090})!
+To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch-yaw-roll, or the roll and yaw axes driven simultaneously.
 
-\begin{figure}
+\begin{figure}[h!]
+    \centering
     \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
     \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
     \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
     \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
+    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\label{subfig:ship_900000}}
     \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
     Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
     This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
     In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
     \textit{3D model courtesy of "printable models" from Free3D.com.}}
 \end{figure}
+
+\subsection{Quaternions}
+
 
 \section{Sensing} \label{sec:sensing}
 Sensing motion within a 3D environment is a key part of any body tracking problem.

@@ -301,7 +301,7 @@ In order to make these sensors more effective for an inertial sensing applicatio
 An Attitude and Heading Reference System (AHRS) is an IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
 The data streams from the sensors can be fused together with external information like GPS data and mathematical models to estimate a body's inertial orientation in three dimensional space.
 The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.
-Many algorithms exist to do this sensor fusion such as the Kalman filter [CITE - Kalman], the Mahony filter [CITE], the Madgwick filter [CITE], and the Fast Complimentary Filter [CITE].
+Many algorithms exist to do this sensor fusion such as the the Fast Complimentary Filter [CITE], Kalman filter [CITE - Kalman], the Mahony filter [CITE], and the Madgwick filter [CITE].
 
 \begin{figure}[h!]
     \caption[AHRS block diagram]{Basic block diagram of an AHRS. 
@@ -474,70 +474,78 @@ However, these parameters must be recalibrated whenever the sensor enters a new 
 [TODO: INSERT FIGURES OF MAGNETIC CALIBRATION AND DISTORTION]
 
 \subsection{Fast Complimentary Filter} \label{ssec:complimentary_filter}
+A complimentary filter take advantage of the problems inherent with the accelerometer and gyroscope measurements such they \textit{compliment} each other.
+By integrating gyroscopic measurements, we can quickly obtain the body's attitude but the errors in the gyroscope sensor cause this value to quickly drift away from the "true" value.
+Accelerometer measurements on the other can use trigonometry on the gravitational acceleration vector to determine pitch and roll (tilt).
+These measurements are affected by the body's motion and can drift over time as the body experiences other accelerations than gravity.
+An accelerometer also cannot report the yaw degree, so must be coupled with a tri-axial magnetometer which can also be influenced by external magnetic fields.
 
-\subsection{Kalman Filter} \label{ssec:kalman_filter}
-The Kalman Filter is a recursive algorithm introduced in the 1960's as a method to track, estimate, and predict the state of a system and corresponding uncertainties [CITE].
-This filter integrates a dynamic (linear) model of the system, control inputs, measurements, and biases/uncertainties into a single algorithm.
-This effectively fuses together system inputs and responses and extrapolates what the system is currently doing and expected to do.
-One key advantage of this algorithm is that it only requires the guess of the previous state to estimate the current state. 
-This massively decreases the memory and processing costs as the history of inputs, measurements, and uncertainties does not need to be remembered or analyzed.
-However, it does have some limitations when the sensor data is noisy or the control inputs cannot be linearly mapped to the system state.
-Random errors in the sensor data may cause the filter to behave unpredictably and non-linearity prevents proper fusion entirely.
-
-The algorithm works by taking uncertainties from sensor measurements and using those to determine the Kalman Gain factor, $K_n$.
-This gain is the magnitude of the uncertainties from the previous estimate and measurement sources.
-
-\begin{equation} \label{eq:kalman_gain}
-    \begin{aligned}
-        K_n &= \frac{\text{Estimate Uncertainty}}{\text{Estimate Uncertainty + Measurement Uncertainty}} \\
-            &= \frac{p_{n,n-1}}{p_{n,n-1} + r_n}
-    \end{aligned}
-\end{equation}
-
-The gain is then applied to a state update equation where the current estimate of the sensor values is determined. S
-
-\begin{equation} \label{eq:kalman_state_update_eq}
-    \begin{aligned}
-        \hat{x}_{n,n} &= \hat{x}_{n,n-1} + K_n(z_n - \hat{x}_{n,n-1}) \\
-                      &= (1-K_n)\hat{x}_{n,n-1} + K_n z_n \\
-    \end{aligned}
-\end{equation}
-
-On the first run of the algorithm, an initial state guess and uncertainty are introduced as a starting point for the state prediction equation.
-This equation is the mathematical model of the system and, for example, can be the Newtonian equations of motion for a moving body.
-This creates a prediction for the next state.
-The algorithm can then output the current state, predicted next state, and associated uncertainties with reasonably high accuracy - assuming the filter is tuned.
-Tuning the filter can be done by better quantifying the measurement errors and by tuning hyperparameter called "process noise variables".
-These variables control how much the algorithm depends on the measurement or the previous estimate to make the current and future estimates.
-
-\begin{figure}[h!]
-    \caption[Kalman filter block diagram]{Basic block diagram of a Kalman filter.}
-    \label{fig:kalman_filter}
-    \centering
-    \includegraphics[width=6in]{background/KalmanFilter.png}
-\end{figure}
-
-\subsection{Mahony Filter} \label{ssec:mahony_filter}
-A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].
-This algorithm estimates the rotation rate, $\pmb{\omega}'$ of the body given the instantaneous rotation rate, $\pmb{\omega}$ and acceleration vector, \pmb{a}.
-The error, $e$, is calculated as the cross-product between the current acceleration vector and the expected gravitational acceleration vector from the previous estimate.
-The filter uses a Proportional-Integral (PI) controller to determine the filter error from the previous estimate and apply a bias, $\delta\omega$ to the current estimate.
-By integrating $\omega'$, the estimated attitude can be determined.
-The equation for a basic Mahony figure is given below:
+In the frequency space, we can consider the gyroscope attitude estimate to drift with a high frequency, and the accelerometer-magnetometer signal to drift with a low frequency.
+To compensate for these drifts, we can establish a complimentary or band-pass filter that attenuates the drift signal and outputs the best estimate of orientation.
+This filter typically uses a hyperparameter, $\gamma$, to control the attenuation of each of the drifts, i.e. the weight of each estimation like so:
 
 \begin{gather}
-    \label{eq:mahony_filter}
-    \pmb{\omega}' = \pmb{\omega} + \left(K_p + K_i\frac{1}{s}\right) \pmb{a} \times \pmb{d} \\
+    {}^G_B\pmb{q}_{est} = (1-\gamma){}^G_B\pmb{q}_lf + \gamma {}^G_B\pmb{q}_hf
     \begin{aligned}
-        \text{where } & \pmb{\omega} \text{ is the instantaneous rotation rate vector} \\
-        & K_p \text{ is the proportional controller constant} \\
-        & K_i \text{ is the integral controller constant} \\
-        & \pmb{a} \text{ is the instantaneous acceleration vector} \\
-        & \pmb{d} \text{ is the estimated gravity vector from the previous estimate} \\
+        \text{where } &{}^G_B\pmb{q}_{est} \text{ is the best estimate of the body quaternion relative to the global frame,} \\
+                      &\gamma \text{ is the controlling hyperparameter, } \\
+                      &{}^G_B\pmb{q}_{lf} \text{ is the body quaternion estimate from the low frequency drift source, and} \\
+                      &{}^G_B\pmb{q}_{hf} \text{ is the body quaternion estimate from the high frequency drift source.}
     \end{aligned} \notag
 \end{gather}
 
-This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation cannot be known or calculated; it also does not account for gyroscopic drift which decreases its accuracy over time.
-Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
+Wu et. al (CITE - FCF) propose a complimentary filter solution that reports being on par with more computationally expensive fusion algorithms like the Kalman Filter and Madgwick Filter.
+This algorithm computes the gravity vector using accelerometer and gyroscope measurements.
+By itself, this can yield the tilt attitude of the body.
+Then, if there is not severe magnetic distortion detected by the magnetometer, the full attitude can be acquired by fusing together the tilt attitude and that estimated from the magnetometer.
+The basic block diagram for the filter is in Figure \ref{fig:fcf_diagram} below.
+
+\begin{figure}
+    \centering
+    \label{fig:fcf_diagram}
+    \includegraphics[height=2in]{background/FCF.png}
+    \caption[Kalman Filter Process]{A simplified block diagram for the Fast Complimentary Filter. 
+    Courtesy of Wu et al. [CITE - FCF]}
+\end{figure}
+
+\subsection{Kalman Filter} \label{ssec:kalman_filter}
+The Kalman Filter [CITE - KF] was introduced in the 1960's as a method to estimate and track a series of explicit and hidden states within a system.
+In a sensor fusion/AHRS application, the Kalman Filter can be used to estimate the orientation state (quaternion) of the system based on the gyroscope, accelerometer, and magnetometer readings.
+The Kalman Filter also estimates the uncertainty and noise associated with attitude estimate to give more insightful feedback on the usefulness of the estimate.
+At each timestep, the filter uses a built-in mathematical model of the system to predict the current system state and its associated uncertainty.
+Then, the filter can predict the state and uncertainty in the next time step and uses that to adjust a correction factor, called the Kalman Gain.
+With each iteration of the filter, the Kalman Gain converges on a minimum value and the uncertainty and accuracy of the estimates increase.
+The convergence speed and accuracy can be tuned using various hyper parameters like process noise and sensor uncertainty.
+The process for the Kalman Filter is shown in Figure \ref{fig:bkg_kalman_filter_process} and a more detailed explanation can be found in Appendix \ref{chap:kalman_filter}.
+
+\begin{figure}
+    \centering
+    \label{fig:bkg_kalman_filter_process}
+    \includegraphics[width=\textwidth]{appendices/kalman-filter/KalmanFilter.png}
+    \caption[Kalman Filter Process]{A simplified process block diagram for the Kalman Filter that includes the steps required for each iteration.}
+\end{figure}
+
+\subsection{Mahony Filter} \label{ssec:mahony_filter}
+% A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].
+% This algorithm estimates the rotation rate, $\pmb{\omega}'$ of the body given the instantaneous rotation rate, $\pmb{\omega}$ and acceleration vector, \pmb{a}.
+% The error, $e$, is calculated as the cross-product between the current acceleration vector and the expected gravitational acceleration vector from the previous estimate.
+% The filter uses a Proportional-Integral (PI) controller to determine the filter error from the previous estimate and apply a bias, $\delta\omega$ to the current estimate.
+% By integrating $\omega'$, the estimated attitude can be determined.
+% The equation for a basic Mahony figure is given below:
+
+% \begin{gather}
+%     \label{eq:mahony_filter}
+%     \pmb{\omega}' = \pmb{\omega} + \left(K_p + K_i\frac{1}{s}\right) \pmb{a} \times \pmb{d} \\
+%     \begin{aligned}
+%         \text{where } & \pmb{\omega} \text{ is the instantaneous rotation rate vector} \\
+%         & K_p \text{ is the proportional controller constant} \\
+%         & K_i \text{ is the integral controller constant} \\
+%         & \pmb{a} \text{ is the instantaneous acceleration vector} \\
+%         & \pmb{d} \text{ is the estimated gravity vector from the previous estimate} \\
+%     \end{aligned} \notag
+% \end{gather}
+
+% This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation cannot be known or calculated; it also does not account for gyroscopic drift which decreases its accuracy over time.
+% Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
 
 \subsection{Madgwick Filter} \label{ssec:madgewick_filter}

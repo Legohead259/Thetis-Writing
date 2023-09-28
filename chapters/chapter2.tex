@@ -27,11 +27,14 @@ But, when the scope is expanded to encompass the entire body and the Earth's fra
 \begin{figure}
     \begin{fitbox}[frametitle=Aside: Notation and Nomenclature for Rotations]
         Bodies on their own typically use the "X, Y, Z" notation that is ubiquitous for the Cartesian coordinate system.
-        However, when refering to planetary bodies like the Earth, this nomenclature typically changes to North, East, and Down (NED).
+        However, when referring to planetary bodies like the Earth, this nomenclature typically changes to North, East, and Down (NED).
         This occurs because on the surface of a large spherical body, we can assume the local area is a plane tangential to the surface.
         To keep the broader scope in mind, we arbitrarily associate the X-axis with East, the Y-axis with North, and the Z-axis with Down towards the Earth's core (perpendicular to the surface).
 
-        [TODO: INSERT GRAPHIC ON BODY AND PLANET COORDINATE FRAME]
+        \caption{Illustration of the difference between the global and local reference frames}
+        % \label{fig:global_frame}
+        \centering
+        \includegraphics[width=2in]{background/global_frame.png}
     \end{fitbox}
 \end{figure}
 
@@ -41,9 +44,14 @@ These are used for Eulerian transformations of vectors.
 The matrix is an $N \times N$ orthogonal matrix where $N$ is the number of dimensions in the vector;
 for a three dimensional vector, the rotation matrix to go from one coordinate frame to another would be a $3 \times 3$ matrix.
 
-[TODO: INSERT FIGURE ON FRAME ROTATIONS]
+\begin{figure}[h!]
+    \caption{Illustration of the rotation from a base coordinate frame to a local coordinate frame about the axis, $\pmb{r}$}
+    \label{fig:frame_rotation}
+    \centering
+    \includegraphics[width=2.5in]{background/frame_rotation.png}
+\end{figure}
 
-In Figure \ref{fig:frame_rotation}, we can see a base coordinate frame, $A$, and a different coordinate frame, $B$ that is rotated relative to the base frame about the axis, $\vec{r}$.
+In Figure \ref{fig:frame_rotation}, we can see a base coordinate frame, $A$, and a different coordinate frame, $B$ that is rotated relative to the base frame about the axis, $\pmb{r}$.
 To express the rotation from the base to the local frame, we can borrow notation from Craig [CITE - Introduction to Robotics].
 The "from" or "base" frame is the preceding superscript while the "to" or "local" frame is the preceding subscript, as shown below:
 
@@ -118,13 +126,14 @@ To break the gimbal lock and get to the correct orientation, the rotation order 
     This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
     In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
     \textit{3D model courtesy of "printable models" from Free3D.com.}}
+    \label{fig:gimbal_lock}
 \end{figure}
 
 \subsection{Quaternions} \label{ssec:quaternions}
 In the 19th century, an Irish mathematician was contemplating the problem of Euler angles and analyzing three dimensional geometry.
 William Hamilton considered the problem from within the complex or imaginary space and found that a three dimensional vector could not be expressed with a complex triplet.
 Instead, Hamilton discovered that the problem could be solved with a complex quadruplet, called a quaternion [CITE - On Quaternions], which could be used as a more mathematically pure tool to understand three dimensional geometry.
-For more detailed notes, see Appendix \ref{chap:quaternions}.
+For more detailed notes, see Kuipers [CITE - QUATERNION TEXTBOOK]
 
 A quaternion exists in four dimensional Hamiltonian space and has three complex and one real component in its vector. 
 Like a rotation matrix, it describes the rotation from one reference frame to another about some axis, $\vec{r}$, as shown in Figure \ref{fig:frame_rotation}.
@@ -462,7 +471,7 @@ Hard iron distortion can be removed from the signal by determining the average o
 
 Once the hard iron distortion is removed from the signal, we should see the readings more closely adhere to the correct spherical shape. 
 Then, we can apply Li’s ellipsoid fitting algorithm[CITE - Li] to characterize the fit of the optimal ellipsoid for the data, expressed as the symmetrical matrix, $A$. 
-Ozyagcilar [CITE - AN4246] delves into the math and builds a relationship between the ellipsoid fit and the soft iron matrix, summarized by:
+Ozyagcilar [CITE - AN4246] builds a relationship between the ellipsoid fit and the soft iron matrix, summarized by:
 
 \begin{equation} \label{eq:soft_iron_matrix}
     W^{-1}=A^{1/2}
@@ -471,7 +480,31 @@ Ozyagcilar [CITE - AN4246] delves into the math and builds a relationship betwee
 With these calibration parameters calculated, they can be used in a sensor fusion algorithm to increase the accuracy of the magnetometer. 
 However, these parameters must be recalibrated whenever the sensor enters a new magnetic environment since either the hard or soft iron distortion could be different than previously calculated.
 
-[TODO: INSERT FIGURES OF MAGNETIC CALIBRATION AND DISTORTION]
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{background/mag_raw.png}
+        \caption[Raw Magnetometer Readings]{Example of hard iron distortion from a magnet near a magnetic sensor. Courtesy of Mike Tuupola [CITE - TUUPOLA].}
+        \label{fig:mag_raw}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{background/mag_hid.png}
+        \caption[Hard Iron Distortion Removed]{Magnetometer calibration data with hard iron distortion removed. Courtesy of Mike Tuupola [CITE - TUUPOLA]}
+        \label{fig:mag_hid}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{background/mag_sid.png}
+        \caption[Soft Iron Distortion Removed]{Magnetometer calibration data with soft and hard iron distortion removed. Courtesy of Ozyagcilar [CITE - AN4246]}
+        \label{fig:mag_sid}
+    \end{subfigure}
+       \caption{Three simple graphs}
+       \label{fig:magnetometer_corrections}
+\end{figure}
 
 \subsection{Fast Complimentary Filter} \label{ssec:complimentary_filter}
 A complimentary filter take advantage of the problems inherent with the accelerometer and gyroscope measurements such they \textit{compliment} each other.
@@ -502,10 +535,10 @@ The basic block diagram for the filter is in Figure \ref{fig:fcf_diagram}.
 
 \begin{figure}
     \centering
-    \label{fig:fcf_diagram}
-    \includegraphics[height=2in]{background/FCF.png}
     \caption[Fast Complimentary Filter]{A simplified block diagram for the Fast Complimentary Filter. 
     Courtesy of Wu et al. [CITE - FCF]}
+    \label{fig:fcf_diagram}
+    \includegraphics[height=2in]{background/FCF.png}
 \end{figure}
 
 \subsection{Kalman Filter} \label{ssec:kalman_filter}
@@ -520,9 +553,9 @@ The process for the Kalman Filter is shown in Figure \ref{fig:bkg_kalman_filter_
 
 \begin{figure}
     \centering
+    \caption[Kalman Filter Process]{A simplified process block diagram for the Kalman Filter that includes the steps required for each iteration.}
     \label{fig:bkg_kalman_filter_process}
     \includegraphics[width=\textwidth]{appendices/kalman-filter/KalmanFilter.png}
-    \caption[Kalman Filter Process]{A simplified process block diagram for the Kalman Filter that includes the steps required for each iteration.}
 \end{figure}
 
 \subsection{Mahony Filter} \label{ssec:mahony_filter}
@@ -591,3 +624,56 @@ While the driving principle behind this filter is straight forward, the GDA has 
 The convergence time can be tuned using the $\beta$ value and the overall error reduced by implementing the sensor models in Equations \ref{eq:inertial_model} and \ref{eq:magnetic_model}.
 The Madgwick filter is also computational and memory intensive as it requires many matrix multiplication operations and Jacobian calculations.
 On low-power, embedded platforms this can cause performance issues that may not be present with simpler models like the Fast Complimentary Filter [CITE - FCF].
+
+\section{Project Management Techniques} \label{sec:project_management}
+Any engineering project requires careful consideration to the design methodology and management structure.
+The methodology and structure dictates how quickly a project will progress and how flexible it is to changes.
+Over the course of this thesis, several questions were considered: "how will the project adjust to design changes?" and "how can the project be structured such that it can be easily picked up in the future?"
+
+\subsection{Version Control} \label{ssec:version_control}
+One of the first things considered was tracking changes in software and hardware using a version control system (VCS).
+Version control allows a team to track changes in source files and restore previous editions, or branch out to experiment with new features.
+Git \footnote[5]{\url{https://docs.github.com/en/get-started/using-git/about-git}} is the industry standard VCS and was used extensively for the software and hardware of this project.
+Online services like GitHub allow developers to manage complex repositories of source code with version control, branches, issue tracking, and so much more.
+Typically, features could be introduced as an issue in the source repository, and then a specific branch created that implemented that feature.
+When completed and tested, the feature could then be re-introduced into the main code base\footnote[6]{\url{https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories}}.
+The same practice could be followed for bugs in the software, ensuring that everything is tracked and fixes did not balloon in size and break the working code.
+GitHub also provided a project planning tool\footnote[7]{\url{https://github.blog/2022-02-11-getting-started-with-project-planning-on-github/}} that aided in building out firmware releases and testing.
+
+The hardware was designed in Autodesk Fusion360 \footnote[8]{\url{https://www.autodesk.com/products/fusion-360/overview?term=1-YEAR&tab=subscription}} which has a built-in version control system more simplistic than Git.
+This was still utilized extensively and as a safety precaution, the final design revisions were also backed up to a GitHub repository.
+
+With version control, the project was able to manage many different versions of firmware that were developed over years and various hardware platforms.
+The tools available made design changes easier to implement and track and allows for new team members to easily come on-board in the future and have ready access to the latest firmware and hardware revisions, and the entire design history.
+
+\subsection{Systems Engineering}
+The project was designed using a hybrid systems engineering process that blended the V-methodology and the design spiral.
+The purpose of these two methods is to constantly iterate on a product until it has reached completion (i.e. the stakeholder requirements are met and the customer is satisfied).
+At the start of the process, the key problem has to be identified and then requirements drawn up for the system.
+At the beginning, these requirements start out broad and are best identified with stakeholders (the people who will be directly impacted by the project).
+Then, it is up to a systems engineer to expand the overarching requirements into capabilities and then subsystem- and component-level requirements.
+
+\paragraph*{The V-Methodology} details a process from design to integration to verification and validation (Figure \ref{fig:v_method}).
+Each step on the left side of the "V" (the start of the project) is verified by the same steps on the right side (the end of the project).
+The idea is that by building good requirements at the start and verifying them at the end, the project will be "successful" with clear expectations outlined at the beginning and a traceability matrix (Appendix \ref{chap:traceability_matrix}) to track requirement progression and achievement.
+The engineering and management teams can following the "V" from left to right and ensure that their product is on-track while mitigating "feature-creep".
+As the product is developed, the design volleys between the left and right sides, slowly iterating back up to the top of the V shape.
+This process is described in more detail in Allouis et al [CITE - FACILITY FOR V and V].
+
+\begin{figure}
+    \centering
+    \caption{The system engineering V-method showing the flow of the project.
+    Courtesy of Allouis et. al [CITE].}
+    \includegraphics[width=3in]{background/v_diagram.png}
+    \label{fig:v_method}
+\end{figure}
+
+\subsection*{Agile Methodology}
+The Agile methodology is a relatively new concept introduced in the mid-1990's that provided a radical new method for doing software development.
+Instead of working in siloed teams based on a broad set of requirements and a large, expansive Gantt chart, programmers were encouraged to start working together in smaller teams to tackle smaller issues and constantly test and present their progress.
+Team leaders would have an easier time managing the smaller teams and workloads and project managers would have a better way of tracking product progress.
+The scrum methodology was also introduced that radically changed the team dynamic and has evolved to improve efficiency in a wide variety of industries [CITE - scrum].
+
+The Agile methodology was implemented on the project so that tasking loading remained light and features could be implemented sprint-by-sprint.
+The testing recommended by the Agile method meant that products could be more quickly verified and validated against, allowing for quicker iteration.
+This meant the project could adapt quickly and provide a framework for new people to start contributing to the project, if necessary.

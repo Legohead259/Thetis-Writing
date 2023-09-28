@@ -132,7 +132,7 @@ But, the quaternion is not susceptible to gimbal lock as when two of its axes al
 Additionally, it is not limited to the range of 0 to 360 (or -180 to 180) like Euler angles and therefore has no discontinuities.
 We can express the quaternion from frame $A$ to frame $B$ as:
 
-\begin{equation*}
+\begin{equation}
     {}^A_B \vec{q} = \left[
         \begin{matrix}
             q_1 & q_2 & q_3 & q_4
@@ -144,26 +144,26 @@ We can express the quaternion from frame $A$ to frame $B$ as:
         \end{matrix}
     \right] = 
     w + x\hat{i} + y\hat{j} + z\hat{k}
-\end{equation*}
+\end{equation}
 
 Since the quaternion is just a vector, this drastically simplifies any rotation calculations and improves computational performance.
 In order to rotate a vector using a quaternion, we need to set the quaternion to be a unit quaternion by:
 
-\begin{equation*}
+\begin{equation}
     q = \frac{q}{|q|}
-\end{equation*}
+\end{equation}
 
 Then, we can calculate the inverse quaternion, ${q}^{-1}$ (or conjugate $q^*=q^{-1}, \text{ if } |q|=1)$, using:
 
-\begin{equation*}
+\begin{equation}
     q^{-1} = \frac{q_0 - q_1\hat{i} - q_2\hat{j} - q_3\hat{k}}{|q|^2}
-\end{equation*}
+\end{equation}
 
 Then, we can rotate the vector using the equation:
 
-\begin{equation*}
-    {}^A \vec{v}_B = {}^A_Bq \vec{v}_A {}^A_Bq^{-1}
-\end{equation*}
+\begin{equation}
+    {}^A_B \pmb{v} = {}^A_Bq \pmb{v}_A {}^A_Bq^{-1}
+\end{equation}
 
 In an inertial measurement unit or attitude and heading reference system, we will need to rotate freely between readings taken in the body's local frame to that in the global frame, such as determining linear acceleration.
 Using the quaternion method above we can also relate body measurements to the global frame, which can be useful for other analyses.
@@ -319,7 +319,7 @@ This will improve the sensor fusion performance and accuracy of the resultant va
 
 In order to calibrate an IMU, we first need to create a model of the data. For the accelerometer and gyroscope, we can create an inertial model defined as:
 
-\begin{gather}
+\begin{gather} \label{eq:inertial_model}
     \vec{i}_c=MS(\vec{i}_u-\vec{b}) \\
     \begin{aligned}
         \text{where } & \vec{i}_C \text{ is the calibrated inertial measurements,} \\ 
@@ -334,7 +334,7 @@ The three calibration values, $M$, $S$, $b$, represent a set of correction facto
 
 \paragraph*{Bias Vector} The bias, or offset, vector is the average of the inertial readings while the sensor is in a stable, known orientation. For example, when the gyroscope is at rest, we would expect the measurement output to be $[0,0,0] \text{ [deg/sec]}$. However, we may measure an average of $[0.89, -0.66, 0.31] \text{ [deg/sec]}$ instead. By subtracting this bias vector from the measurements, we eliminate any unintentional offset from our readings. The bias can be calculated using the equation below:
 
-\begin{gather}
+\begin{gather} \label{eq:gyroscope_bias}
     \vec{b}_g = \frac{1}{N} \sum_{i=0}^N{\vec{g}_n} \\
     \begin{aligned}
         \text{where } & \vec{b}_g \text{ is the bias vector,} \\
@@ -345,7 +345,7 @@ The three calibration values, $M$, $S$, $b$, represent a set of correction facto
 
 For accelerometers, the bias is calculated differently. Each measurement axis must be exposed to ±1g of acceleration by placing the instrument vertical on each of the measurement axes in both the positive and negative directions. The bias for each axis can then be determined by taking the average value as shown below:
 
-\begin{gather}
+\begin{gather} \label{eq:accelerometer_bias}
     \vec{b}_a = \frac{1}{2} \left[ \frac{1}{N}\sum_{n=0}^N{\vec{a}_{n,+g}} + \frac{1}{M}\sum_{m=0}^M{\vec{a}_{m_-g}} \right] \\\
     \begin{aligned}
         \text{where } & b_a \text{ is the bias vector,} \\
@@ -363,7 +363,7 @@ To account for this, we need to expose each sensor to a known reference stimulus
 For a gyroscope, this value can be an arbitrary, but constant, rotation rate, $\omega$. 
 For an accelerometer, this value will be ±1g. The equations for each gyroscope and accelerometer axis are provided below:
 
-\begin{gather}
+\begin{gather} \label{eq:gyroscope_sensitivity}
     s_{g, \omega} = \frac{\lVert g_{+\omega}\rVert + \lVert g_{-\omega}\rVert}{2\omega} \\
     \begin{aligned}
         \text{where } & s_{g,\omega} \text{ is the sensitivity value for each gyroscope axis when exposed to } \omega , \\
@@ -373,7 +373,7 @@ For an accelerometer, this value will be ±1g. The equations for each gyroscope 
     \end{aligned} \notag
 \end{gather}
 
-\begin{gather}
+\begin{gather} \label{eq:accelerometer_sensitivity}
     s_{a, g} = \frac{\lVert a_{+g} \rVert + \lVert a_{-g} \rVert}{2} \\
     \begin{aligned}
         \text{where } & s_{a,g} \text{ is the sensitivity value for each axis when exposed to 1g,} \\
@@ -384,22 +384,22 @@ For an accelerometer, this value will be ±1g. The equations for each gyroscope 
 
 After calculating these values for each axis, we can form the sensitivity matrix for the gyroscope and accelerometer like so:
 
-\begin{equation*}
+\begin{equation}
     S_g = 
     \begin{bmatrix}
         s_{g,x} & 0 & 0 \\
         0 & s_{g,y} & 0 \\
         0 & 0 & s_{g,z}
     \end{bmatrix} 
-\end{equation*}
-\begin{equation*}
+\end{equation}
+\begin{equation}
     S_a =
     \begin{bmatrix}
         s_{a,x} & 0 & 0 \\
         0 & s_{a,y} & 0 \\
         0 & 0 & s_{a,z}
     \end{bmatrix}
-\end{equation*}
+\end{equation}
 
 While this calibration value accounts for some of the intrinsic sensor error, it does not account for axes misalignment or non-orthogonality within the sensor. To accomplish this, we must incorporate the misalignment matrix.
 
@@ -407,7 +407,7 @@ While this calibration value accounts for some of the intrinsic sensor error, it
 
 The misalignment matrix is the final, but most complex, calibration value that we can calculate for the inertial sensors. It reduces error from multiple sources such as non-orthogonality between the measurement axes, the misalignment from the measurement axes to the actual sensor packaging, and misalignment from the package onto the application board. In order to calculate the misalignment matrix, we must consider it as the solution to a non-linear problem. First, we must define an objective function for the solution space. Since the goal of the misalignment matrix is to reduce error, then we can define the objective function as the Root Mean Square Error (RMSE) of the measurement vector, the misalignment vector, and the reference vector:
 
-\begin{gather}
+\begin{gather} \label{eq:misalignment_obj_func}
     RMSE = \sqrt{\frac{1}{N}\sum_{n=0}^N{\|{\vec{i}_{n,u} \cdot M^* -\vec{i}_{n,ref}\|}^2}} \\
     \begin{aligned}
         \text{where } & N \text{ is the number of samples in the dataset,} \\
@@ -421,10 +421,10 @@ Then, given a dataset of measurement vectors and their expected reference vector
 Assuming the sensitivity was not removed from the measurement signal, the $M^*$ matrix happens to include it as its diagonal. 
 By extracting the diagonal and normalizing the original matrix, we are left with the sensitivity and misalignment matrix calibration values.
 
-\begin{equation*}
+\begin{equation} \label{eq:sensativity_and_misalignment}
     S = \text{diag}(M^*) \\
-    M=M^* \cdot S^{-1}
-\end{equation*}
+    M = M^* \cdot S^{-1}
+\end{equation}
 
 We can now apply the misalignment matrix, sensitivity matrix, and bias vector to the sensor readings according to the model above. This should yield outputs that are close to the real values, which is examined in the next section.
 
@@ -437,7 +437,7 @@ Soft iron distortion is typically less severe than hard iron distortion and is c
 The soft iron distortion can also account for misalignment and sensitivity errors. 
 The sensor model for a calibrated magnetometer is given below:
 
-\begin{gather}
+\begin{gather} \label{eq:magnetic_model}
     \vec{m}_c=W^{-1}(\vec{m}_u-\vec{v}) \\
     \begin{aligned}
         \text{where } &\vec{m}_c \text{ is the calibrated magnetometer vector,} \\
@@ -451,22 +451,22 @@ With a calibrated sensor in an ideal environment, we would expect a sphere cente
 Due to the hard and soft iron distortions, this will rarely be the case. 
 Hard iron distortion can be removed from the signal by determining the average of the minimum and maximum values of each axis, as shown below:
 
-\begin{equation*}
+\begin{equation} \label{eq:hard_iron_offset}
     \vec{v}=\frac{1}{2}
     \begin{bmatrix}
         \max(v_x)+\min(v_x) \\
         \max(v_y)+\min(v_y) \\
         \max(v_z)+\min(v_z)
     \end{bmatrix}
-\end{equation*}
+\end{equation}
 
 Once the hard iron distortion is removed from the signal, we should see the readings more closely adhere to the correct spherical shape. 
 Then, we can apply Li’s ellipsoid fitting algorithm[CITE - Li] to characterize the fit of the optimal ellipsoid for the data, expressed as the symmetrical matrix, $A$. 
 Ozyagcilar [CITE - AN4246] delves into the math and builds a relationship between the ellipsoid fit and the soft iron matrix, summarized by:
 
-\begin{equation*}
+\begin{equation} \label{eq:soft_iron_matrix}
     W^{-1}=A^{1/2}
-\end{equation*}
+\end{equation}
 
 With these calibration parameters calculated, they can be used in a sensor fusion algorithm to increase the accuracy of the magnetometer. 
 However, these parameters must be recalibrated whenever the sensor enters a new magnetic environment since either the hard or soft iron distortion could be different than previously calculated.
@@ -484,8 +484,8 @@ In the frequency space, we can consider the gyroscope attitude estimate to drift
 To compensate for these drifts, we can establish a complimentary or band-pass filter that attenuates the drift signal and outputs the best estimate of orientation.
 This filter typically uses a hyperparameter, $\gamma$, to control the attenuation of each of the drifts, i.e. the weight of each estimation like so:
 
-\begin{gather}
-    {}^G_B\pmb{q}_{est} = (1-\gamma){}^G_B\pmb{q}_lf + \gamma {}^G_B\pmb{q}_hf
+\begin{gather} \label{eq:fcf}
+    {}^G_B\pmb{q}_{est} = (1-\gamma){}^G_B\pmb{q}_lf + \gamma {}^G_B\pmb{q}_hf \\
     \begin{aligned}
         \text{where } &{}^G_B\pmb{q}_{est} \text{ is the best estimate of the body quaternion relative to the global frame,} \\
                       &\gamma \text{ is the controlling hyperparameter, } \\
@@ -498,13 +498,13 @@ Wu et. al (CITE - FCF) propose a complimentary filter solution that reports bein
 This algorithm computes the gravity vector using accelerometer and gyroscope measurements.
 By itself, this can yield the tilt attitude of the body.
 Then, if there is not severe magnetic distortion detected by the magnetometer, the full attitude can be acquired by fusing together the tilt attitude and that estimated from the magnetometer.
-The basic block diagram for the filter is in Figure \ref{fig:fcf_diagram} below.
+The basic block diagram for the filter is in Figure \ref{fig:fcf_diagram}.
 
 \begin{figure}
     \centering
     \label{fig:fcf_diagram}
     \includegraphics[height=2in]{background/FCF.png}
-    \caption[Kalman Filter Process]{A simplified block diagram for the Fast Complimentary Filter. 
+    \caption[Fast Complimentary Filter]{A simplified block diagram for the Fast Complimentary Filter. 
     Courtesy of Wu et al. [CITE - FCF]}
 \end{figure}
 
@@ -526,26 +526,68 @@ The process for the Kalman Filter is shown in Figure \ref{fig:bkg_kalman_filter_
 \end{figure}
 
 \subsection{Mahony Filter} \label{ssec:mahony_filter}
-% A popular AHRS sensor fusion algorithm is the Mahony filter [CITE].
-% This algorithm estimates the rotation rate, $\pmb{\omega}'$ of the body given the instantaneous rotation rate, $\pmb{\omega}$ and acceleration vector, \pmb{a}.
-% The error, $e$, is calculated as the cross-product between the current acceleration vector and the expected gravitational acceleration vector from the previous estimate.
-% The filter uses a Proportional-Integral (PI) controller to determine the filter error from the previous estimate and apply a bias, $\delta\omega$ to the current estimate.
-% By integrating $\omega'$, the estimated attitude can be determined.
-% The equation for a basic Mahony figure is given below:
+The Mahony Filter [CITE - Mahony] is a deterministic kinematic observer on the Special Orthogonal Group 3 that is driven by instantaneous attitude and angular velocity measurements.
+That is, the filter exploits a special relationship between observers to decouple gyroscope measurements from attitude estimates and then does on-line gyroscope bias compensation to increase accuracy.
+The filter proposes a model for the gyroscope in the body frame as:
 
-% \begin{gather}
-%     \label{eq:mahony_filter}
-%     \pmb{\omega}' = \pmb{\omega} + \left(K_p + K_i\frac{1}{s}\right) \pmb{a} \times \pmb{d} \\
-%     \begin{aligned}
-%         \text{where } & \pmb{\omega} \text{ is the instantaneous rotation rate vector} \\
-%         & K_p \text{ is the proportional controller constant} \\
-%         & K_i \text{ is the integral controller constant} \\
-%         & \pmb{a} \text{ is the instantaneous acceleration vector} \\
-%         & \pmb{d} \text{ is the estimated gravity vector from the previous estimate} \\
-%     \end{aligned} \notag
-% \end{gather}
+\begin{gather} \label{eq:mahony_gyroscope_model}
+    \pmb{q} = \pmb{g}_u + \pmb{b}_\omega + \pmb{\mu}_\omega \\
+    \begin{aligned}
+        \text{where } &\pmb{g} \text{ is the true angular velocity,} \\
+                      &\pmb{g}_u \text{ is the uncalibrated measured angular velocity,} \\
+                      &\pmb{b}_\omega \text{ is the gyroscope bias vector, and}  \\
+                      &\pmb{\mu}_\omega \text{ is the gyroscope measurement noise}
+    \end{aligned} \notag
+\end{gather}
 
-% This filter is used to fuse 6DOF IMU data, but is limited as the yaw orientation cannot be known or calculated; it also does not account for gyroscopic drift which decreases its accuracy over time.
-% Additionally, this filter primarily works in the Eulerian coordinate system, which causes singularities and discontinuities due to gimbal lock.
+Additionally, the filter defines the accelerometer measurement as the instantaneous linear acceleration, (i.e. accelerations without the gravitational acceleration vector), with corresponding bias and noise vectors.
+The model for the accelerometer is given below:
 
-\subsection{Madgwick Filter} \label{ssec:madgewick_filter}
+\begin{gather} \label{eq:mahony_accelerometer_model}
+    \pmb{a} = {}^G_B R (\pmb{a}_u - \pmb{G}_0 + \pmb{b}_a + )\pmb{\mu}_a \\
+    \begin{aligned}
+        \text{where } &\pmb{a} \text{ is the true linear acceleration in the body frame,} \\
+                      &{}^G_B R \text{ is the rotation matrix from the global to the body frame, } \\
+                      &\pmb{G}_0 \text{ is the gravitational acceleration vector,} \\
+                      &\pmb{a}_u \text{ is the uncalibrated measured angular velocity, } \\
+                      &\pmb{b}_a \text{ is the accelerometer bias vector, and}  \\
+                      &\pmb{\mu}_a \text{ is the accelerometer measurement noise}
+    \end{aligned} \notag
+\end{gather}
+
+These measurements are used to express the body kinematics in an Explicit Complimentary Filter in quaternion form and then rearranged to solve for the change in the body attitude over time, $\pmb{\dot{\hat{q}}}$.
+This estimate can be integrated over the sampling time to get the best estimated attitude via:
+
+\begin{gather} \label{eq:mahony_filter}
+    {}^G_B\pmb{q}_t = {}^G_B\pmb{q}_{t-1} + {}^G_B\pmb{\dot{\hat{q}}}_t \Delta t \\
+    \begin{aligned}
+        \text{where } &{}^G_B\pmb{q}_t \text{ is the body attitude from the global frame to the local frame at time, $t$,} \\
+                      &{}^G_B\pmb{\dot{\hat{q}}}_t \text{ is the time rate of change for the body attitude at time, $t$, and } \\
+                      &\Delta t \text{ is the sample interval}
+    \end{aligned} \notag
+\end{gather}
+
+\subsection{Madgwick Filter} \label{ssec:madgwick_filter}
+The Madgwick Filter [CITE - Madgwick] considers body attitude as an optimization problem that can be solved by a gradient descent algorithm (GDA).
+The filter tries to optimize the difference (deviation) between a predefined reference vector in the global frame, $\pmb{v}_G = [0, v_x, v_y, v_z]$ with its corresponding measurement vector in the local frame, $\pmb{s}_B = [0, s_x, s_y, s_z]$.
+This deviation is expressed in the objective function:
+
+\begin{equation} \label{eq:madgwick_obj_func}
+    f(\pmb{q}, \pmb{v}_G, \pmb{s}_B) = \pmb{q} \pmb{v}_G \pmb{q}^{-1} - \pmb{s}_B
+\end{equation}
+
+The GDA can compute the solution to the objective function by utilizing an initial guess, ${}^G_B \pmb{q}_0$ and a step-size, $\mu$.
+This yields the estimate for the quaternion gradient, $\pmb{q}_{\nabla,t}$.
+The filter than calculates the time rate of change in the body quaternion, $\pmb{\dot{q}}_t$, as measured from the gyroscopes, $\pmb{q}_{\omega,t}$.
+By removing the gyroscope error, $\beta$ from the estimated quaternion error, $\pmb{\dot{q}}_{\epsilon, t}$ along the gradient and numerically integrating the value over the sampling interval, $\Delta t$, the filter yields a quaternion estimate via:
+
+\begin{align} \label{eq:madgwick_filter}
+    \pmb{q}_t &= \pmb{q}_{t-1} + \pmb{\dot{q}}_t \Delta t \\
+              &= \pmb{q}_{t-1} + \left( \pmb{\dot{q}}_{\omega, t} - \beta \pmb{\dot{q}}_{\epsilon, t} \right) \Delta t \\
+              &= \pmb{q}_{t-1} + \left( \pmb{\dot{q}}_{\omega, t} - \beta \frac{\nabla f}{\lVert \nabla f \rvert}\right) \Delta t
+\end{align}
+
+While the driving principle behind this filter is straight forward, the GDA has a convergence time that can lead to a high initial error during the algorithm start.
+The convergence time can be tuned using the $\beta$ value and the overall error reduced by implementing the sensor models in Equations \ref{eq:inertial_model} and \ref{eq:magnetic_model}.
+The Madgwick filter is also computational and memory intensive as it requires many matrix multiplication operations and Jacobian calculations.
+On low-power, embedded platforms this can cause performance issues that may not be present with simpler models like the Fast Complimentary Filter [CITE - FCF].

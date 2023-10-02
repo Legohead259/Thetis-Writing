@@ -326,7 +326,7 @@ This will improve the sensor fusion performance and accuracy of the resultant va
 
 \subsection{Inertial Calibration}
 
-In order to calibrate an IMU, we first need to create a model of the data. For the accelerometer and gyroscope, we can create an inertial model defined as:
+From Madgwick [Cite - Madgwick], in order to calibrate an IMU, we first need to create a model of the data. For the accelerometer and gyroscope, we can create an inertial model defined as:
 
 \begin{gather} \label{eq:inertial_model}
     \vec{i}_c=MS(\vec{i}_u-\vec{b}) \\
@@ -668,7 +668,7 @@ This process is described in more detail in Allouis et al [CITE - FACILITY FOR V
     \label{fig:v_method}
 \end{figure}
 
-\subsection*{Agile Methodology}
+\subsection{Agile Methodology}
 The Agile methodology is a relatively new concept introduced in the mid-1990's that provided a radical new method for doing software development.
 Instead of working in siloed teams based on a broad set of requirements and a large, expansive Gantt chart, programmers were encouraged to start working together in smaller teams to tackle smaller issues and constantly test and present their progress.
 Team leaders would have an easier time managing the smaller teams and workloads and project managers would have a better way of tracking product progress.
@@ -677,3 +677,99 @@ The scrum methodology was also introduced that radically changed the team dynami
 The Agile methodology was implemented on the project so that tasking loading remained light and features could be implemented sprint-by-sprint.
 The testing recommended by the Agile method meant that products could be more quickly verified and validated against, allowing for quicker iteration.
 This meant the project could adapt quickly and provide a framework for new people to start contributing to the project, if necessary.
+
+\section{A Review of the State of the Art} \label{sec:literature_review}
+Inertial sensing is not a new problem to be solved.
+Over the last few decades many solutions have been released with increasingly better performance and efficiency.
+The advent of MEMS technology drastically shrunk sensor sizes and made them cheaper for to use.
+We shall examine three different categories of solutions and compare solutions within those categories.
+
+\subsection{Industrial Solutions}
+Industrial solutions are providided by companies to customers that require performance and reliability for their sensors.
+They will typically be employed in the industrial robotics or automotive industries and integrated with a larger system.
+Thus, they cannot provide standalone services, and do not satisfy the objectives for this thesis.
+But, they represent the cutting edge techniques for sensor fusion.
+These solutions also are the ``more affordable'' variants in order to limit the scope of the review.
+Even so, each solution is prohibitively expensive and therefore out of the scope of the thesis objectives.
+
+\paragraph*{Sparton AHRS-8} The first industrial sensor to consider is the Sparton AHRS-8 [CITE - Sparton] and is one of the cheapest at \$1,350 per unit.
+This is an AHRS designed to be interfaced over USB or Serial and uses Sparton's proprietary AdaptNav\textsuperscript{TM} sensor fusion algorithm.
+This gives a sub 1-degree accurate measurement of body attitude and heading at a range of temperatures and motions.
+However, this sensor lacks GPS/GNSS integration, wireless features, and independent data logging.
+
+[TODO: Insert picture of Sparton AHRS-8]
+
+\paragraph*{Xsens Mti-100} The second sensor to consider comes from the Movella/Xsense corporation and is their MTi-100 IMU [CITE - Xsens].
+This unit costs \$1,809 and provides an 9-DOF IMU with an RS232, RS422, RS485, UART, and USB output for integration on larger platforms.
+Like the Sparton, it runs a proprietary sensor fusion algorithm and does not have GPS/GNSS integration.
+But, it does have a software development kit (SDK) provided by the manufacturer to more easily integrate it and tweak settings.
+The unit boasts a sub 1-degree accurate orientation estimate over a range of temperatures and motions.
+
+[TODO: Insert picture of MTi-100]
+
+\paragraph*{VectorNav VN-200} From the VectorNav corporation comes the Vn-200 AHRS [CITE - VectorNav].
+The unit boasts a \textless 0.2-degree accruate attitude estimation and integrates GPS/GNSS.
+However, it relies on a USb or Serial interface and uses closed source and proprietary firmware for sensor fusion.
+It also does not have wireless or independent data logging functionality and costs over \$3,000.
+
+[TODO: Insert picture of VectoNav]
+
+\paragraph*{SwiftNav Duro} The SwiftNav Duro is a centimeter-accurate GNSS real-time kinematic (RTK) solution that incorporates a high accuracy IMU for inertial navigation [CITE - SwiftNav].
+This unit is developed for robotics applications that need a bolt-on solution for autonomous navigation and positioning.
+The unit comes in a rugged IP67 enclosure and has multiple interfaces such as USB, Serial, and Ethernet for communications.
+However, it does not have wireless or independent data logging functionality.
+The firmware is also closed source and it costs \$5,795 per unit.
+
+[TODO: Insert picture of Duro]
+
+\paragraph*{Aceinna INS401} Rounding out the indsutrial solutions is the Aceinna INS401 which is a rugged centimeter-accurate inertial navigation system (INS) for automotive and industrial autonomous systems [CITE -Aceinna].
+The unit is closed source, but provides a developer-friendly SDK and API for intregration on a larger platform.
+Like its cousins, this unit also does not have wireless connectivity or independent data logging functions, but can communicate over several hard-wired methods.
+
+[TODO: Insert picture of INS401]
+
+\subsection{Hobbyist Solutions}
+Stepping down an order of magnitude in pricing and performance are the hobbyist sensors.
+These can be purchased by companies such as Adafruit and SparkFun and HobbyBro for tens, if not a couple hundred of dollars per unit, making it much more reasonable for the average consumer to use on their projects.
+The hobbyist solutions are much more in line with the objectives of the thesis and should therefore be more carefully considered.
+
+\paragraph*{Kauai Labs NavX2 Micro} The NavX2 micro is derived from the popular NavX board that is routinely used in the First Robotics Competition for high school robotics [CITE - Kauai Labs].
+The NavX2 micro shrinks the sensor down into a low SWaP and cost package that utilizes open source software.
+This makes it well-suited for its application in hobbyist robotics where even basic navigation ability is a coveted feature.
+The unit costs \$89 and can be integrated onto a larger platform via a USB or Serial interface.
+However, it does not have wireless connectivity or independent datalogging.
+For these reasons, the NavX2 micro will not suit the objectives of this thesis.
+
+[TODO: Insert picture of NavX2]
+
+\paragraph*{SparkFun OpenLog Artemis} The OpenLog Artemis (OLA) is a hobbyist solution offered by SparkFun for \$55 [CITE - SparkFun].
+It comes equipped with a 9-DOF IMU, battery integration, a real-time-clock, ADC, and an interface for easily integrating other sensors.
+The unit is pre-loaded with firmware that automatically begins logging when it is powered on and the software is open source and can be freely modified.
+It even has a BlueTooth interface that can be used to wireless monitor data.
+This solution meets the thesis objectives, but the code would have to be modified to perform sensor fusion for orientation estimation and an IP67-rated case would have to designed for it.
+
+[TODO: Insert picture of OLA]
+
+\paragraph*{Pixhawk FCU} The Pixhawk Flight Controller Unit (FCU) is designed for hobbyist robotics applications such as drones (UAVs) and remotely operated vehicles [CITE Pixhawk].
+It runs a sophisticated open source hardware stack that fuses a 9-DOF IMU with GPS data to get position and attitude with a reasonable degree of accuracy.
+The sensor fusion is performed with multiple Extended Kalman Filters and can be logged internally to a microSD card.
+By using a radio over the serial bus, data can be wirelessly transmitted to a ground station for monitoring and logging.
+
+This solution fits the objectives of the thesis, however it is overkill for the intended application and the MAVlink interface used to communicate with it is not intuitive.
+Because data logging is only meant for post-flight analysis if the vehicle crashes or malfunctions, there are significant limitations on what can be logged or how fast.
+For these reasons, the Pixhawk was not considered as a solution for the thesis.
+
+[TODO: Insert picture of PixHawk]
+
+\paragraph*{xio-Technologies x-IMU3} Recently released in June 2023, the x-IMU3 has almost the exact same capabilities as the solution presented in this thesis [CITE - xIMU3].
+This device was designed by the author of the Madgwick algorithm, and is the third iteration of his IMU data loggers.
+The x-IMU3 has a very low SWaP and comes in a IP67-rated enclosure with a USB and button interface.
+The USB interface can be used to directly link the device and offload files, or it can be used with external peripherals.
+Similarly, the x-IMU3 has extensive wireless support and can stream data back to a host application over WiFi (via TCP or UDP) or over BlueTooth.
+
+The x-IMU3 and the thesis were developed independently, but the final products are near to each other in both cost and capability.
+In fact, the x-IMU3 was a major influence on the final firmware revision for the thesis and helped implement key features.
+The creator, Dr. Sebastian Madgwick, has also been helpful in critiquing the thesis design and offered key insights over multiple interviews [CITE - Interviews].
+We shall carefully consider this solution going forward and directly compare it to the thesis product in Chapter \ref{chap:verification_validation}.
+
+[TODO: Insert picture of x-IMU3]

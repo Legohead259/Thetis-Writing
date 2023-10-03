@@ -72,7 +72,7 @@ These overarching requirements were placed into a traceability matrix (Table \re
 	% \fontsize{10pt}{10pt}\selectfont
 	\renewcommand{\arraystretch}{1.75}
 	\caption[Stakeholder Traceability Matrix]{A slimmed down traceability matrix for the stakeholder requirements. Verification and Validation status is not shown here. The priority of each requirement is the relative weight of requirement compared with all others.}
-	\begin{tabular}{|c | p{0.5\textwidth} | c | c | c |}
+	\begin{tabular}{|c | m{0.5\textwidth} | c | c | c |}
 		\hline
 		\textbf{ID} & \multicolumn{1}{c |}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
 		\hline
@@ -533,7 +533,7 @@ To ensure that Thetis is designed with the stakeholders in mind, a Quality Funct
 A QFD weighs the stakeholder requirements (the ``whats'') with the ``hows'', or engineering methods, in a weighted design matrix.
 The QFD analysis is designed to inform engineers what the highest priority methods are based on customer feedback.
 This gives stakeholders a direct influence on the design in a compact matrix format.
-The product created by a QFD analysis is the House of Quality (HOQ), which can be seen in Appendix \ref{chap:house_of_quality}
+The product created by a QFD analysis is the House of Quality (HOQ), which can be seen in Appendix \ref{tab:hoq}
 
 \paragraph*{The left side} of the matrix defines the customer desires with an associated weight or priority for each.
 This data is collected by canvassing the stakeholders and getting their feedback on their priorities.
@@ -611,17 +611,26 @@ These capabilities were organized into three categories:
 \end{description}
 }
 
-The capabilities were organized into a traceability matrix (more information in Appendix \ref{chap:traceability_matrix}), which is shown in Table \ref{tab:capabilities}.
+The capabilities were organized into a traceability matrix (more information in Appendix \ref{chap:traceability_matrix}), which is shown in Table \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities}.
 
-\includepdf[landscape=false, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisCapabilities.pdf}
+% \includepdf[landscape=false, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisCapabilities.pdf}
 
+% \begin{table}
+% 	\caption[Thetis Capabilities]{Thetis capabilities where threshold are mandatory to implement, reach would be "nice-to-have", and stretch are not necessary. 
+% 	The weights are given to influence their priority, i.e. how important that capability is as a whole to the project.}
+% 	\label{tab:capabilities}
+% 	\centering
+% 	\includegraphics[width=\textwidth]{../include/ThetisCapabilities.pdf}
+% \end{table}
+
+% {\fontsize{8pt}{8pt}\selectfont
 % \begin{center}
 % 	\renewcommand{\arraystretch}{1.5} % Set row height
-% 	\begin{longtable}{| c | p{0.35\textwidth} | c | c | c | c | c |}
+% 	\begin{longtable}{| c | p{0.45\textwidth} | c | c | c | c | c |}
 % 		% \caption{Thetis capabilities organized in a traceability matrix.} \\
 
 % 		\hline
-% 		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+% 		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Verify?} & \textbf{Valid?} & \textbf{Status} \\
 % 		\hline
 % 		& \textbf{Threshold} & & & & & \\
 % 		101 & The system must be housed in an IP67-rated enclosure & 1 & 10 & Y & Y & D \\
@@ -655,6 +664,77 @@ The capabilities were organized into a traceability matrix (more information in 
 % 		\label{tab:capabilities}
 % 	\end{longtable} 
 % \end{center}
+% }
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Threshold}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
+		\hline
+		101 & The system must be housed in an IP67-rated enclosure & 1 & 10 & D \\
+		102 & The system enclosure must fit within the volume of 8" x 5" x 1.25" & 0.8 & 8 & D \\
+		103 & The system software and firmware will be fully open-source & 0.9 & 9 & D \\
+		104 & The system shall be able to record inertial measurements of at least 64 Hz & 1 & 10 & TIP \\
+		105 & The system shall be able to store data locally for up to 4 hours continuously & 0.8 & 8 & TIP \\
+		106 & The system shall be able to be operate for up to 4 hours continuously & 0.8 & 8 & A \\
+		107 & The system shall have simple human interface mechanism for status and logging & 0.7 & 7 & D \\
+		108 & The system firmware shall be an open-architecture & 0.5 & 5 & A \\
+		109 & The system will be fully documented & 1 & 10 & A \\
+		110 & The system shall use version control software to track changes & 1 & 10 & D \\
+		111 & The operator shall be able to load data off the system & 1 & 10 & D \\
+		112 & The system shall be capable of being assembled by hand using basic soldering tools & 0.8 & 8 & D \\
+		\hline
+	\end{tabular}
+	\caption{Thetis threshold capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\label{tab:threshold_capabilities}
+\end{table}
+}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Reach}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
+		\hline
+		201 & The system shall integrate a GPS for position tracking at least 1 Hz & 0.7 & 6 & D \\
+		202 & The system will have a simple logging and status interface accessible via web terminal & 0.3 & 2 & A \\
+		203 & The system shall be able to monitor and report battery state of charge & 0.2 & 2 & A \\
+		204 & The system will have configurable settings that can be set by the user & 0.4 & 3 & D \\
+		205 & The system can operate in a Wi-Fi access point or client mode	& 0.2 & 2 & A \\
+		206 & The sensor measurements shall incorporate a calibration model & 0.5 & 4 & TIP \\
+		\hline
+	\end{tabular}
+	\caption{Thetis reach capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\label{tab:reach_capabilities}
+\end{table}
+}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Stretch}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
+		\hline
+		301 & The system file storage shall be accessible via web interface	& 0.1 & 0.8 & A \\
+		302 & The system shall have a backup storage option in case primary storage fails & 0.1 & 0.8 & R \\
+		303 & The system will use a microcontroller capable of basic machine learning & 0.05 & 0.4 & UR \\
+		304 & The system shall be able to log in a burst mode for up to 24 hours & 0.05 & 0.4 & UR \\
+		\hline
+	\end{tabular}
+	\caption{Thetis stretch capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\label{tab:stretch_capabilities}
+\end{table}
+}
 
 \section{Conceptual Design} \label{sec:conceptual_design}
 The general design of the Thetis instrumentation package was built around the principles of capability, manufacturability, and affordability.

@@ -1,12 +1,11 @@
 %%--------------------Chapter 3------------------------
 \chapter{How I Built It} \label{chap:thetis_design}
-Having researched inertial measurement
 
 \section{Stakeholders} \label{sec:stakeholders}
 As with any project, stakeholders are a crucial part of the design process.
-Stakeholders drive certain requirements that the device must achieve in order to be accepted for operation.
+Stakeholders drive overarching requirements that the device must achieve in order to be accepted for operation.
 On an individual level, the committee overseeing this thesis are the major stakeholders as they have a vested interest in the success or failure of the project.
-However, there are some organizational-level stakeholders that have also expressed interest in the project and provided some feedback for their requirements.
+However, some organizational-level stakeholders have also expressed interest in the project and provided some additional requirements.
 A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 
 \begin{table}
@@ -20,7 +19,7 @@ A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 		\hline
 		Committee members & Individual professors who have expressed interest in the project and have agreed to assist in its development. Specifically, Dr. Wood and Dr. Weaver would like to deploy Thetis on university projects; Dr. Gutierrez has provided many requirements on the performance of the instrumentation; and Dr. Silaghi is interested in its application to autonomous navigation. \\
 		\hline
-		Florida Institute of \newline Technology & The university has several classes and projects where the Thetis design could be useful. The Instrumentation Design and Analysis class used Thetis as a demonstrator for designing PCBs and field experiments. Thetis was also designed with Surf Engineering Analysis in mind for students to have a new open source sensor to experiment with. \\
+		Florida Institute of \newline Technology & The university has several classes and projects where Thetis could be useful. The Instrumentation Design and Analysis class used Thetis as a demonstrator for designing PCBs and field experiments. Thetis was also designed with Surf Engineering Analysis in mind for students to have a new open source sensor to experiment with. \\
 		\hline
 		NSWC Carderock - \newline Combatant Craft Division (CCD) & This three-letter agency of the government has expressed interest in using Thetis as a testing and evaluation tool for small unmanned crafts \\
 		\hline
@@ -28,45 +27,68 @@ A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 \end{table}
 
 \subsection{Hands-On Users} \label{ssec:hands_on_users}
+Thetis is intended to be used by college students that are at least sophomore-level and have a basic understanding of instrumentation and electronics.
+The device is simple to use, requiring the user to flick a switch to turn it on or off, and then press a physical or digital button to start or end logging.
+Thetis is also designed to accommodate advanced users who need to leverage different features of the device for their research or want to tinker with it.
+It can also be used by laboratory technicians and instrumentation engineers to aid with data-collection experiments for tracking three dimensional bodies
 
 \section{Design Rationale} \label{sec:design_rationale}
-Thetis is envisioned as an open-source all-in-one data logging solution for use in research projects.
+Thetis is envisioned as an open-source all-in-one inertial data logging solution for use in research projects.
 The device incorporates multiple sensors, GPS tracking, and a WiFi-capable microcontroller in order to enable as many features as can be envisioned by the end users.
 One of the driving considerations was the small footprint.
 Thetis Revision F is designed to fit into one of the smallest IP67-rated enclosures available on the market [LINK].  
 This tiny form factor allows it to be inconspicuously mounted to any floating body like surfboards, scale models, or wave buoys without upsetting their inertial characteristics or impeding nominal operation.
 
-Further discussions with stakeholders later in the design process envisioned a new iteration, Revision G, that had a larger footprint, but added more capabilities like CANbus integration and several connection ports for different communication protocols.
-This revision is meant for deployment on vessels that have a NMEA2000 communications bus.
-This bus allows the device to be powered from the boat's power supply and communicate data to a central controller.
-These features are extremely important for the final application where Thetis is meant to feed data into a navigation algorithm for the safe passage of unmanned vessels.
-
 \subsection{Problem Description} \label{ssec:problem_desc}
-Tracking the inertial movements of small floating bodies in-situ is difficult for small-scale or student-led experiments.
-The price of the measurement instruments and the data acquisition computers (DAQs) offers a high bar for entry for these projects.
-Also, the size of these instruments and DAQs can negatively impact the performance or operation of small floating bodies so they cannot be effectively used.
-This forces classrooms and organizations to either neglect collecting inertial data or using bulky, unreliable prototype setups using off-the-shelf components
+I originally envisioned Thetis as the solution to a couple of problems I encountered during my undergraduate studies.
+For my fluid mechanics laboratory section, we conducted an experiment where we needed to track the rolling of a model pontoon boat as we adjusted its center of gravity.
+Because the lab lacked any way to directly measure the body's inertial movement, angle gauges were placed on the hull and the students had to conduct a time motion analysis from a video recording to plot the roll angle frame-by-frame.
+This was inefficient and made me start thinking about how this could be improved.
+
+The second problem occurred in a class the following semester where we deployed surf boards and pressure gauges into the ocean to monitor a surfer's ride along a wave.
+We used two different instruments, the Lowell MAT-1 data logger [CITE - LOWELL], and an iPhone 6 inside a life proof case.
+The Lowell instrument was not designed for this use case.
+First, the sensor board is housed within a cylindrical body, making properly alignment to a Cartesian (square) coordinate system almost impossible.
+Second, the sensor only had an accelerometer and magnetometer on board.
+It reported roll, pitch, and yaw but the roll and pitch were derived from tilt and gravitational acceleration and the magnetometer determined yaw.
+These values assumed the sensor would be in the vertical position, and we used it in a horizontal position.
+Suffice to say, we were not using the Lowell properly and could not get reliable or useful information out of it for our analysis.
+
+The iPhones were much better suited as they had a full 9-DOF IMU sensor suite and a great data logger application to get the raw sensor values and sensor fusion results.
+However, since this was a class comprised of inexperienced undergraduates, we didn't often check that the seal on the phone cases were properly set before going into the water.
+Within a matter of months, both iPhones were lost because students removed the case and did not replace the water-tight gasket, costing a large sum of money.
+
+Given my experience with these classes, it was clear to me that a low-cost inertial data logging solution could be valuable to the department as a teaching and laboratory instrument.
 
 \subsection{Mission Statement} \label{ssec:mission_statement}
-Thetis aims to democratize the inertial measurement and tracking space for small scale experiments by implementing an open-source, feature-rich, all-in-one solution to monitoring the movements of floating bodies.
+Thetis aims to democratize the inertial measurement and tracking space for small scale experiments by implementing an open-source, feature-rich, all-in-one solution to monitoring the movements of bodies.
 
 \subsection{Stakeholder Requirements} \label{ssec:stakeholder_reqs}
 Interviews with the stakeholders occurred over several months and informed a set of requirements that they determined were necessary for the project's success.
+These overarching requirements were placed into a traceability matrix (Table \ref{tab:stakeholder_reqs_traceability}) to track their priority and status throughout the project.
 
-\begin{itemize}
-	\item[\textbf{SR 01}] - The system shall be able to record acceleration, rotation rate, orientation, and position
-	\item[\textbf{SR 02}] - The system shall be able to fit into a small IP67-rated, or better, enclosure
-	\item[\textbf{SR 03}] - The system shall be able to fit into a small IP67-rated, or better, enclosure
-	\item[\textbf{SR 04}] - The system shall be cheaper than \$200 per unit
-	\item[\textbf{SR 05}] - The system shall use components that are readily available COTS
-	\item[\textbf{SR 06}] - The system designs shall be open source for modification by students
-	\item[\textbf{SR 07}] - The system shall communicate intra-device using known IEEE standards (e.g. SPI/I2C/UART/etc)
-	\item[\textbf{SR 08}] - The system shall communicate extra-device using WiFi and USB
-	\item[\textbf{SR 09}] - They system shall have enough on-board storage for 4 hours of continuously logging at 64 Hz
-	\item[\textbf{SR 10}] - Thetis Revision G shall be able to communicate extra-device using CANbus
-	\item[\textbf{SR 11}] - The system shall have redundant storage for device and communication events
-\end{itemize}
-
+\begin{table}
+	\centering
+	% \fontsize{10pt}{10pt}\selectfont
+	\renewcommand{\arraystretch}{1.75}
+	\caption[Stakeholder Traceability Matrix]{A slimmed down traceability matrix for the stakeholder requirements. Verification and Validation status is not shown here. The priority of each requirement is the relative weight of requirement compared with all others.}
+	\begin{tabular}{|c | p{0.5\textwidth} | c | c | c |}
+		\hline
+		\textbf{ID} & \multicolumn{1}{c |}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
+		\hline
+		SR 01 & The system shall be able to record acceleration, rotation rate, orientation, and position & 1 & 14 & TIP \\
+		SR 02 & The system shall be able to fit into a small IP67-rated, or better, enclosure & 1 & 14 & D \\
+		SR 03 & The system shall be able to be powered by battery for more than 4 hours continuously & 1 & 14 & A \\
+		SR 04 & The system shall be cheaper than \$200 per unit & 0.4 & 6 & A \\
+		SR 05 & The system shall use components that are readily available COTS & 1 & 14 & D \\
+		SR 06 & The system designs shall be open source for modification by students & 0.7 & 10 & D \\
+		SR 07 & The system shall allow users to change settings via interface and/or configuration file & 0.7 & 10 & D \\
+		SR 08 & The system shall communicate extra-device using WiFi and USB & 0.3 & 4 & A \\
+		SR 09 & They system shall have enough on-board storage for 4 hours of continuously logging at 64 Hz & 1 & 14 & TIP \\
+		\hline
+	\end{tabular}
+	\label{tab:stakeholder_reqs_traceability}
+\end{table}
 
 \subsection{Risk Identification} \label{ssec:risk_identification}
 The following tables explore some of the larger risks associated with each of the stakeholder requirements.
@@ -78,16 +100,15 @@ With every risk, we can apply a mitigation to it to reduce the severity of the c
 These risks are likely to impede the development of Thetis by showing up during testing and forcing workarounds after the fact, rather than before.
 
 \paragraph*{Cost Risks} These risks pose a threat to Thetis's development budget.
-They are more likely to manifest in the supply chain of Thetis, especially in the after effects of the COVID-19 pandemic and the chaos of the chip shortage.
-More often, mitigating these risks requires some careful planning and a larger budget and will typically not impede the development process.
+They are more likely to manifest in the supply chain of Thetis, especially in the wake of the COVID-19 pandemic and the chaos of the chip shortage.
 
-\paragraph*{Schedule Risks} By delaying the program's development, Schedule Risks are the most notorious and costly of them all.
+\paragraph*{Schedule Risks} By delaying the program's development, Schedule Risks are the most notorious and costly.
 These risks manifest as delays in development or the supply chain and can significantly impact the expected delivery time of the device.
-They also are prominent across all phases of the design process from planning to testing and are only mitigated, but never eliminated during the design spiral.
+They also are prominent across all phases of the design process from planning to testing and are only mitigated, but never eliminated during the design process.
 
 \paragraph*{Organization Risks} The stakeholders represent various organizations that have an interest in Thetis.
 This risk type poses a problem for the specific stakeholder organization and their interests.
-This can be viewed from the political, economical, or schedule points of view as these are important considerations for the stakeholders.
+This can be viewed from the political, economical, or temporal points of view as these are important considerations for the stakeholders.
 
 \paragraph*{Operational Risks} These risks challenge end users of the device while they are testing.
 Most of them can be mitigated in the design process by working directly with the end users and ensuring their concerns are met.
@@ -153,7 +174,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Stephen Wood} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{The system needs to be able to record the inertial characteristics of a floating body} \\
 	\hline
@@ -164,15 +185,15 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & The IMU and/or GPS will report measurements that have a high margin of error and little consistency & Worthless data for analysis & \cellcolor{yellow} Medium & Selection of sensors that have decent accuracy and low drift. \newline Use a \emph{tuned} Kalman filter to improve reported sensor accuracy & \cellcolor{green} Low \\
+	Technical \newline Assessment & The IMU and/or GPS will report measurements that have a high margin of error and little consistency & Worthless data for analysis & \cellcolor{yellow} Medium & Selection of sensors that have decent accuracy and low drift. \newline Use a sensor calibration model to improve reported sensor accuracy & \cellcolor{green} Low \\
 	\hline
-	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. & Unable to find appropriate components. \newline Any found components are prohibitively expensive & \cellcolor{yellow} Medium & Find components that are in stock and order in bulk. & \cellcolor{yellow} Medium \\
+	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. & Unable to find appropriate components. \newline Any found components are prohibitively expensive & \cellcolor{yellow} Medium & Find components that are in stock and order in bulk. \newline Rework design based on available components. & \cellcolor{yellow} Medium \\
 	\hline
-	Schedule \newline Assessment & Sensor fusion algorithms are difficult to implement and tune. & Schedule overrun trying to tune the algorithms. \newline Inaccuracies introduced through improper tuning. & \cellcolor{yellow} Medium & Good programming practices to make tuning easier during testing. & \cellcolor{green} Low \\
+	Schedule \newline Assessment & Calibration is time consuming to implement, verify, and validate & Schedule overrun trying to tune the algorithms. \newline Inaccuracies introduced through improper tuning. & \cellcolor{yellow} Medium & Good programming practices to make tuning easier during testing. \newline Good understanding of process and mathetmatics. & \cellcolor{green} Low \\
 	\hline
-	Organizational \newline Assessment & Lack of subject matter experts & Project cost and schedule delays & \cellcolor{green} Low & In-house team available. \newline Can reduce scope, as needed. \newline Proper documentation of progress and scheduled design reviews and consultations & \cellcolor{green} Low \\
+	Organizational \newline Assessment & Lack of subject matter experts & Improper implementation and design of sensor and embeded systems. & \cellcolor{yellow} Medium & Thorough background review and study of embedded system design \newline Consult with external experts. & \cellcolor{green} Low \\
 	\hline
-	Operational \newline Assessment & Unreliable sensors. & Device fails and does not recover during testing; lost data & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
+	Operational \newline Assessment & Unreliable sensors. & Device fails and does not recover during testing; lost data & \cellcolor{yellow} Medium & Reliability analysis and testing required. \newline Consult and follow FMECA. & \cellcolor{green} Low
 	\label{tab:sr01_feasibility}
 \end{longtable}
 }
@@ -194,7 +215,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis's electronics need to be independently sealed from the elements, including being temporarily submerged } \\
 	\hline
@@ -234,11 +255,11 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is expected to deploy for a minimum of 3 hours on a typical deployment. Need margin for battery chemistry and preparation time.} \\
 	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The device shall be deployed for a long period and } \\
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The battery shall have an appropriate capacity. Device will be tested with extended duration deployment} \\
 	\hline
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
@@ -253,7 +274,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
 	\hline
-	Operational \newline Assessment & Battery does not have enough capacity to support a 4 hour deployment & Data is lost & \cellcolor{yellow} Medium & Conservative power analysis and choosing an oversized battery. & \cellcolor{green} Low
+	Operational \newline Assessment & Battery does not have enough capacity to support a 4 hour deployment & Data is lost & \cellcolor{yellow} Medium & Conservative power analysis and choosing an oversized battery. \newline Battery monitoring circuit to force save and shutdown at low voltage levels. & \cellcolor{green} Low
 	\label{tab:sr03_feasibility}
 \end{longtable}
 }
@@ -274,9 +295,9 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is designed to be a cheap, expendable unit so that, when damaged by students, it is financially feasible to replace it. It needs to be cheaper than comparable devices} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is designed to be a cheap, expendable unit so that, when damaged by students, it is financially feasible to replace it. It needs to be cheaper than comparable devices.} \\
 	\hline
 	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The Bill of Materials for Thetis shall not exceed the required threshold.} \\
 	\hline
@@ -285,7 +306,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Cheaper components (sensors) that are not as precise or accurate. & Less accurate data that may not be useful for analysis & \cellcolor{yellow} Medium & Use a \emph{tuned} Kalman filter to improve reported sensor accuracy & \cellcolor{green} Low \\
+	Technical \newline Assessment & Cheaper components (sensors) that are not as precise or accurate. & Less accurate data that may not be useful for analysis & \cellcolor{yellow} Medium & Use a sensor calibration model to improve reported sensor accuracy & \cellcolor{green} Low \\
 	\hline
 	Cost \newline Assessment & Chip shortage as a result of the COVID-19 pandemic. \newline Small IP-67 rated enclosures are a niche item that may have to be custom-ordered & Parts significantly inflate the Bill of Materials cost & \cellcolor{yellow} Meidum & Source from reputable suppliers and purchase in bulk & \cellcolor{yellow} Medium \\
 	\hline
@@ -293,7 +314,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & Bill of Materials cost exceeds requirement limit. \newline Development costs become too expensive & Invested stakeholders may pull support. \newline Hardware development slows or stops & \cellcolor{red} High & Purchase materials in bulk, when possible. \newline Use proper development techniques and analysis to reduce the number of hardware iterations and cost  & \cellcolor{yellow} Medium \\
 	\hline
-	Operational \newline Assessment & Cheaper, not as reliable parts. & Unexpected and unrecoverable failures during deployments & \cellcolor{yellow} Medium & Reliability analysis and testing required. & \cellcolor{green} Low
+	Operational \newline Assessment & Cheaper, not as reliable parts. & Unexpected and unrecoverable failures during deployments & \cellcolor{yellow} Medium & Reliability analysis and testing required. \newline Consult and follow FMECA. & \cellcolor{green} Low
 	\label{tab:sr04_feasibility}
 \end{longtable}
 }
@@ -315,9 +336,9 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Stephen Wood} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Using commercial off the shelf parts will reduce development time and costs. COTS parts will also make repair and maintenance easier} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Using commercial off the shelf parts will reduce development time and costs. COTS parts will also make repair and maintenance easier.} \\
 	\hline
 	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{All parts used on Thetis must be available from commercial suppliers and catalogs.} \\
 	\hline
@@ -356,7 +377,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will need to be maintained while students use it for class projects. Therefore, they will need to have the ability to directly modify the hardware and software.} \\
 	\hline
@@ -367,7 +388,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Designs are modified by students who unknowingly break functionality & Disabling or "bricking" Thetis, making it useless. \newline Loss of development history/"good" designs & \cellcolor{green} Low & GitHub tracks all commits and history. \newline "Good" designs are published as release snapshots and cannot be lost. & \cellcolor{green} Low \\
+	Technical \newline Assessment & Designs are modified by students who unknowingly break functionality & Disabling or ``bricking'' Thetis, making it useless. \newline Loss of development history/``good'' designs & \cellcolor{green} Low & GitHub tracks all commits and history. \newline ``Good'' designs are published as release snapshots and cannot be lost. & \cellcolor{green} Low \\
 	\hline
 	Cost \newline Assessment & New design modifications require more investment & Program cost increases as students change the design & \cellcolor{green} Low & Ensure that any design modifications go through a design review and adds substantial value to Thetis & \cellcolor{green} Low \\
 	\hline
@@ -375,7 +396,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & Thetis design may not be patentable and commercialized & Thetis cannot be patented since it is published open source & \cellcolor{red} High & Thetis can still be commercialized by providing board assembly and support services & \cellcolor{green} Low \\
 	\hline
-	Operational \newline Assessment & Vulnerabilities are found and exploited by bad actors & User data can be compromised \newline WiFi capability opens an attack vector to local network & \cellcolor{green} Low & Avoid implementation of OTA software updates \newline Use proper security techniques for FTP username and password & \cellcolor{green} Low
+	Operational \newline Assessment & Vulnerabilities are found and exploited by bad actors & User data can be compromised \newline WiFi capability opens an attack vector to local network & \cellcolor{green} Low & Avoid implementation of OTA software updates \newline Use proper WiFi network security techniques. & \cellcolor{green} Low
 	\label{tab:sr06_feasibility}
 \end{longtable}
 }
@@ -386,7 +407,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 % ==================================
 
 
-\paragraph*{SR 07} - The system shall communicate intra-device using known IEEE standards (e.g. SPI/I2C/UART/etc) 
+\paragraph*{SR 07} - The system shall allow users to change settings via interface and/or configuration file.
 
 {\fontsize{8pt}{8pt}\selectfont
 \begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
@@ -396,26 +417,26 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Hector Gutierrez} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Using standard communication busses to send to data between ICs on the device makes development and integration easier.} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Having settings the users can change will make it easier to configure on deployments and lower the knowledge threshold required to use Thetis in different applications.} \\
 	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{} \\
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{An Application Programming Interface (API) will be interfaced that will modify a settings file that can also be accessed by the user.} \\
 	\hline
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Development time will need to be spent on a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	Technical \newline Assessment & Users can overwrite certain configurations and compromise sensor performance & Thetis will not provide accurate or useful data measurements  & \cellcolor{yellow} Medium & Implement read-only for critical settings and prevent users from overwriting them outside a ``factory'' mode. & \cellcolor{green} Low \\
 	\hline
 	Cost \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
 	\hline
-	Schedule \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Development time will need to be spent on a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	Schedule \newline Assessment & Settings implementation and API will need to be custom & Development time will need to be spent on a custom API and implementation & \cellcolor{yellow} Medium & Thorough background research to see if library solutions exist and can be adapted. & \cellcolor{green} Low \\
 	\hline
 	Organizational \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Future developers will have to study the custom protocol layer in order to understand how to add features & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
 	\hline
-	Operational \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Unintended bugs or data mistakes may be introduced by using a custom protocol layer & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low
+	Operational \newline Assessment & Configurations are lost or not saved between deployments & Users may lose custom settings and need to reload. \newline Thetis may crash with corrupted configurations  & \cellcolor{yellow} Medium & Backup settings to data storage device. \newline Have default settings config that loads on issue to prevent instability & \cellcolor{green} Low
 	\label{tab:sr07_feasibility}
 \end{longtable}
 }
@@ -437,7 +458,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{A physical USB connection is crucial for programming and debugging Thetis. A WiFi connection would allow for wireless programming and data off-loading} \\
 	\hline
@@ -454,7 +475,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Schedule \newline Assessment & Implementing WiFi functionality is difficult and increases complexity; feature creep. & Increased time to develop front end interface; schedule overruns & \cellcolor{red} High & Agile management to limit feature creep & \cellcolor{yellow} Medium \\
 	\hline
-	Organizational \newline Assessment & Some stakeholders may have electromagnetic emissions restrictions & To comply, WiFi functionality will need to be able to be disabled & \cellcolor{green} Low & Allow WiFi features to be disabled by uploading new firmware without those features, or allow users to toggle this function on/off in runtime using a configuration file. & \cellcolor{green} Low \\
+	Organizational \newline Assessment & Some stakeholders may have electromagnetic emissions restrictions & To comply, WiFi functionality will need to be able to be disabled & \cellcolor{green} Low & Allow WiFi features to be disabled by uploading new firmware without those features. \newline Allow users to toggle this function on/off in runtime using a configuration file. & \cellcolor{green} Low \\
 	\hline
 	Operational \newline Assessment & Operators may not have device that can connect to the device over WiFi & Data cannot be offloaded easily in-situ. \newline Wireless monitoring not possible & \cellcolor{green} Low & Ensure that there is always a physical backup for offloading data. \newline Physical lights or other indictors to display system status & \cellcolor{green} Low
 	\label{tab:sr08_feasibility}
@@ -478,109 +499,27 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Dr. Robert Weaver} \\
+	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
 	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will be deployed for several hours and needs to continuously record data. Data rate should be as fast as possible to capture higher frequency oscillations.} \\
 	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Storage devices shall be large enough to support a full-length deployment and record all data as fast as possible (>64 Hz)} \\
+	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Storage devices shall be large enough to support a full-length deployment and record all data as fast as possible (\textgreater 64 Hz)} \\
 	\hline
 	\rowcolor[gray]{0.8}
 	\multicolumn{6}{|c|}{ } \\
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Logger is not able to consistently achieve 64 Hz rate & Significant data loss on higher frequency oscillations & \cellcolor{yellow} Medium & Utilize fast storage mediums. \newline Increase microcontroller and communication clock speeds & \cellcolor{green} Low \\
+	Technical \newline Assessment & Logger is not able to consistently achieve 64 Hz rate & Significant data loss on higher frequency oscillations & \cellcolor{yellow} Medium & Utilize fast storage mediums. \newline Implement proper sensor interrupt practices & \cellcolor{green} Low \\
 	\hline
-	Cost \newline Assessment & Small flash chips will not be sufficient to store the amount of data & More expensive data storage devices (micro SD cards) will have to be used; increase bill of materials cost & \cellcolor{yellow} & Find cheapest storage devices that can be used & \cellcolor{green} Low \\
+	Cost \newline Assessment & Small flash chips will not be sufficient to store the amount of data & More expensive data storage devices (micro SD cards) will have to be used; increase bill of materials cost & \cellcolor{yellow} & Purchase storage devices in bulk and at the minimum capacity. & \cellcolor{green} Low \\
 	\hline
 	Schedule \newline Assessment & Optimizing the logging functionality will take significant development time to be consistently as fast as possible & Schedule overruns & \cellcolor{red} High & Proper programming practices to optimize code wherever possible; reduce refactors & \cellcolor{yellow} Medium \\
 	\hline
 	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8}  & N/A & \cellcolor[gray]{0.8}  \\
 	\hline
-	Operational \newline Assessment & Inertial movements and oscillations will occur at higher frequencies than can be reasonably measured (>16 Hz) & Significant decrease in data accuracy and correlation to real-world motions & \cellcolor{red} High & Log as fast as possible. \newline Perform careful characterization to validate requirement is sufficient for expected motion environment. & \cellcolor{yellow} Medium
+	Operational \newline Assessment & Inertial movements and oscillations will occur at higher frequencies than can be reasonably measured (\textgreater 16 Hz) & Significant decrease in data accuracy and correlation to real-world motions & \cellcolor{red} High & Allow users to change sample rate in-situ using configuration settings. \newline Validate that sensors can accurately record expected signals. & \cellcolor{yellow} Medium
 	\label{tab:sr09_feasibility}
-\end{longtable}
-}
-\newpage
-
-
-% ==================================
-% === STAKEHOLDER REQUIREMENT 10 ===
-% ==================================
-
-
-\paragraph*{SR 10} - Revision G devices shall be capable of communicating extra-device over CANbus 2.0b
-
-{\fontsize{8pt}{8pt}\selectfont
-\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
-	\hline \endlastfoot
-	
-	\hline
-	\rowcolor[gray]{0.8}
-	\multicolumn{6}{|c|}{ } \\
-	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{MARTAC, CCD} \\
-	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Data from Thetis must be able to be reported to a main computer, without a USB or WiFi connection, using the NMEA2000 protocol} \\
-	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will be able to communicate with another computer using the NMEA2000 protocol} \\
-	\hline
-	\rowcolor[gray]{0.8}
-	\multicolumn{6}{|c|}{ } \\
-	\hline
-	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
-	\hline
-	Technical \newline Assessment & Microcontroller does not support CANbus communication natively. \newline Adds significant processing overhead to handle messages & Additional devices needed onboard. \newline Logging or WiFi performance degraded & \cellcolor{red} High & Utilize external drivers for CANbus protocol. \newline Add options to enable/disable WiFi for increased performance & \cellcolor{green} Low \\
-	\hline
-	Cost \newline Assessment & Microcontroller does not support CANbus communication natively. \newline Component shortage due to COVID-19 pandemic & Additional devices needed onboard; inflated bill of materials cost & \cellcolor{yellow} Medium & Purchase components in bulk. \newline Research CANbus controllers and implementations carefully. & \cellcolor{green} Low \\
-	\hline
-	Schedule \newline Assessment & Need to implement CANbus support; feature creep. \newline Another SKU to develop and maintain & Schedule & \cellcolor{red} High & Agile management and proper programming practices & \cellcolor{yellow} Medium \\
-	\hline
-	Organizational \newline Assessment & Not all stakeholder organizations require this feature. \newline Another SKU to develop and maintain & Increased development time. \newline Need to add ability to switch on/off features. & \cellcolor{red} High & Proper management techniques and work with stakeholders and end users to ensure feature is properly implemented & \cellcolor{yellow} Medium \\
-	\hline
-	Operational \newline Assessment & Not all end users will need to use this feature & Need to add ability to switch on/off features & \cellcolor{yellow} Medium & Proper management techniques and work with stakeholders and end users to ensure feature is properly implemented & \cellcolor{yellow} Medium
-	\label{tab:sr10_feasibility}
-\end{longtable}
-}
-\newpage
-
-
-% ==================================
-% === STAKEHOLDER REQUIREMENT 11 ===
-% ==================================
-
-
-\paragraph*{SR 11} - The system shall have redundant storage for device and communication events
-
-{\fontsize{8pt}{8pt}\selectfont
-\begin{longtable}{| p{0.12\linewidth} | p{0.16\linewidth} |  p{0.20\linewidth} | p{0.08\linewidth} | p{0.20\linewidth} | p{0.08\linewidth} |}
-	\hline \endlastfoot
-	
-	\hline
-	\rowcolor[gray]{0.8}
-	\multicolumn{6}{|c|}{ } \\
-	\hline
-	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{MARTAC, CCD} \\
-	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis will need to be able to log CANbus commands as a part of the data analysis process. Also will need to record device events separately over a long deployment.} \\
-	\hline
-	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{Implement a separate, smaller storage device that is different than the main storage.} \\
-	\hline
-	\rowcolor[gray]{0.8}
-	\multicolumn{6}{|c|}{ } \\
-	\hline
-	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
-	\hline
-	Technical \newline Assessment & Microcontroller cannot handle two separate file systems simultaneously & Significant performance decrease due to buffer flushing. \newline Microcontroller crashes due to buffer overflow. & \cellcolor{yellow} Medium & Proper programming practices to manage and minimize memory usage & \cellcolor{green} Low \\
-	\hline
-	Cost \newline Assessment & Additional components required. \newline Parts shortage due to the COVID-19 pandemic. & Inflated bill of materials cost & \cellcolor{yellow} Medium & Find cheap, but reliable flash storage chips. \newline Purchase parts in bulk & \cellcolor{green} Low \\
-	\hline
-	Schedule \newline Assessment & Implementing redundant storage adds complexity & Potential schedule overruns & \cellcolor{red} High & Proper programming and management practices & \cellcolor{green} Low \\
-	\hline
-	Organizational \newline Assessment & Not all stakeholders require redundant storage. \newline Message logging may inadvertently log sensitive data. & Reduced performance due to increased processor overhead. \newline Unintended data leakages. & \cellcolor{yellow} Medium & Add feature to enable/disable redundant storage features. \newline Work closely with stakeholders and end users to ensure feature is used properly & \cellcolor{green} Low \\
-	\hline
-	Operational \newline Assessment & Higher capacity storage device fails and data is stored on secondary device & Reduced max deployment time. \newline Potential data loss. & \cellcolor{yellow} Medium & Ensure that firmware can handle seamless transition between storage devices. \newline Ensure that secondary storage device is large enough to fulfill SR 03. & \cellcolor{green} Low
-	\label{tab:sr11_feasibility}
 \end{longtable}
 }
 \newpage
@@ -589,35 +528,34 @@ This could mean substantial cost increases and schedule delays depending on the 
 
 \subsection{Quality Functional Deployment} \label{ssec:qfd}
 In engineering, there are a variety of customers that need to have their needs met.
-These customers can be internal or external to the project and most were described in Section \ref{sec:stakeholders}.
+These customers can be internal or external to the project and are described in Section \ref{sec:stakeholders}.
 To ensure that Thetis is designed with the stakeholders in mind, a Quality Functional Deployment (QFD) was performed.
-A QFD weighs the stakeholder requirements (the "whats") with the "hows", or engineering methods in a weighted design matrix shown below.
+A QFD weighs the stakeholder requirements (the ``whats'') with the ``hows'', or engineering methods, in a weighted design matrix.
 The QFD analysis is designed to inform engineers what the highest priority methods are based on customer feedback.
-This gives stakeholders a "voice" in the design in a compact matrix format.
+This gives stakeholders a direct influence on the design in a compact matrix format.
+The product created by a QFD analysis is the House of Quality (HOQ), which can be seen in Appendix \ref{chap:house_of_quality}
 
-\subsubsection{House of Quality} \label{sssec:hoq}
-The House of Quality (HOQ) is the product generated by a QFD analysis.
-The left side of the matrix defines the customer desires with an associated weight or priority for each.
+\paragraph*{The left side} of the matrix defines the customer desires with an associated weight or priority for each.
 This data is collected by canvassing the stakeholders and getting their feedback on their priorities.
 
-The middle of the matrix is dedicated with the engineering methods.
+\paragraph*{The middle} of the matrix is dedicated with the engineering methods.
 Here, the design engineers add the methods they think are required to fulfill the projects requirements.
 The numbers throughout the matrix are the strength of the relationship between the requirement and method. 
-The scale is the Fibonacci sequence from 0-8 with higher numbers indicating a stronger relationship.
+The scale is the Fibonacci sequence from 0-8\footnote[1]{0, 1, 2, 3, 5, 8} with higher numbers indicating a stronger relationship.
 For example, SR-03 has a middling relationship with most of the engineering methods and a very strong (8) relationship with the "Battery Capacity" method.
 However, it does not correlate at all (0) with the storage capacity method.
 
-The "roof" or top of the matrix is the inter-relationship between the different engineering methods.
-The grading is slightly different with "-", "0", "+" indicating a detrimental, non-existent, or positive relation with multiple of each denoting the strength.
+\paragraph*{The ``roof''} or top of the matrix is the inter-relationship between the different engineering methods.
+The grading is slightly different with ``-'', ``0'', ``+'' indicating a detrimental, non-existent, or positive relation, respectively, with multiple of each denoting the magnitude.
 As an example, the cost of Thetis has varying degrees of negative association with each of the other engineering methods.
 The type of IMU, GPS, storage method, battery capacity, and enclosure size all add cost to the project and therefore are detrimental to this method.
 
-The right side of the matrix is part of the competitive analysis where Thetis is compared with the other products in use by stakeholders.
+\paragraph*{The right side} of the matrix is part of the competitive analysis where Thetis is compared with the other products in use by stakeholders.
 Each product is rated on a 1-5 scale of increasing quality for each stakeholder requirement.
 This rating is produced based on their capabilities and performance as determined by the stakeholders.
 From the matrix, we can see that Thetis has a strong overall rating with regard to all the requirements where the Lowell MAT-1 struggles with the cost and measurement requirements and the iPhone is strong overall except its price and access for students.
 
-At the bottom of the matrix is the technical performance analysis.
+\paragraph*{At the bottom} of the matrix is the technical performance analysis.
 The first two rows rate each engineering method with an importance which is described by Equation \ref{eq:hoq_importance} and \ref{eq:hoq_rel_importance}.
 The importance of each method informs the design engineers what they should be focussing on during development and what is most important to the stakeholders.
 Beneath that is a technical comparison of Thetis and competing products across the engineering methods.
@@ -654,27 +592,69 @@ This provides a quick breakdown of each product through the lense of the enginee
 \end{landscape}
 
 \section{Concept of Operations} \label{sec:conops}
-Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of vessel orientation and position in real-time at a low cost.
-In a normal operating case, Thetis will be placed near the center of gravity of a floating vessel and turned on to begin recording.
-The user can then connect Thetis to the ship network or use its local WiFi access point to monitor the system and adjust configuration settings.
-These configuration settings include different modes that change how Thetis behaves and what data it records.
+Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of body orientation and position in real-time at a low cost.
+In a normal operating case, Thetis will be placed near the center of gravity of a body and turned on to begin recording.
+The user can then connect Thetis to a larger wireless network or use its local WiFi access point to monitor the system and adjust configuration settings.
 
-\paragraph*{9DOF AHRS Mode} When placed into the 9DOF AHRS mode, Thetis will record the vessel acceleration, rotation rate, magnetic heading, and attitude at a set interval according to the user.
-This mode is the most verbose recording method and can provide a lot of information on how the vessel is reacting to the current sea conditions. 
-Users can specify if they want to record the filtered and fused data as well as the raw data from the sensors.
-This option gives them the ability to run their own analysis in post using different software filtering techniques that may increase accuracy relative to what Thetis could achieve in-situ.
+\section{capabilities} \label{sec:capabilities}
+Based on the stakeholder requirements and concept of operations, a series of capabilities were derived that influenced the subsystem and component-level requirements.
+These capabilities were organized into three categories:
 
-\paragraph*{9DOF INS Mode} When placed into the 9DOF INS mode, Thetis incorporates the built-in GPS to its recording functionality.
-The GPS module provides real-time position, velocity, course, and error at up to 10 Hz.
-This provides a more accurate estimate of the vessel's current position and how it changes over time.
-This mode can also provide basic waypoint navigation services to an automated controller for low-cost basic autonomy applications.
-Thetis Revision G is specifically designed for this application as its dual independent CAN busses can transmit data to a central controller over the NMEA2000 protocol, making it easier to integrate with unmanned vessels or manned vessels with electronic helms.
+{
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1}}
+\begin{description}
+    \item[Threshol:] The bare minimum features the system needs to be have to be considered ``successful'' or ``delivered''.
+    
+    \item[Reach:] Features that enhance the product for the stakeholders and end users that require a moderate amount of effort above a threshold feature.						
+    
+    \item[Stretch:] Features that would distinguish the project from competitors and add immense value for stakeholders and end users, but come at a steep development cost in terms of time and money.
+\end{description}
+}
 
-\paragraph*{WEAVE Mode} The Wave Estimator Algorithm for VEssels (WEAVE) mode is a special mode that allows Thetis to predict the wave heights encountered by the vessel in real-time.
-The algorithm is explained more in depth in Section \ref{sec:weave}.
-This mode allows Thetis to communicate the estimated current sea conditions to a central controller or operator so that they make the appropriate decisions with the operation of the vessel.
-The biggest application of this algorithm in the unmanned technology sector where the unmanned vessel can integrate these estimates into its world model and make better decisions about the best course and speed it should pursue.
-Again, the inclusion of dual independent CAN busses on Revision G makes this feature easier to integrate on electronically-driven vessels.
+The capabilities were organized into a traceability matrix (more information in Appendix \ref{chap:traceability_matrix}), which is shown in Table \ref{tab:capabilities}.
+
+\includepdf[landscape=false, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisCapabilities.pdf}
+
+% \begin{center}
+% 	\renewcommand{\arraystretch}{1.5} % Set row height
+% 	\begin{longtable}{| c | p{0.35\textwidth} | c | c | c | c | c |}
+% 		% \caption{Thetis capabilities organized in a traceability matrix.} \\
+
+% 		\hline
+% 		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+% 		\hline
+% 		& \textbf{Threshold} & & & & & \\
+% 		101 & The system must be housed in an IP67-rated enclosure & 1 & 10 & Y & Y & D \\
+% 		102 & The system enclosure must fit within the volume of 8" x 5" x 1.25" & 0.8 & 8 & Y & Y & D \\
+% 		103 & The system software and firmware will be fully open-source & 0.9 & 9 & Y & Y & D \\
+% 		104 & The system shall be able to record inertial measurements of at least 64 Hz & 1 & 10 & Y & N & TIP \\
+% 		105 & The system shall be able to store data locally for up to 4 hours continuously & 0.8 & 8 & Y & N & TIP \\
+% 		106 & The system shall be able to be operate for up to 4 hours continuously & 0.8 & 8 & Y & N & A \\
+% 		107 & The system shall have simple human interface mechanism for status and logging & 0.7 & 7 & Y & Y & D \\
+% 		108 & The system firmware shall be an open-architecture & 0.5 & 5 & Y & N & A \\
+% 		109 & The system will be fully documented & 1 & 10 & N & N & A \\
+% 		110 & The system shall use version control software to track changes & 1 & 10 & Y & Y & D \\
+% 		111 & The operator shall be able to load data off the system & 1 & 10 & Y & Y & D \\
+% 		112 & The system shall be capable of being assembled by hand using basic soldering tools & 0.8 & 8 & Y & Y & D \\
+% 		\hline
+% 		& \textbf{Reach} & & & & & \\
+% 		201 & The system shall integrate a GPS for position tracking at least 1 Hz & 0.7 & 6 & Y & Y & D \\
+% 		202 & The system will have a simple logging and status interface accessible via web terminal & 0.3 & 2 & Y & N & A \\
+% 		203 & The system shall be able to monitor and report battery state of charge & 0.2 & 2 & Y & N & A \\
+% 		204 & The system will have configurable settings that can be set by the user & 0.4 & 3 & Y & Y & D \\
+% 		205 & The system can operate in a Wi-Fi access point or client mode	& 0.2 & 2 & Y & N & A \\
+% 		206 & The sensor measurements shall incorporate a calibration model & 0.5 & 4 & Y & N & TIP \\
+% 		\hline
+% 		& \textbf{Stretch} & & & & & \\
+% 		301 & The system file storage shall be accessible via web interface	& 0.1 & 0.8 & N & N & A \\
+% 		302 & The system shall have a backup storage option in case primary storage fails & 0.1 & 0.8 & N & N & R \\
+% 		303 & The system will use a microcontroller capable of basic machine learning & 0.05 & 0.4 & N & N & UR \\
+% 		304 & The system shall be able to log in a burst mode for up to 24 hours & 0.05 & 0.4 & N & N & UR \\
+% 		\hline
+
+% 		\label{tab:capabilities}
+% 	\end{longtable} 
+% \end{center}
 
 \section{Conceptual Design} \label{sec:conceptual_design}
 The general design of the Thetis instrumentation package was built around the principles of capability, manufacturability, and affordability.
@@ -687,45 +667,56 @@ It is also assumed that Thetis will be lost at some point during testing.
 This is just an inevitability during field work, so keeping the cost down would also reduce the impact of such a loss on a project's budget.
 
 \subsection{System Requirements} \label{ssec:system_requirements}
-To guide Thetis' design, a series of system requirements were generated that would need to be met in order to certify the design as "complete".
+To guide Thetis' design, a series of system requirements were generated that would need to be met in order to declare the design as ``delivered''.
 These requirements were derived from the House of Quality (Table \ref{tab:hoq}) and the stakeholder requirements (Section \ref{ssec:stakeholder_reqs}).
 Each requirement is categorized into subsections and given a numerical designation.
 The requirement is then given as a clear statement of fact with only one consideration given per requirement.
 A comment may be associated with each requirement that provides additional context or relevant information.
-
-As the design matures, each requirement will need to be verified in the design. This can be done in four separate ways:
-
-\paragraph*{Inspection} The nondestructive examination of a product or system using one or more of the five senses (visual, auditory, olfactory, tactile, taste). 
-It may also include simple physical manipulation and measurements.
-
-\paragraph*{Demonstration} The manipulation of the product or system as it is intended to be used to verify that the results are as planned or expected.								
-
-\paragraph*{Test} The verification of a product or system using a controlled and predefined series of inputs, data, or stimuli to ensure that the product or system will produce a very specific and predefined output as specified by the requirements.								
-
-\paragraph*{Analysis} The verification of a product or system using models, calculations and testing equipment.
-Analysis allows someone to make predictive statements about the typical performance of a product or system based on the confirmed test results of a sample set or by combining the outcome of individual tests to conclude something new about the product or system.
-It is often used to predict the breaking point or failure of a product or system by using nondestructive tests to extrapolate the failure point.								
-
-For some requirements, there are specific tests that need to be performed in order to validate the requirement.
-These tests are detailed more thoroughly in Chapter \ref*{chap:testing_and_validation}.
-There is also a field that enables comments on the performance of the validation test for that specific requirement.
-
-The final column of this requirement table is the requirement status.
-There are multiple statuses a requirement can have:
-
-\begin{itemize}
-	\item \textbf{Under Review (UR)}: Requirement has been submitted and is under review,
-	\item \textbf{Accepted (A)}: Requirement has been reviewed and accepted into the document,
-	\item \textbf{Rejected (R)}: Requirement has been reviewed and rejected from the document,
-	\item \textbf{Testing in Progress (TIP)}: Requirement is currently being tested,
-	\item \textbf{Test Successful (TS)}: Requirement successfully passed testing, but is not yet delivered,				
-	\item \textbf{Test Failure (TF)}: Requirement failed testing and needs further development, and
-	\item \textbf{Delivered (D)}: Requirement has been fully realized and delivered.
-\end{itemize}
+These requirements arranged within a traceability matrix, explained in-depth in Appendix \ref{chap:traceability_matrix}						
 
 Below is a table describing the system requirements for the Thetis instrumentation package.
 
-\includepdf[landscape=true, page=-, width=\textheight, offset=0 -0.25in, pagecommand={}]{../include/ThetisReqs.pdf}
+\includepdf[landscape=true, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisReqs.pdf}
+
+\subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}
+Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
+Each potential flaw is given a probability of occurrence and a weighting from 0 to 10 inclusive for its severity. 
+By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
+
+\paragraph*{LOW} These are RPNs with a value below 2.5 and represent little risk to the system. 
+These are denoted with green highlights in the FMECA chart below.
+
+\paragraph*{MEDIUM} These are RPN's between 2.5 and 7.5 that are represented with yellow highlights below.
+Typically, these failure modes represent a noticeable threat to the system and the mitigations should be carefully implemented.
+
+\paragraph*{HIGH} These are the highest risk RPNs between 7.5 and 10 and are represented with red highlights.
+They are the most severe and should be mitigated at all cost during and after the product development cycle.
+
+The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
+However, since Thetis is using hobby-grade materials and failures are not generally well-documented for the parts, the probabilities represented herein are my best guess based on experience.
+The same applies for the criticality score for each potential failure.
+
+% \begin{landscape}
+% 	\begingroup
+% 		\label{tab:fmeca}
+% 		\centering
+% 		% \vspace*{-1in}\includegraphics[trim={0 0 0 0}, height=6.75in, page=1]{../include/ThetisFMECA.pdf}
+% 		% \vspace*{-1in}\captionof{table}[Failure Mode, Effect, and Criticality Analysis]{A summary of all possible failure modes and their expected effects, likelihoods, criticalities, and mitigations on the Thetis system.}
+% 		\includegraphics[height=6.75in, page=1]{../include/ThetisFMECA.pdf}
+% 		\newpage
+% 		\includegraphics[height=6.75in, page=2]{../include/ThetisFMECA.pdf}
+% 		\newpage
+% 		\includegraphics[height=6.75in, page=3]{../include/ThetisFMECA.pdf}
+% 		\newpage
+% 		\includegraphics[height=6.75in, page=4]{../include/ThetisFMECA.pdf}
+% 		\newpage
+% 		\includegraphics[height=6.75in, page=5]{../include/ThetisFMECA.pdf}
+% 		% \newpage
+% 		% \includegraphics[height=6.75in, page=6]{../include/ThetisFMECA.pdf}
+% 	\endgroup
+% \end{landscape}
+
+\includepdf[landscape=true, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisFMECA.pdf}
 
 \subsection{Functional Block Diagram} \label{ssec:block_diagram}
 Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
@@ -743,9 +734,6 @@ Explanations for these protocols and acronyms can be found in the Appendix.
 \subsection{Functional Flow Diagram} \label{ssec:flow_diagram}
 Based off the block diagram and interviews with potential end users, a notional flow diagram for the firmware was created.
 The code was designed to be modular and allow for new features to be quickly added or removed with separate libraries.
-Additionally, any functions that need to be called, can be executed at specific times to increase computational efficiency and reduce the chance of race conditions occurring.
-Note that this block diagram only includes the base firmware.
-Breakdowns for the algorithmic flows for different operating modes will be given in their respective sections.
 
 \begin{figure}[h!]
 	\label{fig:thetis_flow_diagram}
@@ -754,43 +742,7 @@ Breakdowns for the algorithmic flows for different operating modes will be given
 	\includegraphics[width=5in]{design/flow_diagram.png}
 \end{figure}
 
-\subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}
-Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
-Each potential flaw is given a weighting from 0 to 10 inclusive for both the probability that they will occur, as well as the failure severity if they do. By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
-
-\paragraph*{LOW} These are RPNs with a value below 2.5 and represent little risk to the system. 
-These are denoted with green highlights in the FMECA chart below.
-
-\paragraph*{MEDIUM} These are RPN's between 2.5 and 7.5 that are represented with yellow highlights below.
-Typically, these failure modes represent a noticeable threat to the system and the mitigations should be carefully implemented.
-
-\paragraph*{HIGH} These are the highest risk RPNs between 7.5 and 10 and are represented with red highlights.
-They are the most severe and should be mitigated at all cost during and after the product development cycle.
-
-The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
-However, since Thetis is using hobby-grade materials and failures are not generally well-documented for the parts, the probabilities represented herein are the best guess of the author based of his experience and best guess.
-The same applies for the criticality score for each potential failure.
-
-\begin{landscape}
-	\begingroup
-		\label{tab:fmeca}
-		% \centering
-		\vspace*{-1in}\includegraphics[trim={0 0 0 0}, height=6.75in, page=1]{../include/ThetisFMECA.pdf}
-		\vspace*{-1in}\captionof{table}[Failure Mode, Effect, and Criticality Analysis, hypcap=true]{A summary of all possible failure modes and their expected effects, likelihoods, criticalities, and mitigations on the Thetis system.}
-		\newpage
-		\includegraphics[height=6.75in, page=2]{../include/ThetisFMECA.pdf}
-		\newpage
-		\includegraphics[height=6.75in, page=3]{../include/ThetisFMECA.pdf}
-		\newpage
-		\includegraphics[height=6.75in, page=4]{../include/ThetisFMECA.pdf}
-		\newpage
-		\includegraphics[height=6.75in, page=5]{../include/ThetisFMECA.pdf}
-		\newpage
-		\includegraphics[height=6.75in, page=6]{../include/ThetisFMECA.pdf}
-	\endgroup
-\end{landscape}
-
-\section{Final Design} \label{sec:final_design}
+\section{Brief Revision History} \label{sec:revision_history}
 After carefully considering all the design criteria from the stakeholder requirements and system requirements, Thetis began several design revisions.
 The first design revision, Rev F1, was a functional proof of concept.
 It incorporated many of the base design features of later Thetis revisions, but relied on a breakout board for the IMU mounted to the bottom of the board and had the battery placed on top.
@@ -803,6 +755,7 @@ This version also switched from a Micro SD card receptacle to a soldered SMD fla
 This chip maintained the same capacity requirements from the stakeholders, but took up a fraction of the space on the board.
 However, since this chip was directly soldered to the board, the only way to offload date was through the microcontroller either through an FTP server, or through the USB interface.
 This is not ideal - especially in the early testing phases, as those features are more complex to implement programmatically and test data cannot be easily offloaded if there is an issue with the microcontroller.
+There were also reliability issues which manifest in force on later revisions.
 This revision also kept the breakout board for the IMU on the back, giving it the same space constraint problem as its predecessor.
 
 [INSERT IMAGE OF REVISION F2]
@@ -811,30 +764,31 @@ For Revision F3, some minor changes were made to the diagnostic LEDs and user in
 Several discrete LEDs for logging, error notification, and low battery, were replaced by a single addressable RGB LED that could flash different colors and patterns to convey the system state or errors.
 The dedicated log enable button was also removed in favor of using the boot select button for both purposes.
 However, this method was entirely flawed as the log enable button relies on an interrupt input to trigger the system to begin recording.
-On the ESP32 microcontroller, an interrupt tied to GPIO 0 (the boot select pin) would cause the system to crash and force a reset.
+On the ESP32-S2 microcontroller, an interrupt tied to GPIO 0 (the boot select pin) would cause the system to crash and force a reset.
 Therefore, the entire design had to be scrapped due to this design flaw.
 
 [INSERT IMAGE OF REVISION F3]
 
 Revision F4 was the most radical design change of the series.
 It marked a migration to all SMD components (no breakout board for the IMU) and incorporated all of the design lessons from the previous revision.
-However, the IMU that was used in previous revisions, the Bosch BNO055 was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
-So, this design had to adapt by incorporating a new, previously untested IMU, the STdevices LSM6DSO32.
+However, the IMU that was used in previous revisions, the Bosch BNO055\footnote[2]{\url{https://www.digikey.com/en/products/detail/bosch-sensortec/BNO055/6136301}} was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
+So, this design had to adapt by incorporating a new, previously untested IMU, the STdevices LSM6DSO32\footnote[3]{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LSM6DSO32TR/11694177}}.
 This new IMU does not have a magnetometer and at the time of its design, they were hard to find in stock at any distributors.
 So, in anticipation of the Chip Shortage ending, the BNO055 was incorporated to the design, but not populated, giving this board the unique opportunity of having either or both IMUs present - a useful feature for more accurate sensor fusion, but a terrible prospect for software integration.
 Additionally, this design reintroduced the micro SD card receptacle, but this time, the SMD flash chip was laid out beneath it.
-This provided the assembler to determine which storage system they wanted: easier to use micro SD, or more secure and reliable SMD flash.
+This provided the assembler to determine which storage system they wanted: easier to use micro SD, or more resilient SMD flash.
 Programmatically, these devices work the same, so the software cost was minimal while providing some flexibility.
-However, this design was also doomed as the newly reintroduced log enable button was not integrated into the design properly and the chip select pin for the storage device was connected to an incorrect pin.
+However, this design was also fundamentally flawed as the newly reintroduced log enable button was not integrated into the design properly and the chip select pin for the storage device was connected to an incorrect controller pin.
 This latter issue forced the microcontroller to crash and reset every time is tried to write to the external flash memory, necessitating a new board revision.
 
 [INSERT IMAGE OF REVISION F4 (BOTH RENDERED AND ACTUAL)]
 
-The final revision is the most refined version that full realizes all the features Thetis is meant to incorporate while being easy to assemble and use.
-The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL.
+\section{Final Design} \label{sec:final_design}
+Revision F5 is the latest version that realizes all the hardware features Thetis is meant to incorporate while being easy to assemble and use.
+The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL\footnote[4]{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LIS3MDLTR/4309733}}.
 By reorganizing some components, the SMD flash ship and micro SD card receptacle were placed side-by-side enabling both primary and secondary storage services, enabling backups and improving reliability.
 Then, to improve the battery monitoring capabilities, a battery gauge IC was added.
-The MAX17048 is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
+The MAX17048\footnote[5]{\url{https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX17048G-T10/3758921}} is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
 This data is reported to the microcontroller as the current battery percentage or life remaining - making this a crucial part of monitoring performance and operations of Thetis when deployed.
 Component types and placements were also streamlined to improve manufacturability and allow the potential for the device to be more easily assembled by a pick and place machine.
 This also allows students who have never assembled PCBs before to more easily take up the task and build these boards themselves.
@@ -843,6 +797,8 @@ This also allows students who have never assembled PCBs before to more easily ta
 
 The next sections detail the assembly process in more detail and provide the schematics and PCB layout for Revision F5.
 The schematics for the previous revisions can be found in the appendix.
+
+\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \label{ssec:revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
 
 \subsection{Assembly Technique} \label{ssec:assembly_techniques}
 Thetis was designed with surface mount soldering as the primary assembly technique.
@@ -895,8 +851,6 @@ The assembler will then need to do a deeper inspection to find the cause of the 
 [INSERT PICTURE SERIES OF BOOTING AND TESTING THE NEW BOARD]
 
 Once the new board boots without issue, the board is ready for deployment and can be used by operators and intended end users.
-
-\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \label{ssec:revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
 
 % \subsection{PCB Design} \label{ssec:revf5_pcb}
 

@@ -1,7 +1,63 @@
 %%-----------------Chapter 4---------------------------
-\chapter{Conclusion}
-Lorem ipsum dolor sit amet, idque apeirian mnesarchum vix ea, usu no mandamus constituam comprehensam, cum cu vero definitionem. Fabulas probatus ne pro, eleifend hendrerit adipiscing at vim. Usu eu facilisis persecuti. Ne has vidit principes efficiantur, has liber euripidis no. Vide sapientem salutandi per at. Eu probo democritum referrentur pri, an vidit simul reprimique nam. Omnium eruditi ex per, elit regione reprimique te eos. Dicam timeam no nam. Tacimates indoctum inciderint ad his, sea fastidii appetere oporteat an. Ad cum movet efficiantur. Sale labitur no vis, complectitur consequuntur usu te. Mel te putant timeam denique. Ne mel vidit ancillae. Ius saperet facilisi an. Eligendi scaevola sea ex, ad recteque cotidieque quo. Te sumo brute eum.
+\chapter{Verification and Validation}
+Now that we have an instrument designed, how can we determine if it meets requirements or not?
+The system can be verified and then validated using a variety of techniques.
+First, to verify that a requirement is present, the component or subsystem can be examined independently.
+If it passes examination, we can update the traceability matrix to reflect that the requirement is now verified.
+Once the feature is integrated with the entire system, then we can determine if it is validated or not.
+Instead of examining the feature independently, it will be done so with the entire system to ensure that it functions properly.
+These examinations can fall under four main types:
 
-Lorem ipsum dolor sit amet, idque apeirian mnesarchum vix ea, usu no mandamus constituam comprehensam, cum cu vero definitionem. Fabulas probatus ne pro, eleifend hendrerit adipiscing at vim. Usu eu facilisis persecuti. Ne has vidit principes efficiantur, has liber euripidis no. Vide sapientem salutandi per at. Eu probo democritum referrentur pri, an vidit simul reprimique nam. Omnium eruditi ex per, elit regione reprimique te eos. Dicam timeam no nam. Tacimates indoctum inciderint ad his, sea fastidii appetere oporteat an. Ad cum movet efficiantur. Sale labitur no vis, complectitur consequuntur usu te. Mel te putant timeam denique. Ne mel vidit ancillae. Ius saperet facilisi an. Eligendi scaevola sea ex, ad recteque cotidieque quo. Te sumo brute eum.
+{
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1}}
+\begin{description}
+    \item[Inspection:] The nondestructive examination of a product or system using one or more of the five senses (visual, auditory, olfactory, tactile, taste). 
+    It may also include simple physical manipulation and measurements.
+    
+    \item[Demonstration:] The manipulation of the product or system as it is intended to be used to verify that the results are as planned or expected.								
+    
+    \item[Test:] The verification of a product or system using a controlled and predefined series of inputs, data, or stimuli to ensure that the product or system will produce a very specific and predefined output as specified by the requirements.								
+    
+    \item[Analysis:] The verification of a product or system using models, calculations and testing equipment.
+    Analysis allows someone to make predictive statements about the typical performance of a product or system based on the confirmed test results of a sample set or by combining the outcome of individual tests to conclude something new about the product or system.
+    It is often used to predict the breaking point or failure of a product or system by using nondestructive tests to extrapolate the failure point.
+\end{description}
+}
 
-Lorem ipsum dolor sit amet, idque apeirian mnesarchum vix ea, usu no mandamus constituam comprehensam, cum cu vero definitionem. Fabulas probatus ne pro, eleifend hendrerit adipiscing at vim. Usu eu facilisis persecuti. Ne has vidit principes efficiantur, has liber euripidis no. Vide sapientem salutandi per at. Eu probo democritum referrentur pri, an vidit simul reprimique nam. Omnium eruditi ex per, elit regione reprimique te eos. Dicam timeam no nam. Tacimates indoctum inciderint ad his, sea fastidii appetere oporteat an. Ad cum movet efficiantur. Sale labitur no vis, complectitur consequuntur usu te. Mel te putant timeam denique. Ne mel vidit ancillae. Ius saperet facilisi an. Eligendi scaevola sea ex, ad recteque cotidieque quo. Te sumo brute eum.
+For the following chapter, we shall examine each of Thetis' design capabilities from Tables \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities} and verify their presence on the latest design.
+Then, we shall do the same for the stakeholder requirements.
+
+\section{Methodologies}
+In order to verify and validate that capabilities or requirements exist, we have to do some testing.
+For this thesis, the testing was relegated to the main components such as the enclosure, IMU, and GPS due to time constraints.
+Testing for deployment times, power draw, or potential battery life was not considered as the prototype was not complete enough to warrant these tests.
+
+\subsection{Enclosure Testing}
+The enclosure was first inspected to verify that it met Capabilities 101 and 102 via the manufacturer data sheet.
+The manufacturer claims that the selected case was IP67-rated and fit within the dimensions specified by Capability 102.
+
+In order to validate these claims, Thetis was placed onto a ROV and set to a depth of 20-feet for approximately 1 hour.
+The case was secured to manufacturer recommendations and a wad of paper towel put inside to absorb and indicate any moisture that leaked in.
+If the case's seal failed, the towels would be wet and further examination would be needed to determine the failure mode and limits.
+Otherwise, if the towels were dry, then the case could reasonably withstand use in a marine environment without compromising the electronics inside.
+
+[TODO: Insert picture of Thetis case on ROV]
+
+Similarly, the case was tested on surfboards during several deployments.
+These simulated the conditions and use case that Thetis was designed for and would give a more realistic test of the case's water-proofing capability.
+
+[TODO: Insert picture of Thetis in surfboard]
+
+\subsection{Instrument Testing}
+Thetis measures accelerations, magnetic fields, and rotation rates on three different sensing axes, X, Y, and Z.
+Each axis follows Cartesian standards are at orthogonal to each other with the origin near the center of mass for the board.
+In order to isolate each axis for testing, a calibration cube (Figure \ref{fig:calibration_cube}) was designed that would allow a dominant sensing axis to be placed in the optimal direction.
+Since a cube has faces that are orthogonal to each other, rotating the cube 90-degrees means that the dominant sensing axis can be switch perfectly between the X-, Y-, and Z-axis.
+The drawing for this cube is shown in Appendix \ref{chap:calibration_cube}. 
+
+As Thetis was undergoing testing, it was necessary to directly compare it to a state of the art, commercially-available equivalent, the xio-Technologies x-IMU3 [CITE - xIMU3].
+The devices are placed side-by-side on the cube and their coordinate frames are aligned, i.e. positive X-axis on the x-IMU3 is the same direction as one Thetis.
+Then, both devices undergo the same testing regimens described below.
+As a result, we can draw direct comparisons as shown in Section \ref{sec:results}.
+
+\paragraph*{Magnetic Testing} In order to verify and validate the magnetometer

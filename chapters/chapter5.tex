@@ -27,37 +27,97 @@ These examinations can fall under four main types:
 For the following chapter, we shall examine each of Thetis' design capabilities from Tables \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities} and verify their presence on the latest design.
 Then, we shall do the same for the stakeholder requirements.
 
-\section{Methodologies}
-In order to verify and validate that capabilities or requirements exist, we have to do some testing.
-For this thesis, the testing was relegated to the main components such as the enclosure, IMU, and GPS due to time constraints.
-Testing for deployment times, power draw, or potential battery life was not considered as the prototype was not complete enough to warrant these tests.
+\section{Threshold Capabilities}
 
-\subsection{Enclosure Testing}
-The enclosure was first inspected to verify that it met Capabilities 101 and 102 via the manufacturer data sheet.
-The manufacturer claims that the selected case was IP67-rated and fit within the dimensions specified by Capability 102.
+\paragraph*{101 - The system must be housed in an IP67-rated enclosure} This capability was initially verified by locating a suitable enclosure for Thetis and confirming with the manufacturer through the product data sheet that the system was properly rated.
+Then, it was validated by placing the enclosure onto a Remotely Operated Vehicle (ROV) and descending down to 20-feet of depth while the ROV performed a mission.
+Paper towels were placed within the enclosure so that if any water breached the seals, it would be immediately apparent.
+This represented a worst-case scenario and the enclosure held its seal meaning that it exceeded the capability requirement.
 
-In order to validate these claims, Thetis was placed onto a ROV and set to a depth of 20-feet for approximately 1 hour.
-The case was secured to manufacturer recommendations and a wad of paper towel put inside to absorb and indicate any moisture that leaked in.
-If the case's seal failed, the towels would be wet and further examination would be needed to determine the failure mode and limits.
-Otherwise, if the towels were dry, then the case could reasonably withstand use in a marine environment without compromising the electronics inside.
+[TODO: Insert picture of Thetis on ROV]
 
-[TODO: Insert picture of Thetis case on ROV]
+To represent a more realistic use case, Thetis was placed into a cutout on a surfboard and deployed into the ocean to catch some waves.
+Out nine separate deployments, the case seal failed three different times:
 
-Similarly, the case was tested on surfboards during several deployments.
-These simulated the conditions and use case that Thetis was designed for and would give a more realistic test of the case's water-proofing capability.
+\begin{enumerate}
+    \item A screw was not present in one corner, thereby not clamping that section of the sealing material, 
+    \item a screw was over-torqued and caused the area around the screw to crack, bypassing the seal, and 
+    \item the same case as before was used accidentally.
+\end{enumerate}
 
-[TODO: Insert picture of Thetis in surfboard]
+All three failures were due to operator error proving that careful procedures need to be implemented for actual deployments.
+However, when the case was properly sealed by operators, the seals held and the electronics within were not damaged, even when completely submerged and subjected to dynamic forces as the surfboard rolled and slammed into waves.
 
-\subsection{Instrument Testing}
-Thetis measures accelerations, magnetic fields, and rotation rates on three different sensing axes, X, Y, and Z.
-Each axis follows Cartesian standards are at orthogonal to each other with the origin near the center of mass for the board.
-In order to isolate each axis for testing, a calibration cube (Figure \ref{fig:calibration_cube}) was designed that would allow a dominant sensing axis to be placed in the optimal direction.
-Since a cube has faces that are orthogonal to each other, rotating the cube 90-degrees means that the dominant sensing axis can be switch perfectly between the X-, Y-, and Z-axis.
-The drawing for this cube is shown in Appendix \ref{chap:calibration_cube}. 
+[TODO: Insert picture of Thetis on surfboard]
 
-As Thetis was undergoing testing, it was necessary to directly compare it to a state of the art, commercially-available equivalent, the xio-Technologies x-IMU3 [CITE - xIMU3].
-The devices are placed side-by-side on the cube and their coordinate frames are aligned, i.e. positive X-axis on the x-IMU3 is the same direction as one Thetis.
-Then, both devices undergo the same testing regimens described below.
-As a result, we can draw direct comparisons as shown in Section \ref{sec:results}.
+\paragraph*{102 - The system enclosure must fit within a volume of 8" x 5" x 1.25"} Like Capability 101, this was initially verified by inspection during the search for this enclosure and confirming the enclosure dimensions with the manufacturer.
+Then, it was validated by placing it securely into the cutouts in the surfboard made for the iPhone 6S - the device Thetis is intended to replace, as shown in Figure \ref{fig:thetis_surfboard}.
 
-\paragraph*{Magnetic Testing} In order to verify and validate the magnetometer
+\paragraph*{103 - The system software and firmware will be fully open-source} This capability is both verified and validated by inspection as the code is readily accessible on GitHub.
+The firmware is broken into several sub repositories: \href{https://github.com/Legohead259/Thetis-Firmware}{Thetis-Firmware}, \href{https://github.com/Legohead259/ThetisLib}{ThetisLib}, \href{https://github.com/Legohead259/xioAPI-Arduino}{xioAPI-Arduino}, \href{https://github.com/Legohead259/Timer-Events-Arduino}{Timer-Events-Arduino}, and \href{https://github.com/Legohead259/Fusion-Arduino}{Fusion-Arduino} all of which are under the MIT license and available.
+Thetis has several tangential software packages that are also open source such as the \href{https://github.com/Legohead259/Thetis-Scripts}{scripts repository} used for data processing and analysis, the \href{https://github.com/xioTechnologies/x-IMU3-Software}{x-IMU3 GUI} used to visualize data and log from a host computer, and the \href{https://github.com/Legohead259/Thetis-Calibration}{code for the calibration machine}.
+
+\paragraph*{104 - The system shall record inertial measurements at a minimum frequency of 64 Hz} This capability requires a demonstration in order to be verified and validated.
+We can initially inspect the firmware to ensure that the inertial measurements are taken every 15.6 milliseconds, but it is not guaranteed that the system can consistently take measurements at that speed.
+Therefore, the best way to demonstrate this capability was during the calibration procedure detailed in Section \ref{sec:calibration_methodologies}.
+Thetis was set to record at 64 Hz and when the data was offloaded, it was confirmed to be taken at the appropriate interval.
+Therefore, this capability has been verified and validated within the system.
+
+\paragraph*{105 - The system shall be able to data locally for up to 4 hours continuously} We can analyze the size of logging messages and SD card to determine if this capability is verified.
+In the latest version of the firmware, five messages are published to the data storage device: position, inertial, magnetic, quaternion, and euler angle.
+Combined, these messages take 198 bytes of space and occur, on average, 64 times per second for 12,672 bytes per second.
+There are 14,400 seconds in 4 hours, so multiplying these values together, we get 182.5 megabytes of storage required for 4 hours of use.
+The microSD cards used throughout testing are at least 4 gigabytes which gives an estimated 88 hours of continuous logging.
+This requirement was validated by running Thetis for four hours continuously and verifying that the log file was successfully created and maintained for that period.
+
+\begin{equation} \label{eq:storage_time}
+    t_{\text{samples}} = \frac{N_{\text{storage}} [\text{Bytes}]}{198 [\text{Bytes}] \times 64 [\text{s}^{-1}] \times 3600 \left[\frac{\text{s}}{\text{h}}\right]} = \frac{4 [\text{GB}]}{198 [\text{Bytes}] \times 64 [\text{s}^{-1}] \times 3600 \left[\frac{\text{s}}{\text{h}}\right]} = ~88 [\text{h}]
+\end{equation}
+
+\paragraph*{106 - The system shall be able to operate for up to 4 hours continuously} For this capability, we can verify it by analysis like the previous one.
+We need to start with a couple of assumptions:
+
+\begin{enumerate}
+    \item Battery capacity is 420 mAh with 3.7V nominal voltage,
+    \item Current consumption without WiFi enabled is ~50 mA, and
+    \item Current consumption with WiFi enabled is ~120 mA while transmitting
+\end{enumerate}
+
+The latter two assumptions are based on a zeroth-order estimate by summing together the estimated current consumption of the various components as listed in their data sheets.
+We can then make a zeroth-order estimate using Equation \ref{eq:battery_life}.
+This yields an estimated continuous battery life of 9.4 hours without WiFi and 3.9 hours with WiFi.
+An important note about the WiFi estimate is the assumption that it is constantly transmitting.
+In reality, this may not be accurate so the battery life may be longer.
+If it is below the four-hour threshold, then certain mitigations can be implemented like a burst-mode transmission of data every couple of second or minutes.
+
+\begin{equation} \label{eq:battery_life}
+    t_{\text{battery}} = \frac{3.7 [\text{v}] \times 420 [\text{mAh}]}{3.3 [\text{V}] \times I_{\text{mode}} [\text{mA}]}
+\end{equation}
+
+This capability was validated by running Thetis for four hours continuously from full battery power and ensuring that the battery voltage at the end of the test was within the safe operating limits.
+Specific power consumption tests were not performed due to the technical complexity of precisely measuring current draw.
+
+\paragraph*{107 - The system shall have a simple human interface mechanism for status and logging} This is another capability that is straight forward to verify and validate using inspection techniques.
+First, to enable logging, an operator only needs to hold the ``log'' button for a half second and the same to stop logging.
+To convey status, the RGB LED on-board changes color and pattern.
+By referencing the current RGB LED color and pattern with the diagnostic LED table, then the operator can know what the system is doing.
+These features were used extensively throughout testing with great success.
+
+\paragraph*{108 - The firmware shall be open architecture} This capability is challenging to fully define and implement, hence its relatively low priority in the threshold category.
+To verify this capability has been met, we should consider the difficulty of adding a new feature or component to the firmware.
+The firmware uses an object-oriented approach with a star topology as discussed in Section \ref{sec:firmware}.
+This means that a new feature can be added by putting it into the appropriate class and tying it to other classes/functions through the main \lstinline[style=customInline]|Thetis| object.
+Similarly, we can add a new component by creating a new class in the library and then implementing it in the main class.
+
+Validating this capability will require more research out the scope of this thesis to ensure a proper software architecture is implemented and followed.
+
+\paragraph*{109 - The system will be fully documented} This is another capability that is easy to validate and verify through testing.
+Multiple groups of students and stakeholders will be asked to perform simple tasks using Thetis such as replacing a component, assembling the board, adding a firmware feature, or performing calibration.
+If the participants are able to perform the task using the available documentation, then this capability has been verified and validated.
+Otherwise, the documentation needs to created or modified accordingly.
+
+\paragraph*{110 - The system shall use version control software to track changes} As discussed in Section \ref{ssec:version_control}, GitHub is a centralized VCS solution that enables version history and tracking.
+Since all of the software and firmware for Thetis is on GitHub, this capability has been thoroughly verified and validated.
+Similarly, all of the hardware was designed in Fusion 360 which implements its own VCS solution and then backed up to GitHub.
+
+\paragraph*{111 - The operator shall be }

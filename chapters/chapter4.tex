@@ -40,7 +40,7 @@ For a longer discussion on this machine, see Section \ref{ssec:calibration_machi
     \label{fig:calibration_cube_machine}
 \end{figure}
 
-\section{Methodologies}
+\section{Methodologies} \label{sec:calibration_methodologies}
 The calibration process is important to improve the accuracy of the sensor before post processing and analysis are performed.
 It is crucial that the calibration parameter settings on the device are at their default values before beginning.
 Each of the starting misalignment ($M_0$) and soft iron ($W^{-1}$) matrices should be 3x3 identity matrices and the starting bias ($\pmb{b}$) and hard iron vectors ($\pmb{v}$) should be zero vectors.
@@ -64,7 +64,7 @@ Any starting sensitivity ($\pmb{s}$) vectors should also be a ones vector.
     \end{bmatrix}
 \end{gather}
 
-\subsection{Magnetometer}
+\subsection{Magnetometer} \label{ssec:calibration_magnetometer}
 To calibrate the magnetometer, it needs to be rotated about all three axes in a "figure-8" motion.
 This can be best accomplished by rotating about a single point while making the figure-8 pattern.
 This ensures that the measurements in the X-, Y-, and Z-axis are evenly distributed throughout the magnetic field.
@@ -72,7 +72,7 @@ Without any distortions, this will create a sphere with a radius of the magnitud
 However, as discussed in Chapter \ref{chap:background} and evidenced in Section \ref{sec:calibration_results}, this is not always the case.
 To improve accuracy, make sure that the entire apparatus is far away from any magnetic influences such as electrical fields and magnets.
 
-\subsection{Gyroscope}
+\subsection{Gyroscope} \label{ssec:calibration_gyroscope}
 The gyroscope is calibrated using the calibration machine discussed more in Section \ref{ssec:calibration_machine}.
 To begin, the machine must be booted and the measurement devices turned on.
 Then, two terminal windows can be opened on the machine's Raspberry Pi through SSH or a headed setup.
@@ -118,23 +118,23 @@ Once you have collected the data, you can stop the motor using the command:
 Note that this command sets the motor speed to a default value, so you will need to reset the speed using the commands again.
 It will be beneficial to start/stop recording at the start and end of every test so that a single log file represents a single test.
 
-\subsection{Accelerometer}
+\subsection{Accelerometer} \label{ssec:calibration_accelerometer}
 The accelerometer must be calibrated on the gear and socket apparatus while it is vertical.
 The apparatus should be leveled such that the instruments on the calibration cube are perfectly vertical with respect to gravity and the other axes are planar to the Earth's surface.
 Choose an axis and place the positive direction downwards (-1g).
 The arrows on the coordinate reference markers point towards the positive direction.
-Then, align the indicator on the gear with 0-degree marker on the socket, as shown in Figure \ref{calibration_cube_gear}.
+Then, align the indicator on the gear with 0-degree marker on the socket, as shown in Figure \ref{fig:calibration_cube_gear}.
 
 Rotate the calibration cube and gear in 45-degree increments, stopping for 30-seconds at each interval to collect an good average of data.
 It will be beneficial to start/stop recording at the start and end of each increment so that a single log file represents a single orientation.
 
-\subsection{Orientation}
+\subsection{Orientation} \label{ssec:calibration_orientation}
 Roll and pitch orientation data can be collected simultaneously with the accelerometer calibration data as the devices are rotated about the X- and Y-axis, respectively.
 This will give roll and pitch in 45-degree increments that can be analyzed for errors before and after calibration.
 
 To get the yaw readings, we can re-use the gear and socket apparatus, this time placing it flat on a surface and placing the Z-axis of the devices vertical.
 Make sure that the entire apparatus is far away from any magnetic influences and near the location where the magnetometer was calibrated.
-Start the gear at the 0-degree marker on the socket, then orient the entire apparatus to magnetic north as determined by an external compass as shown in Figure \ref{fig:magnetic_apparatus}.
+Start the gear at the 0-degree marker on the socket, then orient the entire apparatus to magnetic north as determined by an external compass as shown in Figure \ref{fig:calibration_cube_compass}.
 Rotate the calibration cube and gear in 45-degree increments for 360-degrees, pausing for 30-seconds at each interval to get an average reading.
 It will be beneficial to start/stop recording at the start and end of each increment so that a single log file represents a single orientation.
 
@@ -142,10 +142,10 @@ It will be beneficial to start/stop recording at the start and end of each incre
     \centering
     \includegraphics[height=2in]{calibration/calibration_cube_compass.jpg}
     \caption{Calibration cube aligned with an external compass.}
-    \label{fig:calibration_cube_gear}
+    \label{fig:calibration_cube_compass}
 \end{figure}
 
-\section{Results}
+\section{Results} \label{sec:calibration_results}
 The calibration data was collected and ran through a calibration script which is a Jupyter Notebook [CITE - calibration script].
 The raw log files were converted to CSVs using the x-IMU3 GUI [Footnote for GUI] conversion tool.
 The resultant Magnetometer, Inertial, and Quaternion files were imported to the script using the \lstinline[style=customInline]|pandas| library.
@@ -158,7 +158,7 @@ This cleaned and windowed data were placed back into the dictionary for each dat
 After plotting the raw inertial data, the calibration parameters were calculated for the accelerometer and gyroscope.
 The process used the mathematical techniques described in Chapter \ref{chap:background} and several external toolboxes.
 For determining the misalignment matrix and sensitivity vector, the \lstinline[style=customInline]|scipy.optimize.minimize| toolbox [FOOTNOTE] was used with the Sequential Least Squares Programming (SLSQP) method.
-For this method, the objective function defined in Equation \ref{eq:root_mean_square_error} was used as the scalar function.
+For this method, the objective function defined in Equation \ref{eq:misalignment_obj_func} was used as the scalar function.
 
 After producing the inertial calibration parameters, the script calculates the root-mean-square-error between for the devices with respect to ground truth and each other. 
 These plots are shown in the following section.
@@ -257,7 +257,7 @@ The calibration data yielded the following parameters:
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{calibration/prelim/prelim_accel.png}
-    \caption[Cummulative Gyroscope Error]{Root-Mean-Square-Error during calibration across all axes and test orientations. From left to right, Thetis with respect to the ground truth, Thetis with respect to the x-IMU3, and the x-IMU3 with respect to the ground truth.}
+    \caption[Cumulative Gyroscope Error]{Root-Mean-Square-Error during calibration across all axes and test orientations. From left to right, Thetis with respect to the ground truth, Thetis with respect to the x-IMU3, and the x-IMU3 with respect to the ground truth.}
     \label{fig:prelim_accel_data}
 \end{figure}
 

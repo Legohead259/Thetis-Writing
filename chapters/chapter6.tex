@@ -1,0 +1,89 @@
+%%-----------------Chapter 6---------------------------
+\chapter{Future Efforts and Potential Applications}
+As you may have noticed, this thesis was an intensive, multi-disciplinary effort that required in-depth knowledge of electronics, board design, software engineering, and systems engineering.
+Because of the breadth and depth required by this thesis, some areas were not covered due to technical or temporal constraints.
+A large portion of the software was only finalized in the months leading up to finishing this thesis and a hardware fault cost another couple of months of development work.
+Therefore, there is a lot left unfinished that is intended for future students to pick up as their own research projects.
+Some of these efforts are detailed in this chapter.
+
+\section{Calibration}
+As discussed at the end of Chapter \ref{chap:calibration}, the calibration procedure failed for the inertial sensors.
+The specific reasons could not be determined before the thesis needed to be completed and were out of the technical scope anyways.
+Therefore, it will be required in the future to examine these procedures and determine the source of the flaws.
+
+In order to accomplish this, the objective function and constraints should be examined first.
+It is likely that the objective function was not used properly with the optimization procedure, producing results that fell into a local minima that satisfied the problem, but did not satisfy the calibration application.
+Therefore, the optimization function should be modified to include additional constraints or boundaries to limit the range of ``acceptable'' results from the objective function.
+This may improve the accuracy of the calculated misalignment matrices and sensitivity vectors.
+
+Additionally, these procedures should be more thoroughly tested and evaluated across a range of boards and types of sensors.
+The calibration script created for this thesis is not sufficient for this task, so the concepts employed by it should be expanded as required.
+The measurements can be compared between the boards before and after calibration to determine the efficacy of the proposed procedures.
+
+\section{Hardware Revision F6}
+Based on testing and interviews with Dr. Madgwick [CITe - madgwick interviews], another hardware revision, Revision F6, was created to address some of the concerns with Revision F5.
+First, the secondary flash storage chip, the XTSD, was removed entirely since it was redundant and caused the hardware issues that crippled development on Revision F5 for months.
+
+The space created by removing this chip allowed the MARG array to moved to a section of the board that could be mechanically isolated from the rest of the board.
+This was necessary because MEMS sensors are affected by strain and in the configuration on Revision F5, the sensors were located at a point of max strain when the board was screwed into the enclosure.
+This would affect precision and could cause measurements to slightly vary depending on the torque of the screws used in the assembly.
+
+Additionally, the \lstinline[style=customInline]|data ready| interrupts from the sensors were attached to the microcontroller which should improve performance by switching the measurement method to an interrupt-based one versus polling.
+By switching to an interrupt-based measurement method the readings can be taken at a much higher sample rate and be more accurate to the recorded timestamp.
+This method is also less computationally intensive on the microcontroller.
+
+Then the microcontroller was changed to one that had an antenna attached directly to its PCB, removing the need for an external antenna.
+On the ESP32-S2 microcontroller, the chip would refuse to boot when an external antenna was attached.
+This issue was never fully investigated, but the onboard antenna should negate this problem and simplify the overall assembly.
+
+Finally, the power supply was substituted for a more efficient DC-DC converter which should improve efficiency and extend battery life.
+
+This revision has been designed in ECAD, but was not ordered or built due to time constraints.
+Therefore, in the future, a student or group of students can build and verify and validate this design using the procedures laid out for Revision F5.
+
+[TODO: Insert picture of Revision F6 and schematic]
+
+\section{Software Improvements}
+There are several things that are feasible with the hardware available that were not able to be implemented before the thesis needed to be completed.
+Most of these features are not explicitly required by the system requirements, but they could improve the quality and usability of Thetis.
+
+\subsection{Wireless}
+
+\subsection{Settings}
+
+\subsection{Data Storage}
+
+
+\subsection{Sensors}
+Many of the sensors implemented in the firmware are based upon the Adafruit libraries for those components.
+While this simplifies the integration, it bloats the memory and storage requirements.
+This also creates a dependency on third-party software which could be problematic in some situations.
+Therefore, it would be nicer to have all of the sensors packaged individually in libraries that are self-contained and conform to the I2CDevLib [TODO: add footnote to I2CDevLib] standards.
+This would improve the code performance and reduce memory requirements.
+
+Additionally, the \lstinline[style=custominline]|Fusion| library has implemented some new features for accelerometer and magnetometer rejection and status flags that would be useful for the entire sensor fusion process.
+Therefore, the firmware should be migrated to this new version and have these features implemented.
+
+\section{More Verification and Validation}
+
+\subsection{Wireless}
+
+\subsection{Power}
+
+\section{Calibration Machine}
+
+\subsection{Requirements}
+
+\subsection{Block Diagram}
+
+\subsection{Concept of Operations}
+
+\section{Floating Body Testing}
+
+\subsection{Surfboard}
+
+\subsection{Wave Buoy}
+
+\subsection{Model Barge}
+
+\section{WEAVE}

@@ -685,11 +685,11 @@ The capabilities were organized into a traceability matrix (more information in 
 		108 & The system firmware shall be an open-architecture & 0.5 & 5 & A \\
 		109 & The system will be fully documented & 1 & 10 & A \\
 		110 & The system shall use version control software to track changes & 1 & 10 & D \\
-		111 & The operator shall be able to load data off the system & 1 & 10 & D \\
+		111 & The operator shall be able to offload data from the system & 1 & 10 & D \\
 		112 & The system shall be capable of being assembled by hand using basic soldering tools & 0.8 & 8 & D \\
 		\hline
 	\end{tabular}
-	\caption{Thetis threshold capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Threshold Capabilities]{Thetis threshold capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:threshold_capabilities}
 \end{table}
 }
@@ -703,15 +703,15 @@ The capabilities were organized into a traceability matrix (more information in 
 		\hline
 		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
 		\hline
-		201 & The system shall integrate a GPS for position tracking at least 1 Hz & 0.7 & 6 & D \\
+		201 & The system shall use a GPS with a minimum 1 Hz update rate for position tracking & 0.7 & 6 & D \\
 		202 & The system will have a simple logging and status interface accessible via web terminal & 0.3 & 2 & A \\
 		203 & The system shall be able to monitor and report battery state of charge & 0.2 & 2 & A \\
-		204 & The system will have configurable settings that can be set by the user & 0.4 & 3 & D \\
+		204 & The system will have configurable settings that can be changed by the operator & 0.4 & 3 & D \\
 		205 & The system can operate in a Wi-Fi access point or client mode	& 0.2 & 2 & A \\
 		206 & The sensor measurements shall incorporate a calibration model & 0.5 & 4 & TIP \\
 		\hline
 	\end{tabular}
-	\caption{Thetis reach capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Reach Capabilities]{Thetis reach capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:reach_capabilities}
 \end{table}
 }
@@ -725,13 +725,13 @@ The capabilities were organized into a traceability matrix (more information in 
 		\hline
 		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
 		\hline
-		301 & The system file storage shall be accessible via web interface	& 0.1 & 0.8 & A \\
+		301 & The system file storage shall be accessible via web or USB interface	& 0.1 & 0.8 & A \\
 		302 & The system shall have a backup storage option in case primary storage fails & 0.1 & 0.8 & R \\
-		303 & The system will use a microcontroller capable of basic machine learning & 0.05 & 0.4 & UR \\
+		303 & The system will use a microcontroller capable of machine learning using TinyML & 0.05 & 0.4 & UR \\
 		304 & The system shall be able to log in a burst mode for up to 24 hours & 0.05 & 0.4 & UR \\
 		\hline
 	\end{tabular}
-	\caption{Thetis stretch capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Stretch Capabilities]{Thetis stretch capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:stretch_capabilities}
 \end{table}
 }

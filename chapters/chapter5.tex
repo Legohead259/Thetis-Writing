@@ -29,6 +29,38 @@ Then, we shall do the same for the stakeholder requirements.
 
 \section{Threshold Capabilities}
 
+\newcommand{\yes}{\cellcolor[HTML]{63BE7B}Y}
+\newcommand{\no}{\cellcolor[HTML]{F8696B}N}  %{0.9}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+    \centering
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Threshold}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+		\hline
+		101 & The system must be housed in an IP67-rated enclosure & \yes & \yes & D \\
+		102 & The system enclosure must fit within the volume of 8" x 5" x 1.25" & \yes & \yes & D \\
+		103 & The system software and firmware will be fully open-source & \yes & \yes & D \\
+		104 & The system shall record inertial measurements at a minimum frequency of 64 Hz & \yes & \yes & D \\
+		105 & The system shall be able to store data locally for up to 4 hours continuously & \yes & \no & TIP \\
+		106 & The system shall be able to be operate for up to 4 hours continuously & \yes & \no & A \\
+		107 & The system shall have simple human interface mechanism for status and logging & \yes & \yes & D \\
+		108 & The system firmware shall be an open-architecture & \yes & \yes & A \\
+		109 & The system will be fully documented & \no & \no & A \\
+		110 & The system shall use version control software to track changes & \yes & \yes & D \\
+		111 & The operator shall be able to offload data from the system & \yes & \yes & D \\
+		112 & The system shall be capable of being assembled by hand using basic soldering tools & \yes & \yes & D \\
+		\hline
+	\end{tabular}
+	\caption{Verification and validation of threshold capabilities}
+	\label{tab:vv_threshold_capabilities}
+\end{table}
+}
+
 \paragraph*{101 - The system must be housed in an IP67-rated enclosure} This capability was initially verified by locating a suitable enclosure for Thetis and confirming with the manufacturer through the product data sheet that the system was properly rated.
 Then, it was validated by placing the enclosure onto a Remotely Operated Vehicle (ROV) and descending down to 20-feet of depth while the ROV performed a mission.
 Paper towels were placed within the enclosure so that if any water breached the seals, it would be immediately apparent.
@@ -120,4 +152,169 @@ Otherwise, the documentation needs to created or modified accordingly.
 Since all of the software and firmware for Thetis is on GitHub, this capability has been thoroughly verified and validated.
 Similarly, all of the hardware was designed in Fusion 360 which implements its own VCS solution and then backed up to GitHub.
 
-\paragraph*{111 - The operator shall be }
+\paragraph*{111 - The operator shall be able to offload data from the system} Since the operator needs to be able to pull data off the system after an experiment, this capability is easily verified and validated via demonstration.
+During the calibration procedure, data was routinely written to the onboard microSD card and then the operator could pull the card out, load it into a host computer, then transfer the data into an analysis script.
+Additionally, data was able to be recorded in real-time through the x-IMU3 GUI application on a host computer through a USB connection to Thetis.
+Both of these methods and verified that the capability was implemented and the fact that it could be reliably used throughout multiple tests validated it.
+
+\paragraph*{112 - The system shall be capable of being assembled using basic soldering tools} This capability was clearly demonstrated in Section \ref{ssec:assembly_techniques} where the board is shown to be assembled using solder paste, tweezers, a soldering iron, and hot air.
+We can also verify this capability by inspecting the various component used throughout the design.
+The smallest component is an `0603' which is 60 thousandths of an inch long by 30 thousandths wide.
+While certainly small, they can be manipulated by a steady hand and placed on the board with reasonable accuracy.
+For these reasons, this capability has been verified and validated.
+
+\section{Reach Capabilities}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+    \centering
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Reach}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+		\hline
+		201 & The system shall use a GPS with a minimum 1 Hz update rate for position tracking & \yes & \no & TIP \\
+		202 & The system will have a simple logging and status interface accessible via web terminal & \no & \no & A \\
+		203 & The system shall be able to monitor and report battery state of charge & \yes & \no & A \\
+		204 & The system will have configurable settings that can be changed by the operator & \yes & \yes & D \\
+		205 & The system can operate in a Wi-Fi access point or client mode	& \yes & \no & A \\
+		206 & The sensor measurements shall incorporate a calibration model & \yes & \no & TIP \\
+		\hline
+	\end{tabular}
+	\caption{Verification and validation of reach capabilities}
+	\label{tab:vv_reach_capabilities}
+\end{table}
+}
+
+\paragraph*{201 - The system shall use a GPS with a minimum 1 Hz update rate for position tracking} This capability can be verified by inspecting the GPS used on Thetis.
+The GPS receiver uses the MTK3339 chipset [TODO: Footnote to Adafruit ultimate GPS module] which is capable of update messages every 1 to 10 Hz, according to its manufacturer data sheet. 
+Due to time constraints, this device was unable to be validated in the latest version of the Thetis firmware.
+Details for this step are discussed more in Section \ref{sec:gps_next_steps}.
+
+\paragraph*{202 - The system will have a simple human interface accessible via web browser} In earlier versions of the firmware, there was a basic webpage that allowed operators to start/stop logging and check the device status.
+However, in the latest firmware version, this capability was removed to simplify testing.
+The hardware is still capable of providing this interface but it remains to be implemented.
+For more information, see Section \ref{ssec:wifi_next_steps}.
+
+\paragraph*{203 - The system shall be able to monitor and report battery state of charge} This capability has been verified through inspection by integrating the MAX17048 [TODO: Footnote to product page] onto the board design.
+This chip calculates state of charge and reports it to the microcontroller.
+Then the battery state is reported as a battery message through the device API.
+However, this capability has not been validated as the battery monitor chip has not been calibrated for the selected batteries nor analyzed for its accuracy.
+Further testing is required as detailed in Section \ref{ssec:battery_monitor_next_steps}.
+
+\paragraph*{204 - The system will have configurable settings that can be changed by the operator} This capability was another one that was verified and validated throughout the calibration process by testing.
+The firmware implements and extends the xioAPI which provides an extensive list of settings that can be changed via JSON commands (TODO: CITE user manual).
+The calibration process required tweaks to some settings which were routinely done through the USB connection to a host computer.
+Additionally, during development of this feature, every setting was tested and validated to work.
+
+\paragraph*{205 - The system can operate in a Wi-Fi access point or client mode} This capability can be verified by inspecting the manufacturer data sheet for the microcontroller used on Thetis.
+The ESP32 series of chips used on the board are Wi-Fi enabled microcontrollers that can broadcast their own networks (access point mode) or connect to a local one (client mode).
+On Thetis, switching between these modes and Wi-Fi disabled is done through configuration commands.
+Performance of the Wi-Fi connection and other features have not been validated in the latest firmware and should be integrated following the discussion in Section \ref{ssec:wifi_next_steps}.
+
+\paragraph*{206 - The sensor measurements shall incorporate a calibration model} The capability is implemented by using the Madgwick sensor fusion algorithm described in Chapter \ref{chap:background} and the \lstinline[style=customInline]|Fusion| library made for that algorithm.
+The \lstinline[style=customInline]|Fusion| library incorporates the calibration model described in Equations \ref{eq:inertial_model} and \ref{eq:magnetic_model} by default and the specific calibration parameters are loaded as configuration settings.
+Due to the failure of the calibration process, this capability was not validated.
+
+\section{Stretch Capabilities}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}[ht!]
+    \centering
+	\renewcommand{\arraystretch}{1.5} % Set row height
+	\begin{tabular}{| c | m{0.55\textwidth} | c | c | c |}
+		\hline
+		\multicolumn{5}{| c |}{\textbf{Stretch}} \\
+		\hline
+		\textbf{ID} & \multicolumn{1}{c|}{\textbf{Description}} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+		\hline
+		301 & The system file storage shall be accessible via web or USB interface	& \no & \no & A \\
+		302 & The system shall have a backup storage option in case primary storage fails & \no & \no & R \\
+		303 & The system will use a microcontroller capable of machine learning using TinyML & \no & \no & UR \\
+		304 & The system shall be able to log in a burst mode for up to 24 hours & \no & \no & UR \\
+		\hline
+	\end{tabular}
+	\caption{Verification and validation of stretch capabilities}
+	\label{tab:vv_stretch_capabilities}
+\end{table}
+}
+
+\paragraph*{301 - The system file storage shall be accessible via web or USB interface} From previous experiments with the ESP32-S2 and -S3 microcontrollers, it is possible to host a File Transfer Protocol (FTP) server [TODO: footnote/ref to FTP server experiments] or have the device appear as a USB flash drive [TODO: footnote/ref to USB mdisk experiment] when connected to a host computer.
+However, in the latest firmware version, these features are not implemented so this capability is feasible, but not verified or validated in the current system.
+
+\paragraph*{302 - The system shall have a backup storage option in case primary storage fails} This capability was initially envisioned as a mitigation for any microSD card failure mode.
+Especially in cases where the microSD card could become physically damaged during a test, the secondary option would still allow some data to be recovered.
+However, as explained in [TODO: determine prototype discussion section], this capability introduced system-breaking errors and the anticipated failure mode was never encountered throughout initial testing.
+Therefore, this capability was rejected in favor of a simplified and more reliable software and hardware design.
+
+\paragraph*{303 - The system will use a microcontroller capable of machine learning using TinyML} This capability was added to address some of the future efforts proposed in the next chapter.
+An experiment was run [TODO: footnote/ref to TinyML experiment] that proved the feasibility, but due to the technical effort and time constraints, this capability was not seriously considered for implementation.
+
+\paragraph*{304 - The system shall be able to log in a burst mode for up to 24 hours} This is another capability that was envision for a future use, but never seriously considered for implementation.
+The idea with this is to extend the battery life to capture inertial signals over a longer time span such as required for the WEAVE experiment proposed in Section \ref{sec:weave}.
+However, this capability could be better implemented by a new hardware revision that could accept external battery power, instead of relying on its smaller internal battery.
+Theoretically, this is possible to integrate using the component's sleep functionalities and other techniques.
+
+\section{Stakeholder Requirements}
+
+{\fontsize{8pt}{8pt}\selectfont
+\begin{table}
+	\centering
+	\renewcommand{\arraystretch}{1.75}
+	\begin{tabular}{|c | m{0.5\textwidth} | c | c | c |}
+		\hline
+		\textbf{ID} & \multicolumn{1}{c |}{\textbf{Description}} & \textbf{Verified?} & \textbf{Validated?} & \textbf{Status} \\
+		\hline
+		SR 01 & The system shall be able to record acceleration, rotation rate, orientation, and position & \yes & \yes & TIP \\
+		SR 02 & The system shall be able to fit into a small IP67-rated, or better, enclosure & \yes & \yes & D \\
+		SR 03 & The system shall be able to be powered by battery for more than 4 hours continuously & \yes & \yes & D \\
+		SR 04 & The system shall be cheaper than \$200 per unit & \yes & \no & A \\
+		SR 05 & The system shall use components that are readily available COTS & \yes & \yes & D \\
+		SR 06 & The system designs shall be open source for modification by students & \yes & \yes & D \\
+		SR 07 & The system shall allow users to change settings via interface and/or configuration file & \yes & \yes & D \\
+		SR 08 & The system shall communicate extra-device using WiFi and USB & \yes & \yes & A \\
+		SR 09 & They system shall have enough on-board storage for 4 hours of continuously logging at 64 Hz & \yes & \yes & D \\
+		\hline
+	\end{tabular}
+	\caption{Verification and validation of stakeholder requirements}
+	\label{tab:vv_stakeholder_reqs}
+\end{table}
+}
+
+\paragraph*{SR 01 - The system shall be able to record acceleration, rotation rate, orientation, and position} The requirement was verified and validated throughout the calibration procedure described in the previous chapter.
+Thetis recorded and output the inertial measurements (rotation rate and acceleration), magnetometer readings, position measurements from the GPS, and orientation as both a quaternion and euler angles.
+This was recorded through the on-board microSD card logger and through the x-IMU3 GUI application running on a host computer and connected via USB.
+
+\paragraph*{SR 02 - The system shall be able to fit into a small IP67-rated, or better, enclosure} As explained with Capabilities 101 and 102 in Section \ref{sec:vv_threshold_capabilities}, this requirement was verified and validated by testing the enclosure at depth on an ROV and in a more realistic deployment.
+The enclosure held a water-tight seal when properly engaged and undamaged.
+
+\paragraph*{SR 03 - The system shall be able to be powered by battery for more than 4 hours continuously} This requirement was verified using the analysis discussed in Section \ref{sec:vv_threshold_capabilities} with Capability 106. 
+It was further validated by running the system for more than 4 hours and checking that the end battery voltage was at an acceptable level.
+
+\paragraph*{SR 04 - The system shall be cheaper than \$200 per unit} This requirement was verified by inspecting the Bill of Materials for Thetis and checking that the summation was less than \$200.
+This requirement is difficult to validate however, because additional hardware revisions may be necessary to improve performance or add additional features.
+This estimate also does not include the development time or overall expense, which would definitely increase the unit price.
+
+\paragraph*{SR 05 - The system shall use components that are readily available COTS} This requirement was verified and validated by sourcing components from online distributors like DigiKey.
+All of the components used on Thetis can be purchased online and then assembled on the custom PCB. 
+This requirement was tricky to implement during the chip shortage of 2020, but now that more components are more readily available, further hardware revisions should not have any problems continuing to use COTS parts.
+
+\paragraph*{SR 06 - The system shall be open source for modification by students} This requirement is verified by the extensive use of GitHub repositories that are public-facing and accessible by anyone with an internet connection.
+Students can access the repositories, download the source code and files, make modifications as needed.
+To validate the requirement, multiple groups of students and stakeholders were gathered to attempt various tasks such as repair a chip, calibrate the board, add a new software feature, etc.
+As they were performing these tasks, they were given documentation and in turn provided feedback on the quality of the documentation and any clarifications they needed.
+
+\paragraph*{SR 07 - The system shall allow users to change settings via interface and/or configuration files} The requirement was verified by implementing and extending the xioAPI in the Thetis firmware.
+This API provides a suite of settings to control how the board performs and its capabilities.
+The configurations can be changed via a web or USB interface to a host computer or by uploading a custom configuration file to the onboard flash storage.
+To validate the requirement, each setting was thoroughly tested to ensure it could be changed and the interface was used during the calibration process to tweak a couple of settings.
+
+\paragraph*{SR 08 - The system shall communicate extra-device using Wi-Fi and USB} Since Thetis uses a microcontroller that is capable of USB host and Wi-Fi, this requirement is easily verified by inspecting the manufacturer data sheet.
+However, the requirement remains unvalidated because the performance when using the wireless interface is severely limited.
+More testing is required as detailed in Section \ref{sec:wifi_next_steps}
+
+\paragraph*{SR 09 - The system shall have enough on board storage for 4 hours of continuous logging at 64 Hz} This requirement was verified and validated throughout the calibration process.
+Firstly, the calibration data was captured at 64 Hz proving the second part of the requirement.
+Then, as described in Section \ref{sec:vv_threshold_capabilities}, the microSD card storage size was analyzed to ensure that it was large enough and Thetis was run for 4 hours, logging the entire time.

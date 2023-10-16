@@ -1,4 +1,4 @@
-\chapter{Wave Estimating Algorithm for Vessels Experiment (WEAVE)}
+\chapter{Wave Estimating Algorithm for Vessels Experiment (WEAVE)} \label{chap:weave}
 
 \section{Introduction} \label{sec:weave_intro}
 
@@ -295,54 +295,25 @@ From the displacement, we can perform a wave-by-wave analysis which uses the zer
 The psuedocode for the algorithm is given below. 
 The analysis of all these windows yields wave statistics that we can compare between the inertial data loggers and the spectral analysis method.
 
-% \begin{algorithmic}
-%     \Procedure{name}{params}
-%       \State body
-%     \EndProcedure
-    % \end{algorithmic}
-% Function: wave_by_wave
-% Arguments: eta, f_s, g
-% Returns: upcross_times, waves
-%   index := 1
-%   Find all indicies where eta is negative
-%   For each negative index:
-%     If the next index in eta is positive:
-%       Add the current negative index to upcross_times
-%       Increment index
-%     end
-%   end
-
-%   For each upcross_time except the last one:s
-%     Calculate wave waves inside a wave structure
-%     Append new wave struct to waves
-%   end
-% end
-% \end{algorithmic}
-
-% \begin{algorithm}
-%     \KwIn{$\eta, f_s, g$}
-%     \KwOut{upcross_times, waves}
-%     \caption{Wave by Wave algorithm}\label{alg:wave_by_wave}                        
-% \end{algorithm}
-
 \begin{algorithm}
     \begin{algorithmic}[1]
         \Function{WaveByWave}{$\eta,f_s,g$}
         \State index $\longleftarrow 1$
         \State negIndices $\longleftarrow$ find all negative indices in $\eta$ \Comment{negIndices is a list of indicies}
-        \For{$n=1, \dots, \text{size}(\text{negIndices})$}
-            \If{$\eta[negIndices[n]+1] > 0$}
-                \State $upcrossTimes[index] \longleftarrow negIndices[n]$
-                \State $index++$
+        \For{n=1, $\dots$, size(negIndices)}
+            \If{$\eta$[negIndices[n]+1]$ > 0$}
+                \State upcrossTimes[index] $\longleftarrow$ negIndices[n]
+                \State index++
             \EndIf
         \EndFor
 
-        \For{$u=1, \dots, size(upcrossTimes)-1$}
-            \State $\eta_u \longleftarrow \eta[upcrossTimes[u]:upcrossTimes[u+1]]$
+        \For{u=1, $\dots$, size(upcrossTimes)-1}
+            \State $\eta_u \longleftarrow \eta$[upcrossTimes[u]:upcrossTimes[u+1]]
             \State Calculate $H_u$, $T_u$, and others for $\eta_u$
             \State Put wave parameters into wave structure
             \State Append the new wave structure to $waves$
         \EndFor
+        \State Return $waves$
         \EndFunction
     \end{algorithmic}
     \caption{Wave By Wave}\label{alg:wave_by_wave}

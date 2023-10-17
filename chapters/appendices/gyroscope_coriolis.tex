@@ -1,0 +1,59 @@
+\chapter{Gyroscope Coriolis Effect Proof} \labchap{gyroscope_proof}
+
+The position of the center of mass in the gyroscope body  frame is given by:
+
+\begin{equation}
+    B_c = 
+    \begin{bmatrix}
+        x \\
+        y 
+    \end{bmatrix}
+\end{equation}
+
+The inertial velocity of the mass is given by the positional derivative and the tangential velocity due to rotation:
+
+\begin{equation}
+    \dot{B_c} = 
+    \begin{bmatrix}
+        \dot{x} \\ 
+        \dot{y}
+    \end{bmatrix}
+    + B_\omega \times B_r =
+    \begin{bmatrix}
+        \dot{x} - \omega y \\
+        \dot{y} + \omega x
+    \end{bmatrix}
+\end{equation}
+
+The inertial acceleration is the next derivative given by:
+
+\begin{equation}
+    \ddot{B_c} = 
+    \begin{bmatrix}
+        \ddot{x} \\
+        \ddot{y}
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \dot{x}-\omega y \\
+        \dot{y} + \omega x
+    \end{bmatrix}
+    + B_\omega \times B_{\dot{r}} = 
+    \begin{bmatrix}
+        \ddot{x} - 2\omega\dot{y} - \omega^2 x \\
+        \ddot{y} + 2\omega\dot{x} - \omega^2 y
+    \end{bmatrix}
+\end{equation}
+
+The first element in $(3)$ represents the acceleration experienced by the x-axis (driven axis). This axis is actively controlled by the gyroscope driving circuit. The second element is that of the sensing axis (y-axis). Recall Newton’s Second Law of Motion, $F=ma$:
+
+\begin{equation}
+    F_y=mB_{\ddot{c}, y} = m(\ddot{y}+2\omega\dot{x}-\omega^2y)
+\end{equation}
+
+If the mass starts at the resting position, $y=\dot{y}=\ddot{y}=0$. Therefore, we get:
+
+\begin{equation}
+    F_y=2m\omega\dot{x}
+\end{equation}
+
+Since the mass is displaced along the x-axis at a high frequency and short distance, $\dot{x}$ is significant and the Coriolis effect generates a high amplitude, proportional displacement in the y-axis. The tuning fork configuration essentially doubles the displacement and makes capacitive detection easier. Additionally, when undergoing linear acceleration, the masses move equally, minimizing sensitivity to shock, vibration, and tilt.

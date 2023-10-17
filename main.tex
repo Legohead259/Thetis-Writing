@@ -11,6 +11,8 @@
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage[a-1b]{pdfx}
+\usepackage{biblatex}
+\addbibresource{mybibliography.bib}
 
 \usepackage{caption}
 \usepackage{subcaption}
@@ -233,8 +235,10 @@
 %% -----------Bibliography--------------------------
 \nocite{*}
 % Do not split a reference between two pages, this should be taken care of in the style
-\bibliographystyle{plain}
-\bibliography{mybibliography}
+% \bibliographystyle{plain}
+% \bibliography{mybibliography}
+\printbibliography
+
 %% -----------Appendices----------------------------
 \appendix
 \include{chapters/appendices/voltage_divider}

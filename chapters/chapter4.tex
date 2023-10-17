@@ -1,18 +1,18 @@
 %%---------------Chapter 4------------------------------
-\chapter{Calibration} \label{chap:calibration}
+\chapter{Calibration} \labchap{calibration}
 Now that Thetis is designed, we have to calibrate the instruments on board.
-We will follow the procedures used in Madgwick [CITE - Madgwick Thesis] and the mathematical methods discussed in Chapter \ref{chap:background}.
+We will follow the procedures used in Madgwick \cite{Madgwick:dissertation} and the mathematical methods discussed in Chapter \ref{chap:background}.
 Before calibration began, it was necessary to design a couple of frames and machines to assist with the process.
 
 Since the three sensing axes follow Cartesian standard and are orthogonal to each other in three dimensions, a calibration cube is needed to align a single axis to the measurement apparatus.
 The cube ensures that a single axis is align with the instrument and the other two are planar - this mitigates their influence on the data and allows us to measure one specific axis.
-It is also designed to hold an x-IMU3 [CITE] next to Thetis, allowing a direct comparison to be made while collecting data - this is discussed further within this section.
+It is also designed to hold an x-IMU3 \cite{xioTechnologies} next to Thetis, allowing a direct comparison to be made while collecting data - this is discussed further within this section.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[height=2in]{calibration/calibration_cube2.jpg}
     \caption[Calibration cube]{Calibration cube with the x-IMU3 (left) and Thetis (right) mounted on it}
-    \label{fig:calibration_cube}
+    \labfig{calibration_cube}
 \end{figure}
 
 To test the accelerometer and orientation data, a 72-tooth gear and socket was cut out of spare wood using a laser cutter.
@@ -23,24 +23,23 @@ This means that Thetis and the x-IMU3 can be rotated in 5-degree increments with
     \centering
     \includegraphics[height=2in]{calibration/calibration_cube_gear.jpg}
     \caption[Raw and Windowed Gyroscope Data]{Calibration cube mounted in the gear and socket apparatus for accelerometer and orientation testing.}
-    \label{fig:calibration_cube_gear}
+    \labfig{calibration_cube_gear}
 \end{figure}
 
 Finally, to test the gyroscope, a machine was designed and created that could rotate the calibration cube at a constant specified rate.
-It is based on a Raspberry Pi running Robot Operating System 2 [CITE/Footnote] using a stepper motor driver HAT [CITE/Footnote].
-The HAT is connected to a stepper motor which is coupled to a plate mounted on a lazy susan bearing [CITE/footnote].
+It is based on a Raspberry Pi running Robot Operating System 2 \cite{Macenski:2022} using a stepper motor driver HAT \footnote{\url{https://www.waveshare.com/stepper-motor-hat.htm}}.
+The HAT is connected to a stepper motor which is coupled to a plate mounted on a lazy susan bearing \footnote{\url{https://www.tindie.com/products/fluxgarage/turntable-for-stepper-motor-kit/}}.
 Commands to the Pi allow it to start the motor, begin rotating, and then stop rotating.
 Some other features are implemented, but not used for calibration.
-For a longer discussion on this machine, see Section \ref{ssec:calibration_machine}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[height=2in]{calibration/calibration_cube_machine.jpg}
     \caption{Calibration cube mounted on top of the rotating plate for gyroscope data collection.}
-    \label{fig:calibration_cube_machine}
+    \labfig{calibration_cube_machine}
 \end{figure}
 
-\section{Methodologies} \label{sec:calibration_methodologies}
+\section{Methodologies} \labsec{calibration_methodologies}
 The calibration process is important to improve the accuracy of the sensor before post processing and analysis are performed.
 It is crucial that the calibration parameter settings on the device are at their default values before beginning.
 Each of the starting misalignment ($M_0$) and soft iron ($W^{-1}$) matrices should be 3x3 identity matrices and the starting bias ($\pmb{b}$) and hard iron vectors ($\pmb{v}$) should be zero vectors.
@@ -64,7 +63,7 @@ Any starting sensitivity ($\pmb{s}$) vectors should also be a ones vector.
     \end{bmatrix}
 \end{gather}
 
-\subsection{Magnetometer} \label{ssec:calibration_magnetometer}
+\subsection{Magnetometer} \labsubsec{calibration_magnetometer}
 To calibrate the magnetometer, it needs to be rotated about all three axes in a "figure-8" motion.
 This can be best accomplished by rotating about a single point while making the figure-8 pattern.
 This ensures that the measurements in the X-, Y-, and Z-axis are evenly distributed throughout the magnetic field.
@@ -72,8 +71,8 @@ Without any distortions, this will create a sphere with a radius of the magnitud
 However, as discussed in Chapter \ref{chap:background} and evidenced in Section \ref{sec:calibration_results}, this is not always the case.
 To improve accuracy, make sure that the entire apparatus is far away from any magnetic influences such as electrical fields and magnets.
 
-\subsection{Gyroscope} \label{ssec:calibration_gyroscope}
-The gyroscope is calibrated using the calibration machine discussed more in Section \ref{ssec:calibration_machine}.
+\subsection{Gyroscope} \labsubsec{calibration_gyroscope}
+The gyroscope is calibrated using the calibration machine discussed more in Appendix \ref{chap:calibration_machine}. 
 To begin, the machine must be booted and the measurement devices turned on.
 Then, two terminal windows can be opened on the machine's Raspberry Pi through SSH or a headed setup.
 On one terminal, navigate to the \lstinline[style=customInline]|calibrator_ws/| directory and execute the following command:
@@ -118,7 +117,7 @@ Once you have collected the data, you can stop the motor using the command:
 Note that this command sets the motor speed to a default value, so you will need to reset the speed using the commands again.
 It will be beneficial to start/stop recording at the start and end of every test so that a single log file represents a single test.
 
-\subsection{Accelerometer} \label{ssec:calibration_accelerometer}
+\subsection{Accelerometer} \labsubsec{calibration_accelerometer}
 The accelerometer must be calibrated on the gear and socket apparatus while it is vertical.
 The apparatus should be leveled such that the instruments on the calibration cube are perfectly vertical with respect to gravity and the other axes are planar to the Earth's surface.
 Choose an axis and place the positive direction downwards (-1g).
@@ -128,7 +127,7 @@ Then, align the indicator on the gear with 0-degree marker on the socket, as sho
 Rotate the calibration cube and gear in 45-degree increments, stopping for 30-seconds at each interval to collect an good average of data.
 It will be beneficial to start/stop recording at the start and end of each increment so that a single log file represents a single orientation.
 
-\subsection{Orientation} \label{ssec:calibration_orientation}
+\subsection{Orientation} \labsubsec{calibration_orientation}
 Roll and pitch orientation data can be collected simultaneously with the accelerometer calibration data as the devices are rotated about the X- and Y-axis, respectively.
 This will give roll and pitch in 45-degree increments that can be analyzed for errors before and after calibration.
 
@@ -142,12 +141,12 @@ It will be beneficial to start/stop recording at the start and end of each incre
     \centering
     \includegraphics[height=2in]{calibration/calibration_cube_compass.jpg}
     \caption{Calibration cube aligned with an external compass.}
-    \label{fig:calibration_cube_compass}
+    \labfig{calibration_cube_compass}
 \end{figure}
 
-\section{Results} \label{sec:calibration_results}
-The calibration data was collected and ran through a calibration script which is a Jupyter Notebook [CITE - calibration script].
-The raw log files were converted to CSVs using the x-IMU3 GUI [Footnote for GUI] conversion tool.
+\section{Results} \labsec{calibration_results}
+The calibration data was collected and ran through a calibration script in \cite{Thetis-Scripts}.
+The raw log files were converted to CSVs using the x-IMU3 software conversion tool \footnote{\url{https://github.com/xioTechnologies/x-IMU3-Software/blob/main/Examples/Python/file_converter.py}}.
 The resultant Magnetometer, Inertial, and Quaternion files were imported to the script using the \lstinline[style=customInline]|pandas| library.
 Then, they were initially processed into dictionaries the contained the relevant data for each device for each test for each axis.
 
@@ -157,7 +156,7 @@ This cleaned and windowed data were placed back into the dictionary for each dat
 
 After plotting the raw inertial data, the calibration parameters were calculated for the accelerometer and gyroscope.
 The process used the mathematical techniques described in Chapter \ref{chap:background} and several external toolboxes.
-For determining the misalignment matrix and sensitivity vector, the \lstinline[style=customInline]|scipy.optimize.minimize| toolbox [FOOTNOTE] was used with the Sequential Least Squares Programming (SLSQP) method.
+For determining the misalignment matrix and sensitivity vector, the \lstinline[style=customInline]|scipy.optimize.minimize| toolbox was used with the Sequential Least Squares Programming (SLSQP) method.
 For this method, the objective function defined in Equation \ref{eq:misalignment_obj_func} was used as the scalar function.
 
 After producing the inertial calibration parameters, the script calculates the root-mean-square-error between for the devices with respect to ground truth and each other. 
@@ -174,24 +173,24 @@ Note that the x-IMU3 does not have a hard or soft iron plot as it was already ca
         \centering
         \includegraphics[width=\textwidth]{calibration/raw/raw_mag_all_45.png}
         \caption[Raw Magnetometer Readings]{Raw magnetometer calibration data from Thetis (left) and the x-IMU3 (right)}
-        \label{fig:mag_cal_raw}
+        \labfig{mag_cal_raw}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{calibration/prelim/mag_hard_iron_removed.png}
         \caption[Hard Iron Distortion Removed]{Thetis magnetometer calibration data with hard iron distortion removed.}
-        \label{fig:mag_cal_hid_removed}
+        \labfig{mag_cal_hid_removed}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.5\textwidth}
         \centering
         \includegraphics[width=\textwidth]{calibration/prelim/mag_soft_iron_removed.png}
         \caption[Soft Iron Distortion Removed]{Magnetometer calibration data with soft and hard iron distortion removed.}
-        \label{fig:mag_cal_sid_removed}
+        \labfig{mag_cal_sid_removed}
     \end{subfigure}
        \caption{Magnetometer calibration process}
-       \label{fig:magnetometer_calibration_process}
+       \labfig{magnetometer_calibration_process}
 \end{figure}
 
 The calibration data yielded the following parameters:
@@ -215,30 +214,30 @@ The calibration data yielded the following parameters:
     \centering
     \includegraphics[width=\textwidth]{calibration/raw/raw_gyro_x-axis_305.png}
     \caption[Raw and Windowed Gyroscope Data]{Raw and windowed gyroscope data from Thetis (left) and the x-IMU3 (right).}
-    \label{fig:raw_gyro_data}
+    \labfig{raw_gyro_data}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{calibration/prelim/prelim_gyro.png}
     \caption[Cummulative Gyroscope Error]{Root-Mean-Square-Error during calibration across all axes and test speeds. From left to right, Thetis with respect to the ground truth, Thetis with respect to the x-IMU3, and the x-IMU3 with respect to the ground truth.}
-    \label{fig:prelim_gyro_data}
+    \labfig{prelim_gyro_data}
 \end{figure}
 
 The calibration data yielded the following parameters:
 
 \begin{gather}
-    \pmb{b} = \begin{bmatrix} \label{eq:accelerometer_bias}
+    \pmb{b} = \begin{bmatrix} \labeq{accelerometer_bias}
         -0.0003 \\
         0.0002 \\
         0.0002 \\
     \end{bmatrix} \\
-    \pmb{s} = \begin{bmatrix} \label{eq:accelerometer_sensitivity}
+    \pmb{s} = \begin{bmatrix} \labeq{accelerometer_sensitivity}
         1.0110 \\
         0.9672 \\
         1.0041 \\
     \end{bmatrix} \\
-    M = \begin{bmatrix} \label{eq:accelerometer_misalignment}
+    M = \begin{bmatrix} \labeq{accelerometer_misalignment}
         1 & 0.0037 & 0.0399 \\
         0.0100 & 1 & -0.0075 \\
         -0.0259 & 0.0105 & 1 \\
@@ -251,14 +250,14 @@ The calibration data yielded the following parameters:
     \centering
     \includegraphics[width=\textwidth]{calibration/raw/raw_accel_x-axis_0.png}
     \caption[Raw and Windowed Accelerometer Data]{Raw and windowed accelerometer data from Thetis (left) and the x-IMU3 (right).}
-    \label{fig:raw_accel_data}
+    \labfig{raw_accel_data}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{calibration/prelim/prelim_accel.png}
     \caption[Cumulative Gyroscope Error]{Root-Mean-Square-Error during calibration across all axes and test orientations. From left to right, Thetis with respect to the ground truth, Thetis with respect to the x-IMU3, and the x-IMU3 with respect to the ground truth.}
-    \label{fig:prelim_accel_data}
+    \labfig{prelim_accel_data}
 \end{figure}
 
 The calibration data yielded the following parameters:
@@ -299,9 +298,9 @@ With the hard iron offset applied to the data, the following RMSE values and per
         \hline
         \textbf{Comparison} & \textbf{RMSE (uT)} & \textbf{Percent Error} \\
         \hline
-        Thetis w.r.t Ground Truth\footnote[1]{As measured curing calibration, the magnitude of the magnetic field was ~45 uT} & 3.49 & 7.33\% \\
-        Thetis w.r.t x-IMU3\footnote[2]{From the x-IMU3 data sheet, the x-IMU3 readings were converted from a.u. to uT using 50 uT/a.u.} & 4.92 & 9.34\% \\
-        x-IMU3 w.r.t Ground Truth\footnote[2]{} & 2.48 & 4.69\% \\
+        Thetis w.r.t Ground Truth\footnote{As measured curing calibration, the magnitude of the magnetic field was ~45 uT} & 3.49 & 7.33\% \\
+        Thetis w.r.t x-IMU3\footnote{From the x-IMU3 data sheet, the x-IMU3 readings were converted from a.u. to uT using 50 uT/a.u.} & 4.92 & 9.34\% \\
+        x-IMU3 w.r.t Ground Truth\footnotemark[\value{footnote}] & 2.48 & 4.69\% \\
         \hline
     \end{tabular}
 \end{table}

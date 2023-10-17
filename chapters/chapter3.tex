@@ -1,7 +1,7 @@
 %%--------------------Chapter 3------------------------
-\chapter{How I Built It} \label{chap:thetis_design}
+\chapter{How I Built It} \labchap{thetis_design}
 
-\section{Stakeholders} \label{sec:stakeholders}
+\section{Stakeholders} \labsec{stakeholders}
 As with any project, stakeholders are a crucial part of the design process.
 Stakeholders drive overarching requirements that the device must achieve in order to be accepted for operation.
 On an individual level, the committee overseeing this thesis are the major stakeholders as they have a vested interest in the success or failure of the project.
@@ -10,7 +10,7 @@ A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 
 \begin{table}
 	\caption{A summary of stakeholders of the Thetis device}
-	\label{tab:stakeholders}
+	\labtab{stakeholders}
 	\centering
 	\begin{tabular}{|p{0.3\linewidth} | p{0.6\linewidth}|}
 		\hline
@@ -26,27 +26,27 @@ A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 	\end{tabular}
 \end{table}
 
-\subsection{Hands-On Users} \label{ssec:hands_on_users}
+\subsection{Hands-On Users} \labsubsec{hands_on_users}
 Thetis is intended to be used by college students that are at least sophomore-level and have a basic understanding of instrumentation and electronics.
 The device is simple to use, requiring the user to flick a switch to turn it on or off, and then press a physical or digital button to start or end logging.
 Thetis is also designed to accommodate advanced users who need to leverage different features of the device for their research or want to tinker with it.
 It can also be used by laboratory technicians and instrumentation engineers to aid with data-collection experiments for tracking three dimensional bodies
 
-\section{Design Rationale} \label{sec:design_rationale}
+\section{Design Rationale} \labsec{design_rationale}
 Thetis is envisioned as an open-source all-in-one inertial data logging solution for use in research projects.
 The device incorporates multiple sensors, GPS tracking, and a WiFi-capable microcontroller in order to enable as many features as can be envisioned by the end users.
 One of the driving considerations was the small footprint.
-Thetis Revision F is designed to fit into one of the smallest IP67-rated enclosures available on the market [LINK].  
+Thetis Revision F is designed to fit into a small IP67-rated enclosure.  
 This tiny form factor allows it to be inconspicuously mounted to any floating body like surfboards, scale models, or wave buoys without upsetting their inertial characteristics or impeding nominal operation.
 
-\subsection{Problem Description} \label{ssec:problem_desc}
+\subsection{Problem Description} \labsubsec{problem_desc}
 I originally envisioned Thetis as the solution to a couple of problems I encountered during my undergraduate studies.
 For my fluid mechanics laboratory section, we conducted an experiment where we needed to track the rolling of a model pontoon boat as we adjusted its center of gravity.
 Because the lab lacked any way to directly measure the body's inertial movement, angle gauges were placed on the hull and the students had to conduct a time motion analysis from a video recording to plot the roll angle frame-by-frame.
 This was inefficient and made me start thinking about how this could be improved.
 
 The second problem occurred in a class the following semester where we deployed surf boards and pressure gauges into the ocean to monitor a surfer's ride along a wave.
-We used two different instruments, the Lowell MAT-1 data logger [CITE - LOWELL], and an iPhone 6 inside a life proof case.
+We used two different instruments, the Lowell MAT-1 data logger \cite{lowell}, and an iPhone 6 inside a life proof case.
 The Lowell instrument was not designed for this use case.
 First, the sensor board is housed within a cylindrical body, making properly alignment to a Cartesian (square) coordinate system almost impossible.
 Second, the sensor only had an accelerometer and magnetometer on board.
@@ -60,10 +60,10 @@ Within a matter of months, both iPhones were lost because students removed the c
 
 Given my experience with these classes, it was clear to me that a low-cost inertial data logging solution could be valuable to the department as a teaching and laboratory instrument.
 
-\subsection{Mission Statement} \label{ssec:mission_statement}
+\subsection{Mission Statement} \labsubsec{mission_statement}
 Thetis aims to democratize the inertial measurement and tracking space for small scale experiments by implementing an open-source, feature-rich, all-in-one solution to monitoring the movements of bodies.
 
-\subsection{Stakeholder Requirements} \label{ssec:stakeholder_reqs}
+\subsection{Stakeholder Requirements} \labsubsec{stakeholder_reqs}
 Interviews with the stakeholders occurred over several months and informed a set of requirements that they determined were necessary for the project's success.
 These overarching requirements were placed into a traceability matrix (Table \ref{tab:stakeholder_reqs_traceability}) to track their priority and status throughout the project.
 
@@ -90,7 +90,7 @@ These overarching requirements were placed into a traceability matrix (Table \re
 	\label{tab:stakeholder_reqs_traceability}
 \end{table}
 
-\subsection{Risk Identification} \label{ssec:risk_identification}
+\subsection{Risk Identification} \labsubsec{risk_identification}
 The following tables explore some of the larger risks associated with each of the stakeholder requirements.
 Risks are categorized into several types: Technical, Cost, Schedule, Organizational, and Operational.
 Each risk has an associated consequence on the project's development and a severity rating from "Low" to "High".
@@ -526,7 +526,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 
 \end{landscape}
 
-\subsection{Quality Functional Deployment} \label{ssec:qfd}
+\subsection{Quality Functional Deployment} \labsubsec{qfd}
 In engineering, there are a variety of customers that need to have their needs met.
 These customers can be internal or external to the project and are described in Section \ref{sec:stakeholders}.
 To ensure that Thetis is designed with the stakeholders in mind, a Quality Functional Deployment (QFD) was performed.
@@ -541,7 +541,7 @@ This data is collected by canvassing the stakeholders and getting their feedback
 \paragraph*{The middle} of the matrix is dedicated with the engineering methods.
 Here, the design engineers add the methods they think are required to fulfill the projects requirements.
 The numbers throughout the matrix are the strength of the relationship between the requirement and method. 
-The scale is the Fibonacci sequence from 0-8\footnote[1]{0, 1, 2, 3, 5, 8} with higher numbers indicating a stronger relationship.
+The scale is the Fibonacci sequence from 0-8\footnote{0, 1, 2, 3, 5, 8} with higher numbers indicating a stronger relationship.
 For example, SR-03 has a middling relationship with most of the engineering methods and a very strong (8) relationship with the "Battery Capacity" method.
 However, it does not correlate at all (0) with the storage capacity method.
 
@@ -562,7 +562,7 @@ Beneath that is a technical comparison of Thetis and competing products across t
 This provides a quick breakdown of each product through the lense of the engineering methods, providing some insight to stakeholders of the benefit of Thetis over competitors.
 
 \begin{gather}
-	\label{eq:hoq_importance}
+	\labeq{hoq_importance}
 	I = \sum_{n=1}^N{w_n \times R_n} \\
 	\begin{aligned}
 		\text{where } &I \text{ is the engineering method's importance} \\
@@ -573,7 +573,7 @@ This provides a quick breakdown of each product through the lense of the enginee
 \end{gather}
 
 \begin{gather}
-	\label{eq:hoq_rel_importance}
+	\labeq{hoq_rel_importance}
 	RI = \frac{I_m}{\sum{\textbf{I}}} \\
 	\begin{aligned}
 		\text{where } &RI \text{ is the engineering method's relative importance} \\
@@ -591,12 +591,12 @@ This provides a quick breakdown of each product through the lense of the enginee
 	\end{table}
 \end{landscape}
 
-\section{Concept of Operations} \label{sec:conops}
+\section{Concept of Operations} \labsec{conops}
 Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of body orientation and position in real-time at a low cost.
 In a normal operating case, Thetis will be placed near the center of gravity of a body and turned on to begin recording.
 The user can then connect Thetis to a larger wireless network or use its local WiFi access point to monitor the system and adjust configuration settings.
 
-\section{capabilities} \label{sec:capabilities}
+\section{capabilities} \labsec{capabilities}
 Based on the stakeholder requirements and concept of operations, a series of capabilities were derived that influenced the subsystem and component-level requirements.
 These capabilities were organized into three categories:
 
@@ -736,7 +736,7 @@ The capabilities were organized into a traceability matrix (more information in 
 \end{table}
 }
 
-\section{Conceptual Design} \label{sec:conceptual_design}
+\section{Conceptual Design} \labsec{conceptual_design}
 The general design of the Thetis instrumentation package was built around the principles of capability, manufacturability, and affordability.
 The parts selected for the design had to offer a suite of capabilities that would enable a wide range of projects.
 While Thetis was designed primarily for monitoring the movement of floating bodies, it can be adapted for use in general robotics, embedded AI research, and other datalogging tasks.
@@ -746,7 +746,7 @@ Thetis was originally designed at the start of the global chip shortage in 2020,
 It is also assumed that Thetis will be lost at some point during testing.
 This is just an inevitability during field work, so keeping the cost down would also reduce the impact of such a loss on a project's budget.
 
-\subsection{System Requirements} \label{ssec:system_requirements}
+\subsection{System Requirements} \labsubsec{system_requirements}
 To guide Thetis' design, a series of system requirements were generated that would need to be met in order to declare the design as ``delivered''.
 These requirements were derived from the House of Quality (Table \ref{tab:hoq}) and the stakeholder requirements (Section \ref{ssec:stakeholder_reqs}).
 Each requirement is categorized into subsections and given a numerical designation.
@@ -758,7 +758,7 @@ Below is a table describing the system requirements for the Thetis instrumentati
 
 \includepdf[landscape=true, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisReqs.pdf}
 
-\subsection{Failure Mode, Effect, and Criticality Analysis} \label{ssec:fmeca}
+\subsection{Failure Mode, Effect, and Criticality Analysis} \labsubsec{fmeca}
 Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
 Each potential flaw is given a probability of occurrence and a weighting from 0 to 10 inclusive for its severity. 
 By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
@@ -798,31 +798,31 @@ The same applies for the criticality score for each potential failure.
 
 \includepdf[landscape=true, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisFMECA.pdf}
 
-\subsection{Functional Block Diagram} \label{ssec:block_diagram}
+\subsection{Functional Block Diagram} \labsubsec{block_diagram}
 Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
 This block diagram shows the data sharing relationships in blue and the power relationships in warm colors.
 Labels on the specific lines indicate the specific communication protocol or voltage level being used by the line.
 Explanations for these protocols and acronyms can be found in the Appendix.
 
 \begin{figure}[h!]
-	\label{fig:thetis_block_diagram}
+	\labfig{thetis_block_diagram}
 	\caption[Thetis RevF5 Block Diagram]{A block diagram representation of the Thetis RevF5 instrumentation board.}
 	\centering
 	\includegraphics[width=5in]{design/block_diagram.png}
 \end{figure}
 
-\subsection{Functional Flow Diagram} \label{ssec:flow_diagram}
+\subsection{Functional Flow Diagram} \labsubsec{flow_diagram}
 Based off the block diagram and interviews with potential end users, a notional flow diagram for the firmware was created.
 The code was designed to be modular and allow for new features to be quickly added or removed with separate libraries.
 
 \begin{figure}[h!]
-	\label{fig:thetis_flow_diagram}
+	\labfig{thetis_flow_diagram}
 	\caption[Base Firmware Flow Diagram]{A flow diagram representation of the base firmware of the Thetis instrumentation board.}
 	\centering
 	\includegraphics[width=5in]{design/flow_diagram.png}
 \end{figure}
 
-\section{Brief Revision History} \label{sec:revision_history}
+\section{Brief Revision History} \labsec{revision_history}
 After carefully considering all the design criteria from the stakeholder requirements and system requirements, Thetis began several design revisions.
 The first design revision, Rev F1, was a functional proof of concept.
 It incorporated many of the base design features of later Thetis revisions, but relied on a breakout board for the IMU mounted to the bottom of the board and had the battery placed on top.
@@ -851,8 +851,8 @@ Therefore, the entire design had to be scrapped due to this design flaw.
 
 Revision F4 was the most radical design change of the series.
 It marked a migration to all SMD components (no breakout board for the IMU) and incorporated all of the design lessons from the previous revision.
-However, the IMU that was used in previous revisions, the Bosch BNO055\footnote[2]{\url{https://www.digikey.com/en/products/detail/bosch-sensortec/BNO055/6136301}} was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
-So, this design had to adapt by incorporating a new, previously untested IMU, the STdevices LSM6DSO32\footnote[3]{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LSM6DSO32TR/11694177}}.
+However, the IMU that was used in previous revisions, the Bosch BNO055\footnote{\url{https://www.digikey.com/en/products/detail/bosch-sensortec/BNO055/6136301}} was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
+So, this design had to adapt by incorporating a new, previously untested IMU, the STdevices LSM6DSO32\footnote{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LSM6DSO32TR/11694177}}.
 This new IMU does not have a magnetometer and at the time of its design, they were hard to find in stock at any distributors.
 So, in anticipation of the Chip Shortage ending, the BNO055 was incorporated to the design, but not populated, giving this board the unique opportunity of having either or both IMUs present - a useful feature for more accurate sensor fusion, but a terrible prospect for software integration.
 Additionally, this design reintroduced the micro SD card receptacle, but this time, the SMD flash chip was laid out beneath it.
@@ -863,12 +863,12 @@ This latter issue forced the microcontroller to crash and reset every time is tr
 
 [INSERT IMAGE OF REVISION F4 (BOTH RENDERED AND ACTUAL)]
 
-\section{Final Design} \label{sec:final_design}
+\section{Final Design} \labsec{final_design}
 Revision F5 is the latest version that realizes all the hardware features Thetis is meant to incorporate while being easy to assemble and use.
-The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL\footnote[4]{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LIS3MDLTR/4309733}}.
+The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL\footnote{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LIS3MDLTR/4309733}}.
 By reorganizing some components, the SMD flash ship and micro SD card receptacle were placed side-by-side enabling both primary and secondary storage services, enabling backups and improving reliability.
 Then, to improve the battery monitoring capabilities, a battery gauge IC was added.
-The MAX17048\footnote[5]{\url{https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX17048G-T10/3758921}} is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
+The MAX17048\footnote{\url{https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX17048G-T10/3758921}} is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
 This data is reported to the microcontroller as the current battery percentage or life remaining - making this a crucial part of monitoring performance and operations of Thetis when deployed.
 Component types and placements were also streamlined to improve manufacturability and allow the potential for the device to be more easily assembled by a pick and place machine.
 This also allows students who have never assembled PCBs before to more easily take up the task and build these boards themselves.
@@ -878,9 +878,9 @@ This also allows students who have never assembled PCBs before to more easily ta
 The next sections detail the assembly process in more detail and provide the schematics and PCB layout for Revision F5.
 The schematics for the previous revisions can be found in the appendix.
 
-\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \label{ssec:revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
+\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \labsubsec{revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
 
-\subsection{Assembly Technique} \label{ssec:assembly_techniques}
+\subsection{Assembly Technique} \labsubsec{assembly_techniques}
 Thetis was designed with surface mount soldering as the primary assembly technique.
 This technique differs from traditional soldering as the components are so small that a soldering iron is ineffective in mounting components to the board.
 Many of the ICs used on the final Thetis revision do not have exposed legs or pads that can be touched with an iron, so solder paste and hot air are required.
@@ -932,6 +932,6 @@ The assembler will then need to do a deeper inspection to find the cause of the 
 
 Once the new board boots without issue, the board is ready for deployment and can be used by operators and intended end users.
 
-% \subsection{PCB Design} \label{ssec:revf5_pcb}
+% \subsection{PCB Design} \labsubsec{revf5_pcb}
 
-% \subsection{Unit Testing} \label{ssec:unit_testing}
+% \subsection{Unit Testing} \labsubsec{unit_testing}

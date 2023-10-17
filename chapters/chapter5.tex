@@ -1,5 +1,5 @@
 %%-----------------Chapter 5---------------------------
-\chapter{Verification and Validation}
+\chapter{Verification and Validation} \labchap{verification_validation}
 Now that we have an instrument designed, how can we determine if it meets requirements or not?
 The system can be verified and then validated using a variety of techniques.
 First, to verify that a requirement is present, the component or subsystem can be examined independently.
@@ -27,7 +27,7 @@ These examinations can fall under four main types:
 For the following chapter, we shall examine each of Thetis' design capabilities from Tables \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities} and verify their presence on the latest design.
 Then, we shall do the same for the stakeholder requirements.
 
-\section{Threshold Capabilities} \label{sec:}
+\section{Threshold Capabilities} \labsec{threshold_capabilities}
 
 \newcommand{\yes}{\cellcolor[HTML]{63BE7B}Y}
 \newcommand{\no}{\cellcolor[HTML]{F8696B}N}  %{0.9}
@@ -57,7 +57,7 @@ Then, we shall do the same for the stakeholder requirements.
 		\hline
 	\end{tabular}
 	\caption{Verification and validation of threshold capabilities}
-	\label{tab:vv_threshold_capabilities}
+	\labtab{vv_threshold_capabilities}
 \end{table}
 }
 
@@ -66,7 +66,12 @@ Then, it was validated by placing the enclosure onto a Remotely Operated Vehicle
 Paper towels were placed within the enclosure so that if any water breached the seals, it would be immediately apparent.
 This represented a worst-case scenario and the enclosure held its seal meaning that it exceeded the capability requirement.
 
-[TODO: Insert picture of Thetis on ROV]
+\begin{figure}[h!]
+    \caption[ROV Setup]{Thetis (bottom) attached to a Blue ROV2 frame for enclosure testing.}
+    \labfig{thetis_rov}
+    \centering
+    \includegraphics[height=2.5in]{verify_validate/thetis_rov.jpg}
+\end{figure}
 
 To represent a more realistic use case, Thetis was placed into a cutout on a surfboard and deployed into the ocean to catch some waves.
 Out nine separate deployments, the case seal failed three different times:
@@ -80,7 +85,12 @@ Out nine separate deployments, the case seal failed three different times:
 All three failures were due to operator error proving that careful procedures need to be implemented for actual deployments.
 However, when the case was properly sealed by operators, the seals held and the electronics within were not damaged, even when completely submerged and subjected to dynamic forces as the surfboard rolled and slammed into waves.
 
-[TODO: Insert picture of Thetis on surfboard]
+\begin{figure}[h!]
+    \caption[Surfboard Setup]{Thetis (right) and the x-IMU3 (left) secured in a cutout on a modified surfboard during a deployment.}
+    \labfig{thetis_surfboard}
+    \centering
+    \includegraphics[height=2.5in]{verify_validate/thetis_surfboard.jpg}
+\end{figure}
 
 \paragraph*{102 - The system enclosure must fit within a volume of 8" x 5" x 1.25"} Like Capability 101, this was initially verified by inspection during the search for this enclosure and confirming the enclosure dimensions with the manufacturer.
 Then, it was validated by placing it securely into the cutouts in the surfboard made for the iPhone 6S - the device Thetis is intended to replace, as shown in Figure \ref{fig:thetis_surfboard}.
@@ -102,7 +112,7 @@ There are 14,400 seconds in 4 hours, so multiplying these values together, we ge
 The microSD cards used throughout testing are at least 4 gigabytes which gives an estimated 88 hours of continuous logging.
 This requirement was validated by running Thetis for four hours continuously and verifying that the log file was successfully created and maintained for that period.
 
-\begin{equation} \label{eq:storage_time}
+\begin{equation} \labeq{storage_time}
     t_{\text{samples}} = \frac{N_{\text{storage}} [\text{Bytes}]}{198 [\text{Bytes}] \times 64 [\text{s}^{-1}] \times 3600 \left[\frac{\text{s}}{\text{h}}\right]} = \frac{4 [\text{GB}]}{198 [\text{Bytes}] \times 64 [\text{s}^{-1}] \times 3600 \left[\frac{\text{s}}{\text{h}}\right]} = ~88 [\text{h}]
 \end{equation}
 
@@ -122,7 +132,7 @@ An important note about the WiFi estimate is the assumption that it is constantl
 In reality, this may not be accurate so the battery life may be longer.
 If it is below the four-hour threshold, then certain mitigations can be implemented like a burst-mode transmission of data every couple of second or minutes.
 
-\begin{equation} \label{eq:battery_life}
+\begin{equation} \labeq{battery_life}
     t_{\text{battery}} = \frac{3.7 [\text{v}] \times 420 [\text{mAh}]}{3.3 [\text{V}] \times I_{\text{mode}} [\text{mA}]}
 \end{equation}
 
@@ -184,35 +194,38 @@ For these reasons, this capability has been verified and validated.
 		\hline
 	\end{tabular}
 	\caption{Verification and validation of reach capabilities}
-	\label{tab:vv_reach_capabilities}
+	\labtab{vv_reach_capabilities}
 \end{table}
 }
 
 \paragraph*{201 - The system shall use a GPS with a minimum 1 Hz update rate for position tracking} This capability can be verified by inspecting the GPS used on Thetis.
-The GPS receiver uses the MTK3339 chipset [TODO: Footnote to Adafruit ultimate GPS module] which is capable of update messages every 1 to 10 Hz, according to its manufacturer data sheet. 
-Due to time constraints, this device was unable to be validated in the latest version of the Thetis firmware.
-Details for this step are discussed more in Section \ref{sec:gps_next_steps}.
+The GPS receiver uses the MTK3339 chipset\footnote{\url{https://www.adafruit.com/product/746}} which is capable of update messages every 1 to 10 Hz, according to its manufacturer data sheet. 
+This feature was validated by placing Thetis at a monument \footnote{\url{https://ngs.noaa.gov/cgi-bin/ds_mark.prl?PidBox=AK4011}} with a known GPS coordinate for one hour.
+Readings were taken at 1 Hz and recorded to the data log file.
+Figure \ref{fig:gps_error} shows the distribution of measurement errors over the test in Northings and Eastings.
+
+[TODO: Insert figure of GPS test errors. Discuss below]
 
 \paragraph*{202 - The system will have a simple human interface accessible via web browser} In earlier versions of the firmware, there was a basic webpage that allowed operators to start/stop logging and check the device status.
 However, in the latest firmware version, this capability was removed to simplify testing.
 The hardware is still capable of providing this interface but it remains to be implemented.
-For more information, see Section \ref{ssec:wifi_next_steps}.
+For more information, see Section \ref{ssec:future_wireless}.
 
-\paragraph*{203 - The system shall be able to monitor and report battery state of charge} This capability has been verified through inspection by integrating the MAX17048 [TODO: Footnote to product page] onto the board design.
+\paragraph*{203 - The system shall be able to monitor and report battery state of charge} This capability has been verified through inspection by integrating the MAX17048 \footnote{\url{https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX17048G-T10/3758921}} onto the board design.
 This chip calculates state of charge and reports it to the microcontroller.
 Then the battery state is reported as a battery message through the device API.
 However, this capability has not been validated as the battery monitor chip has not been calibrated for the selected batteries nor analyzed for its accuracy.
-Further testing is required as detailed in Section \ref{ssec:battery_monitor_next_steps}.
+Further testing is required as detailed in Section \ref{ssec:future_settings} and \ref{ssec:future_vv_power}.
 
 \paragraph*{204 - The system will have configurable settings that can be changed by the operator} This capability was another one that was verified and validated throughout the calibration process by testing.
-The firmware implements and extends the xioAPI which provides an extensive list of settings that can be changed via JSON commands (TODO: CITE user manual).
+The firmware implements and extends the xioAPI which provides an extensive list of settings that can be changed via JSON commands \cite{ThetisUserManual}.
 The calibration process required tweaks to some settings which were routinely done through the USB connection to a host computer.
 Additionally, during development of this feature, every setting was tested and validated to work.
 
 \paragraph*{205 - The system can operate in a Wi-Fi access point or client mode} This capability can be verified by inspecting the manufacturer data sheet for the microcontroller used on Thetis.
 The ESP32 series of chips used on the board are Wi-Fi enabled microcontrollers that can broadcast their own networks (access point mode) or connect to a local one (client mode).
 On Thetis, switching between these modes and Wi-Fi disabled is done through configuration commands.
-Performance of the Wi-Fi connection and other features have not been validated in the latest firmware and should be integrated following the discussion in Section \ref{ssec:wifi_next_steps}.
+Performance of the Wi-Fi connection and other features have not been validated in the latest firmware and should be integrated following the discussion in Section \ref{ssec:future_wireless} and \ref{ssec:future_vv_wireless}.
 
 \paragraph*{206 - The sensor measurements shall incorporate a calibration model} The capability is implemented by using the Madgwick sensor fusion algorithm described in Chapter \ref{chap:background} and the \lstinline[style=customInline]|Fusion| library made for that algorithm.
 The \lstinline[style=customInline]|Fusion| library incorporates the calibration model described in Equations \ref{eq:inertial_model} and \ref{eq:magnetic_model} by default and the specific calibration parameters are loaded as configuration settings.
@@ -237,11 +250,11 @@ Due to the failure of the calibration process, this capability was not validated
 		\hline
 	\end{tabular}
 	\caption{Verification and validation of stretch capabilities}
-	\label{tab:vv_stretch_capabilities}
+	\labtab{vv_stretch_capabilities}
 \end{table}
 }
 
-\paragraph*{301 - The system file storage shall be accessible via web or USB interface} From previous experiments with the ESP32-S2 and -S3 microcontrollers, it is possible to host a File Transfer Protocol (FTP) server [TODO: footnote/ref to FTP server experiments] or have the device appear as a USB flash drive [TODO: footnote/ref to USB mdisk experiment] when connected to a host computer.
+\paragraph*{301 - The system file storage shall be accessible via web or USB interface} From previous experiments with the ESP32-S2 and -S3 microcontrollers, it is possible to host a File Transfer Protocol (FTP) server \footnote{\url{https://www.mischianti.org/2020/02/08/ftp-server-on-esp8266-and-esp32}} or have the device appear as a USB flash drive \footnote{\url{https://github.com/Legohead259/ThetisLib/blob/ba94c8f8eba002fef2d88b5f21aa544ef2b5b2b1/Examples/usbmsc/test.ino}} when connected to a host computer.
 However, in the latest firmware version, these features are not implemented so this capability is feasible, but not verified or validated in the current system.
 
 \paragraph*{302 - The system shall have a backup storage option in case primary storage fails} This capability was initially envisioned as a mitigation for any microSD card failure mode.
@@ -250,10 +263,10 @@ However, as explained in [TODO: determine prototype discussion section], this ca
 Therefore, this capability was rejected in favor of a simplified and more reliable software and hardware design.
 
 \paragraph*{303 - The system will use a microcontroller capable of machine learning using TinyML} This capability was added to address some of the future efforts proposed in the next chapter.
-An experiment was run [TODO: footnote/ref to TinyML experiment] that proved the feasibility, but due to the technical effort and time constraints, this capability was not seriously considered for implementation.
+An experiment was run \footnote{\url{https://github.com/Legohead259/Project-Thetis-TinyML-Example}} that proved the feasibility, but due to the technical effort and time constraints, this capability was not seriously considered for implementation.
 
 \paragraph*{304 - The system shall be able to log in a burst mode for up to 24 hours} This is another capability that was envision for a future use, but never seriously considered for implementation.
-The idea with this is to extend the battery life to capture inertial signals over a longer time span such as required for the WEAVE experiment proposed in Section \ref{sec:weave}.
+The idea with this is to extend the battery life to capture inertial signals over a longer time span such as required for the WEAVE experiment proposed in Section \ref{ssec:future_weave}.
 However, this capability could be better implemented by a new hardware revision that could accept external battery power, instead of relying on its smaller internal battery.
 Theoretically, this is possible to integrate using the component's sleep functionalities and other techniques.
 
@@ -279,7 +292,7 @@ Theoretically, this is possible to integrate using the component's sleep functio
 		\hline
 	\end{tabular}
 	\caption{Verification and validation of stakeholder requirements}
-	\label{tab:vv_stakeholder_reqs}
+	\labtab{vv_stakeholder_reqs}
 \end{table}
 }
 
@@ -313,7 +326,7 @@ To validate the requirement, each setting was thoroughly tested to ensure it cou
 
 \paragraph*{SR 08 - The system shall communicate extra-device using Wi-Fi and USB} Since Thetis uses a microcontroller that is capable of USB host and Wi-Fi, this requirement is easily verified by inspecting the manufacturer data sheet.
 However, the requirement remains unvalidated because the performance when using the wireless interface is severely limited.
-More testing is required as detailed in Section \ref{sec:wifi_next_steps}
+More testing is required as detailed in Section \ref{ssec:future_wireless} and \ref{ssec:future_vv_wireless}
 
 \paragraph*{SR 09 - The system shall have enough on board storage for 4 hours of continuous logging at 64 Hz} This requirement was verified and validated throughout the calibration process.
 Firstly, the calibration data was captured at 64 Hz proving the second part of the requirement.

@@ -912,9 +912,9 @@ When the stencil is removed, there should be a healthy deposit of solder paste o
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Thetis placed into a jig, ready to put under the stencil.]{\includegraphics[height=1in]{design/assembly_jig}\labsubfig{assembly_jig}}\hskip3ex
-    \subfloat[Depositing the solder on the stencil and dragging it across.]{\includegraphics[height=1in]{design/assembly_paste.jpg}\labsubfig{assembly_paste}}\hskip10ex
-    \subfloat[Solder deposited on the PCB pads from the stencil]{\includegraphics[height=1in]{design/assembly_pasted.jpg}\labsubfig{assembly_pasted}}\hskip5ex
+    \subfloat[Thetis placed into a jig, ready to put under the stencil.]{\includegraphics[height=1in]{design/assembly_jig}\label{subfig:assembly_jig}}\hskip3ex
+    \subfloat[Depositing the solder on the stencil and dragging it across.]{\includegraphics[height=1in]{design/assembly_paste.jpg}\label{subfig:assembly_paste}}\hskip10ex
+    \subfloat[Solder deposited on the PCB pads from the stencil]{\includegraphics[height=1in]{design/assembly_pasted.jpg}\label{subfig:assembly_pasted}}\hskip5ex
 	\caption[Solder deposition for stencil PCB assembly]{A series showing the process of putting solder paste onto a PCB from a stencil using Revision F5.}
 	\labfig{stencil_process}
 \end{figure}
@@ -933,9 +933,9 @@ The entire process from putting the board beneath the stencil to assembled and r
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Components being placed from inventory boxes onto the boards manually using tweezers]{\includegraphics[height=1in]{design/assembly_placing_components}\labsubfig{assembly_placing}}\hskip3ex
-    \subfloat[All in-stock components placed on the PCB.]{\includegraphics[height=1in]{design/assembly_placed_components.jpg}\labsubfig{assembly_placed}}\hskip10ex
-    \subfloat[PCB on a mini hotplate for solder reflow.]{\includegraphics[height=1in]{design/assembly_reflow.jpg}\labsubfig{assembly_reflow}}\hskip5ex
+    \subfloat[Components being placed from inventory boxes onto the boards manually using tweezers]{\includegraphics[height=1in]{design/assembly_placing_components}\label{subfig:assembly_placing}}\hskip3ex
+    \subfloat[All in-stock components placed on the PCB.]{\includegraphics[height=1in]{design/assembly_placed_components.jpg}\label{subfig:assembly_placed}}\hskip10ex
+    \subfloat[PCB on a mini hotplate for solder reflow.]{\includegraphics[height=1in]{design/assembly_reflow.jpg}\label{subfig:assembly_reflow}}\hskip5ex
 	\caption[Component placement and reflow for a Thetis Revision F5 PCB]{A series showing the process of components onto a Revision F5 PCB from an inventory and using a hotplate for solder reflow.}
 	\labfig{assembly_process}
 \end{figure}
@@ -975,7 +975,7 @@ The assembler will then need to do a deeper inspection to find the cause of the 
 
 Once the new board boots without issue, the board is ready for deployment and can be used by operators and intended end users.
 
-\section{Prototype Problems}
+\section{Prototype Problems} \labsec{prototype_problems}
 Revision F5 was the most extensively tested revision of the Thetis instrumentation package.
 It has gone on several deployments to beaches inside surfboards and down to 20-feet of water on an ROV measuring vibrations.
 Unfortunately, there was a serious flaw that plagued Revision F5 - it would not reliably or consistently record data.

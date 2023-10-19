@@ -115,11 +115,11 @@ To break the gimbal lock and get to the correct orientation, the rotation order 
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\labsubfig{ship_000000}}\hskip3ex
-    \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\labsubfig{ship_009000}}\hskip10ex
-    \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\labsubfig{ship_909000}}\hskip5ex
-    \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\labsubfig{ship_000090}}
-    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\labsubfig{ship_900000}}
+    \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
+    \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
+    \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
+    \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
+    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\label{subfig:ship_900000}}
     \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
     Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
     This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
@@ -483,21 +483,21 @@ However, these parameters must be recalibrated whenever the sensor enters a new 
         \centering
         \includegraphics[width=\textwidth]{background/mag_raw.png}
         \caption[Raw Magnetometer Readings]{Example of hard iron distortion from a magnet near a magnetic sensor. Courtesy of Mike Tuupola \cite{Tuupola:2018}.}
-        \labsubfig{mag_raw}
+        \label{subfig:mag_raw}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{background/mag_hid.png}
         \caption[Hard Iron Distortion Removed]{Magnetometer calibration data with hard iron distortion removed. Courtesy of Mike Tuupola \cite{Tuupola:2018}}
-        \labsubfig{mag_hid}
+        \label{subfig:mag_hid}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{background/mag_sid.png}
         \caption[Soft Iron Distortion Removed]{Magnetometer calibration data with soft and hard iron distortion removed. Courtesy of Ozyagcilar \cite{Ozyagcilar:2015}}
-        \labsubfig{mag_sid}
+        \label{subfig:mag_sid}
     \end{subfigure}
        \caption{Three simple graphs}
        \labfig{magnetometer_corrections}

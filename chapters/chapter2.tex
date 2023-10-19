@@ -115,20 +115,20 @@ To break the gimbal lock and get to the correct orientation, the rotation order 
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
-    \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
-    \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
-    \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
-    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\label{subfig:ship_900000}}
+    \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\labsubfig{ship_000000}}\hskip3ex
+    \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\labsubfig{ship_009000}}\hskip10ex
+    \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\labsubfig{ship_909000}}\hskip5ex
+    \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\labsubfig{ship_000090}}
+    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\labsubfig{ship_900000}}
     \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
     Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
     This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
     In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
     \textit{3D model courtesy of "printable models" from Free3D.com.}}
-    \label{fig:gimbal_lock}
+    \labfig{gimbal_lock}
 \end{figure}
 
-\subsection{Quaternions} \label{ssec:quaternions}
+\subsection{Quaternions} \labsubsec{quaternions}
 In the 19th century, an Irish mathematician was contemplating the problem of Euler angles and analyzing three dimensional geometry.
 William Hamilton considered the problem from within the complex or imaginary space and found that a three dimensional vector could not be expressed with a complex triplet.
 Instead, Hamilton discovered that the problem could be solved with a complex quadruplet, called a quaternion \cite{Hamilton:1850}, which could be used as a more mathematically pure tool to understand three dimensional geometry.
@@ -305,7 +305,7 @@ Magnetometers in a weak magnetic field, like Earth's, are not accurate enough to
 Finally, GPS readings will provide position and velocity vectors, but typically update slowly and have a large circle of error and cannot determine attitude.
 In order to make these sensors more effective for an inertial sensing application, we need to fuse the data feeds into a unified output that emphasizes the strength of each sensor, while mitigating their limitations.
 
-\subsection{Attitude and Heading Reference System} \label{ssec:ahrs}
+\subsection{Attitude and Heading Reference System} \labsubsec{ahrs}
 An Attitude and Heading Reference System (AHRS) is an IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
 The data streams from the sensors can be fused together with external information like GPS data and mathematical models to estimate a body's inertial orientation in three dimensional space.
 The block diagram for this operation is shown in Figure \ref{fig:ahrs_design}.

@@ -62,7 +62,7 @@ Basically, the more precise your measurements are, the faster the Kalman filter 
 \subsection{The Estimate Uncertainty Extrapolation Equation} 
 Another Kalman equation is how the filter predicts future uncertainties and is called the \textit{Estimate Uncertainty Extrapolation Equation} or the \textit{Estimate Covariance Extrapolation Equation}.
 Like with the State Extrapolation Equations, this is done with dynamic models and will be unique to every example.
-If we refer to the previous models from Equations \ref{eq:see_disp} and \ref{eq:see_velocity}, we can define the Estimate Uncertainty Extrapolation Equations as:
+We can define the Estimate Uncertainty Extrapolation Equations in a kinematic model example as:
 
 \begin{gather}
     \labeq{covariance_extrapolation}
@@ -75,9 +75,9 @@ If we refer to the previous models from Equations \ref{eq:see_disp} and \ref{eq:
 \subsection{Putting it all Together}
 First, the filter is initialized with a first guess ($\hat{x}_{0,0}$) and an associated uncertainty ($p_{0,0}$).
 These values are passed into the dynamic model equations and Equation \ref{eq:covariance_extrapolation} to predict the state at the first measurement ($x_{1,0}$) and the associated uncertainty ($p_{1,0}$).
-This is shown as Step 0 in Figure \ref{fig:kalman_filter}.
+This is shown as Step 0 in Figure \ref{fig:kalman_filter_process}.
 Then, we can take a measurement ($z_n$) and record its uncertainty ($r_n$), using the latter to determine the Kalman gain with Equation \ref{eq:kalman_gain}.
-We can then estimate the current state value using Equation \ref{eq:kalman_state_update_eq} using the recorded measurement and the Kalman gain ($K_n$).
+We can then estimate the current state value using Equation \ref{eq:kalman_state_update} using the recorded measurement and the Kalman gain ($K_n$).
 The current state estimate and its uncertainty can then be outputted from the filter and used in applications; this process is shown as Steps 1, 2a, and 2b in the figure below.
 These values are then fed into the dynamic model to predict the next state and estimate the associated uncertainty (Step 3 in the below diagram).
 Optionally, these predicted values can be outputted from the model as well, as the application requires.

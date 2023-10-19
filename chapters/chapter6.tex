@@ -36,12 +36,18 @@ Then the microcontroller was changed to one that had an antenna attached directl
 On the ESP32-S2 microcontroller, the chip would refuse to boot when an external antenna was attached.
 This issue was never fully investigated, but the onboard antenna should negate this problem and simplify the overall assembly.
 
+Another change affects the GPS module.
+On Revision F5, the ground plane beneath the module was not contiguous and small relative to the antenna size.
+This introduced RF noise and attenuation, reducing overall accuracy.
+On the new revision, the ground plane is stitched together with vias linking the top and bottom planes.
+This should improve performance slightly over Revision F5.
+
 Finally, the power supply was substituted for a more efficient DC-DC converter which should improve efficiency and extend battery life.
 
 This revision has been designed in ECAD, but was not ordered or built due to time constraints.
 Therefore, in the future, a student or group of students can build and verify and validate this design using the procedures laid out for Revision F5.
 
-[TODO: Insert picture of Revision F6 and schematic]
+\revisionfigure{f6}
 
 \section{Software Improvements} \labsec{future_software}
 There are several things that are feasible with the hardware available that were not able to be implemented before the thesis needed to be completed.

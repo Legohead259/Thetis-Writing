@@ -147,7 +147,7 @@ These features were used extensively throughout testing with great success.
 
 \paragraph*{108 - The firmware shall be open architecture} This capability is challenging to fully define and implement, hence its relatively low priority in the threshold category.
 To verify this capability has been met, we should consider the difficulty of adding a new feature or component to the firmware.
-The firmware uses an object-oriented approach with a star topology as discussed in Section \ref{sec:firmware}.
+The firmware uses an object-oriented approach with a star topology.
 This means that a new feature can be added by putting it into the appropriate class and tying it to other classes/functions through the main \lstinline[style=customInline]|Thetis| object.
 Similarly, we can add a new component by creating a new class in the library and then implementing it in the main class.
 
@@ -202,9 +202,22 @@ For these reasons, this capability has been verified and validated.
 The GPS receiver uses the MTK3339 chipset\footnote{\url{https://www.adafruit.com/product/746}} which is capable of update messages every 1 to 10 Hz, according to its manufacturer data sheet. 
 This feature was validated by placing Thetis at a monument \footnote{\url{https://ngs.noaa.gov/cgi-bin/ds_mark.prl?PidBox=AK4011}} with a known GPS coordinate for one hour.
 Readings were taken at 1 Hz and recorded to the data log file.
-Figure \ref{fig:gps_error} shows the distribution of measurement errors over the test in Northings and Eastings.
+Figure \ref{fig:gps_error} shows the distribution of measurement errors over the test in Northings and Eastings and the calibration script and data can be found in \cite{Thetis-Scripts}.
 
-[TODO: Insert figure of GPS test errors. Discuss below]
+The measurement plot shows that 95\% of the GPS measurements fall within 5-meters of the known GPS position.
+This is slightly worse performance than typically expected (about 3-meters \cite{Hofmann:2001}) but can be attributed to the small chip antenna on top of the module and the unoptimized PCB layout.
+On Revision F5, the GPS module has a broken ground plane beneath it.
+This results in RF noise and attenuation within the module that will decrease its accuracy.
+This issue is addressed in Revision F6 (\ref{ssec:future_hardware}).
+The drifting readings to the south east are aslo interesting and should be further investigated.
+
+\begin{figure}[h!]
+    \caption{GPS measurement deviations as measured from Thetis Revision F5 in middle of the day, clear conditions.
+	Expected error should be less than 3-meters}
+    \labfig{gps_error}
+    \centering
+    \includegraphics[height=2.5in]{verify_validate/gps_test_errors.png}
+\end{figure}
 
 \paragraph*{202 - The system will have a simple human interface accessible via web browser} In earlier versions of the firmware, there was a basic webpage that allowed operators to start/stop logging and check the device status.
 However, in the latest firmware version, this capability was removed to simplify testing.
@@ -259,14 +272,14 @@ However, in the latest firmware version, these features are not implemented so t
 
 \paragraph*{302 - The system shall have a backup storage option in case primary storage fails} This capability was initially envisioned as a mitigation for any microSD card failure mode.
 Especially in cases where the microSD card could become physically damaged during a test, the secondary option would still allow some data to be recovered.
-However, as explained in [TODO: determine prototype discussion section], this capability introduced system-breaking errors and the anticipated failure mode was never encountered throughout initial testing.
+However, as explained in \ref{sec:prototype_problems}, this capability introduced system-breaking errors and the anticipated failure mode was never encountered throughout initial testing.
 Therefore, this capability was rejected in favor of a simplified and more reliable software and hardware design.
 
 \paragraph*{303 - The system will use a microcontroller capable of machine learning using TinyML} This capability was added to address some of the future efforts proposed in the next chapter.
 An experiment was run \footnote{\url{https://github.com/Legohead259/Project-Thetis-TinyML-Example}} that proved the feasibility, but due to the technical effort and time constraints, this capability was not seriously considered for implementation.
 
 \paragraph*{304 - The system shall be able to log in a burst mode for up to 24 hours} This is another capability that was envision for a future use, but never seriously considered for implementation.
-The idea with this is to extend the battery life to capture inertial signals over a longer time span such as required for the WEAVE experiment proposed in Section \ref{ssec:future_weave}.
+The idea with this is to extend the battery life to capture inertial signals over a longer time span such as required for the WEAVE experiment proposed in Section \ref{chap:weave}.
 However, this capability could be better implemented by a new hardware revision that could accept external battery power, instead of relying on its smaller internal battery.
 Theoretically, this is possible to integrate using the component's sleep functionalities and other techniques.
 
@@ -300,10 +313,10 @@ Theoretically, this is possible to integrate using the component's sleep functio
 Thetis recorded and output the inertial measurements (rotation rate and acceleration), magnetometer readings, position measurements from the GPS, and orientation as both a quaternion and euler angles.
 This was recorded through the on-board microSD card logger and through the x-IMU3 GUI application running on a host computer and connected via USB.
 
-\paragraph*{SR 02 - The system shall be able to fit into a small IP67-rated, or better, enclosure} As explained with Capabilities 101 and 102 in Section \ref{sec:vv_threshold_capabilities}, this requirement was verified and validated by testing the enclosure at depth on an ROV and in a more realistic deployment.
+\paragraph*{SR 02 - The system shall be able to fit into a small IP67-rated, or better, enclosure} As explained with Capabilities 101 and 102 in Section \ref{sec:threshold_capabilities}, this requirement was verified and validated by testing the enclosure at depth on an ROV and in a more realistic deployment.
 The enclosure held a water-tight seal when properly engaged and undamaged.
 
-\paragraph*{SR 03 - The system shall be able to be powered by battery for more than 4 hours continuously} This requirement was verified using the analysis discussed in Section \ref{sec:vv_threshold_capabilities} with Capability 106. 
+\paragraph*{SR 03 - The system shall be able to be powered by battery for more than 4 hours continuously} This requirement was verified using the analysis discussed in Section \ref{sec:threshold_capabilities} with Capability 106. 
 It was further validated by running the system for more than 4 hours and checking that the end battery voltage was at an acceptable level.
 
 \paragraph*{SR 04 - The system shall be cheaper than \$200 per unit} This requirement was verified by inspecting the Bill of Materials for Thetis and checking that the summation was less than \$200.
@@ -330,4 +343,4 @@ More testing is required as detailed in Section \ref{ssec:future_wireless} and \
 
 \paragraph*{SR 09 - The system shall have enough on board storage for 4 hours of continuous logging at 64 Hz} This requirement was verified and validated throughout the calibration process.
 Firstly, the calibration data was captured at 64 Hz proving the second part of the requirement.
-Then, as described in Section \ref{sec:vv_threshold_capabilities}, the microSD card storage size was analyzed to ensure that it was large enough and Thetis was run for 4 hours, logging the entire time.
+Then, as described in Section \ref{sec:threshold_capabilities}, the microSD card storage size was analyzed to ensure that it was large enough and Thetis was run for 4 hours, logging the entire time.

@@ -1,4 +1,4 @@
-\chapter{Kalman Filter} \label{chap:kalman_filter}
+\chapter{Kalman Filter} \labchap{kalman_filter}
 \section{Introduction} 
 The Kalman Filter is a recursive algorithm introduced in the 1960's as a method to track, estimate, and predict the state of a system and corresponding uncertainties.
 This filter integrates a dynamic (linear) model of the system, control inputs, measurements, and biases/uncertainties into a single algorithm.
@@ -24,7 +24,7 @@ Multiple uni-dimensional Kalman filters can be run in parallel or chained togeth
 These parameters are combined together into the Kalman Gain, denoted as $K_n$, which is the third Kalman equation.
 The Kalman gain is bounded by: $0 <= Kn <= 1$.
 
-\begin{equation} \label{eq:kalman_gain}
+\begin{equation} \labeq{kalman_gain}
     \begin{aligned}
         K_n &= \frac{\text{Estimate Uncertainty}}{\text{Estimate Uncertainty + Measurement Uncertainty}} \\
             &= \frac{p_{n,n-1}}{p_{n,n-1} + r_n}
@@ -33,7 +33,7 @@ The Kalman gain is bounded by: $0 <= Kn <= 1$.
 
 If we refresh the State Update Equation with the Kalman gain, we get:
 
-\begin{equation} \label{eq:kalman_state_update}
+\begin{equation} \labeq{kalman_state_update}
     \begin{aligned}
         \hat{x}_{n,n} &= \hat{x}_{n,n-1} + K_n(z_n - \hat{x}_{n,n-1}) \\
                         &= (1-K_n)\hat{x}_{n,n-1} + K_n z_n \\
@@ -65,7 +65,7 @@ Like with the State Extrapolation Equations, this is done with dynamic models an
 If we refer to the previous models from Equations \ref{eq:see_disp} and \ref{eq:see_velocity}, we can define the Estimate Uncertainty Extrapolation Equations as:
 
 \begin{gather}
-    \label{eq:covariance_extrapolation}
+    \labeq{covariance_extrapolation}
     \begin{aligned}
         p_{n+1,n}^x &= p_{n,n}^x + \Delta t p_{n,n}^{\dot{x}} \\
         p_{n+1,n}^{\dot{x}} &= p_{n,n}^{\dot{x}}
@@ -86,7 +86,7 @@ This process repeats for every measurement with $n$ incrementing every time.
 \begin{figure}[h!]
     \includegraphics[width=\textwidth]{appendices/kalman-filter/KalmanFilter.png}
     \caption[Kalman Filter Diagram]{Process diagram for a Kalman filter.}
-    \label{fig:kalman_filter_process}
+    \labfig{kalman_filter_process}
 \end{figure}
 
 \begin{fitbox}[frametitle=Example]

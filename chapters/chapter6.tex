@@ -159,7 +159,7 @@ The most compact way to accomplish this may be to borrow the design from a three
 \begin{figure}
     \centering
     \caption[Three Axis Gimbal]{The rear of a three-axis gimbal used on UAVs for action cameras. 
-    Courtesy of RC Product India. \url{https://www.rcproduct.in/product/feiyutech-oem-sftuav-mini-3d-3-axis-gimbal/}}
+    Courtesy of \href{https://www.rcproduct.in/product/feiyutech-oem-sftuav-mini-3d-3-axis-gimbal/}{RC Product India}.}
     \labfig{three_axis_gimbal}
     \includegraphics[height=2in]{future_efforts/three-axis-gimbal.png}
 \end{figure}
@@ -185,13 +185,13 @@ By determining a ``home'' position, the compass can also detect the degrees rota
 This allows ground truth measurements to be taken for the gyroscope, accelerometer, and orientation datasets for all three rotation axes.
 A microcontroller can be placed on the Raspberry Pi HAT and handle the real-time control of the motors and sensors, while interfacing with the Pi over a serial port such as UART, SPI, or I2C.
 
-[TODO: Insert block diagram for calibration machine]
+% [TODO: Insert block diagram for calibration machine]
 
 The data can be run through the ROS2 packages and a master script can analyze the data at the end of the calibration process and produce the results.
 Then, the same can occur after the validation process and a calibration certificate can be made that shows the IMU error over all the testing regimes.
-This architecture is represented in the block diagram in Figure \ref{fig:calibration_machine_ros}.
+% This architecture is represented in the block diagram in Figure \ref{fig:calibration_machine_ros}.
 
-[TODO: Insert block diagram for the ROS2 architecture]
+% [TODO: Insert block diagram for the ROS2 architecture]
 
 \subsection{Concept of Operations} \labsubsec{future_cm_conops}
 For the new calibration machine, the idea is a one-touch solution that is fully automated, requiring minimal human intervention.

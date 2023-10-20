@@ -1,14 +1,19 @@
-\chapter{Voltage Divider} \label{chap:voltage_divider}
+\chapter{Voltage Divider} \labchap{voltage_divider}
 The most basic way to measure resistance is with a voltage divider.
 A voltage divider consists of two resistors in series that go between an input voltage and ground, as shown in the schematic below.
 The resistive sensor is placed at the $R_2$ position and we want to read the potential between the top of $R_2$ and ground, $V_{out}$ to determine the sensor's resistance.
 This voltage can be determined by the equation:
 
-\begin{equation} \label{eq:voltage_divider}
+\begin{equation} \labeq{voltage_divider}
     V_{out} = V_{in} \frac{R_2}{R_1 + R_2}
 \end{equation}
 
-[TODO: INSERT VOLTAGE DIVIDER SCHEMATIC]
+\begin{figure}[h!]
+    \caption{A typical voltage divider circuit}
+    \labfig{voltage_divider}
+    \centering
+    \includegraphics[height=2.5in]{appendices/voltage_divider/voltage_divider.png}
+\end{figure}
 
 \section{Example: Battery Monitor}
     Let's say the device you are bringing with you onto the roller coaster uses a 3.3V-logic microcontroller.
@@ -32,4 +37,9 @@ This voltage can be determined by the equation:
 
     To get a resistor that is exactly 2727 $\Omega$ is very difficult, but we can approximate this value using the much more common 2.7 k$\Omega$ resistor without introducing much error into our measurements.
 
-    [TODO: INSERT BATTERY VOLTAGE MEASUREMENT CIRCUIT]
+    \begin{figure}[h!]
+        \caption{A simple battery monitor circuit for 3.3V logic level microcontrollers.}
+        \labfig{battery_monitor}
+        \centering
+        \includegraphics[height=2.5in]{appendices/voltage_divider/battery_monitor.png}
+    \end{figure}

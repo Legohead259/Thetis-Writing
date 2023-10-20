@@ -1,4 +1,4 @@
-\chapter{Traceability Matrix} \label{chap:traceability_matrix}
+\chapter{Traceability Matrix} \labchap{traceability_matrix}
 A traceability matrix is an artifact within Systems Engineering that tracks the stakeholder requirements, capabilities, system requirements, and testing methodologies.
 The primary purpose is to give a Lead Systems Engineer other other team member quick access to all of the driving information for the product and trace the requirement lifecycle.
 Each matrix has eight columns that contain information about the requirement:
@@ -26,7 +26,7 @@ The weight of a capability is compared to all of the other weights in the same c
 For instance, a threshold capability's priority will only factor in the weights of other threshold capabilities.
 But, a stretch capability's priority will factor in the weights of all capabilities in the design.
 
-\begin{equation} \label{eq:priority}
+\begin{equation} \labeq{priority}
     P = \frac{w_c}{\sum w} \times 100
 \end{equation}
 
@@ -81,7 +81,7 @@ The value of this column is pulled from Table \ref{tab:req_status} based on the 
         D   & Delivered             & Requirement has been fully realized and delivered \\
         \hline
     \end{tabular}
-    \label{tab:req_status}
+    \labtab{req_status}
 \end{table}
 
 \section{Requirement Lifecylce}
@@ -100,5 +100,5 @@ Finally, when the feature is fully integrated with the product and released, the
     \centering
     \caption{Lifecycle of a requirement}
     \includegraphics[height=6in]{appendices/traceability-matrix/requirement_lifecycle.png}
-    \label{fig:requirement_lifecycle}
+    \labfig{requirement_lifecycle}
 \end{figure}

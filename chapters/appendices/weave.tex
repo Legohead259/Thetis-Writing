@@ -232,15 +232,16 @@ To make the Bessel and Butterworth filter fulfill this criterion, we need to sub
 
 The two remaining filters, Chebyshev and Elliptic, have sharper transition regions but at the cost of non-linear phase shifts and ripple in the pass and stop bands. 
 For a bandpass filter design, we can define a couple of parameters: a low-stop frequency of 0.025 Hz, a low-pass frequency of 0.05 Hz, a high-stop frequency of 2.0 Hz, a high-pass frequency of 0.25 Hz, a stop attenuation of 100 dB, and a pass attenuation of 0.1 dB. 
-With these values, different bode plots for Chebyshev Type I (first), Chebyshev Type II (second), and Elliptic (third) filters were created.
+With these values, different bode plots for Chebyshev Type I (Figure \ref{subfig:chebyshev_1}), Chebyshev Type II (Figure \ref{subfig:chebyshev_2}), and Elliptic (Figure \ref{subfig:elliptic}) filters were created.
 
-% !https://user-images.githubusercontent.com/8077426/244510835-9e355498-dd3a-4c37-a63c-776719ef89bc.PNG
-
-% !https://user-images.githubusercontent.com/8077426/244510841-f2535bc3-1237-4d3c-beff-73ea63e68ed0.PNG
-
-% !https://user-images.githubusercontent.com/8077426/244510844-809ae599-16b9-4f2f-935c-8e865a0e95e7.PNG
-
-[TODO: Include figures of filter bode plots]
+\begin{figure}[h!]
+    \centering
+    \subfloat[Chebyshev Type I filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/chebyshev_1.png}\label{subfig:chebyshev_1}}\hskip3ex
+    \subfloat[Chebyshev Type II filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/chebyshev_2.png}\label{subfig:chebyshev_2}}\hskip3ex
+    \subfloat[Elliptic filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/elliptic.png}\label{subfig:elliptic}}\hskip3ex
+    \caption[Digital filter bode plots]{Bode plots for Chebyshev and Elliptical filters using a low-stop frequency of 0.025 Hz, a low-pass freuqnecy of 0.05 Hz, a high-stop frequency of 2.0 Hz, a high-pass frequency of 0.25 Hz, a stop attenuation of 100 dB, and a pass attenuation of 0.1 dB.}
+    \labfig{filter_bode_plots}
+\end{figure}
 
 From these plots, we can see that the both the Chebyshev Type II and Elliptic filter have undesired ripple on the stop bands and the phase shift is very non-linear. 
 The Chebyshev Type I filter on the other hand has a much sharper attenuation of the stop bands without any ripple at the cost of some more phase shift. 
@@ -342,3 +343,7 @@ From the wave-by-wave analysis, we can determine the significant wave height by 
 If we want to directly compare to the previous methods, we need to window our waves in the same time periods as the spectral analysis. 
 We can compute the significant wave height for that window using the above equation and determine the peak period by creating a distribution of periods (that is, time between upcrossings) in that window; the peak wave period would be that with the most counts in its bin. 
 As before, we can compare the inertial data loggers to each other via per cent difference, and to the wave buoy via the RMSE method.
+
+\section{References} \labsec{weave_references}
+
+[TODO: weave references using biblatex?]

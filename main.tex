@@ -134,6 +134,21 @@
 \newcommand{\labtab}[1]{\label{tab:#1}}
 \newcommand{\labeq}[1]{\label{eq:#1}}
 
+% Revision figure command
+\newcommand{\revisionfigure}[1]{
+    \begin{figure}[H]
+		\labfig{thetis_rev_#1}
+        \caption{Thetis Revision \uppercase{#1} PCB render with call outs for important components.}
+		\centering
+		\includegraphics[width=5in]{design/revision_#1_labeled.png}
+    \end{figure}
+}
+
+% Include schematic command
+\newcommand{\schematic}[1]{
+	\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Revision #1 Schematic} \labsubsec{rev#1_schematic}}]{../include/Thetis_Rev#1_SCH.pdf}
+}
+
 
 \title{Project Thetis\\ A Low-Cost, Low-Profile Inertial Datalogger}
 \author{Braidan Duffy}
@@ -251,9 +266,9 @@
 \include{chapters/appendices/traceability_matrix}
 \include{chapters/appendices/weave}
 % TODO: Software breakdown?
-% TODO: Software guide
-% TODO: Raw data plots
-% TODO: Schematics
+\include{chapters/appendices/revision_schematics}
 % TODO: Current calibration machine design
+% TODO: Raw data plots
+% TODO: Software guide
 
 \end{document}

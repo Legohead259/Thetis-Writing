@@ -824,15 +824,6 @@ The code was designed to be modular and allow for new features to be quickly add
 
 \section{Brief Revision History} \labsec{revision_history}
 
-\newcommand{\revisionfigure}[1]{
-    \begin{figure}[H]
-		\labfig{thetis_rev_#1}
-        \caption{Thetis Revision \uppercase{#1} PCB render with call outs for important components.}
-		\centering
-		\includegraphics[width=5in]{design/revision_#1_labeled.png}
-    \end{figure}
-}
-
 After carefully considering all the design criteria from the stakeholder requirements and system requirements, Thetis began several design revisions.
 The first design revision, Rev F1, was a functional proof of concept.
 It incorporated many of the base design features of later Thetis revisions, but relied on a breakout board for the IMU mounted to the bottom of the board and had the battery placed on top.
@@ -888,7 +879,8 @@ This also allows students who have never assembled PCBs before to more easily ta
 The next sections detail the assembly process in more detail and provide the schematics and PCB layout for Revision F5.
 The schematics for the previous revisions can be found in the appendix.
 
-\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \labsubsec{revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
+% \includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \labsubsec{revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
+\schematic{F5}
 
 \subsection{Assembly Technique} \labsubsec{assembly_techniques}
 Thetis was designed with surface mount soldering as the primary assembly technique.

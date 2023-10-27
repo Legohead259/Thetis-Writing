@@ -1,10 +1,30 @@
 %%-----------List of Symbols, Nomenclature or Abbreviation--------
 \chapter*{List of Symbols, Nomenclature or
-Abbreviations} \addcontentsline{toc}{chapter}{Abbreviations} Start
-writing here. This is optional.
-\begin{table}[!h]
-\begin{tabular}{l l r}
-$\sum$  &$\backslash$sum\\
-$\bigcap$ &$\backslash$bigcap
-\end{tabular}
-\end{table}
+Abbreviations} \addcontentsline{toc}{chapter}{Abbreviations}
+
+\begin{longtable}{l m{0.3\textwidth} m{0.5\textwidth}}
+    % \renewcommand{\arraystretch}{1.5} % Set row height
+    % \begin{tabular}{l m{0.3\textwidth} m{0.5\textwidth}}
+        Symbol & Meaning & Definition \\
+        \hline
+        $\phi$ & Roll & Typically, any rotation about the center or longitudinal (x) axis \\
+        $\theta$ & Pitch & Typically, any rotation about the side or transverse (y) axis \\
+        $\psi$ & Yaw & Typically, any rotation about the vertical (z) axis \\
+        MEMS & Microelectromechanical Systems & Small electromechanical systems that perform a function and are micrometers in size \\
+        MARG & Magnetic, Angular Rate, and Gravity & A collection of tri-axial magnetometers, gyroscopes, and accelerometers in a sensor package \\
+        IMU & Inertial Measurement Unit & A collection of gyroscopes and/or accelerometers (optionally with magnetometers) in a sensor package \\
+        DOF & Degree(s) of Freedom & A measurement or movement axis in a body \\
+        GPS & Global Positioning System & A collection of satellites in Earth orbit that allows receivers to triangulate their position \\
+        ToF & Time of Flight & The time it takes a signal (typically electromagnetic) to be emitted, reflected, and return back to the emitter \\
+        AHRS & Attitude and Heading Reference System & An algorithm (or collection of algorithms) that report body attitude and heading from sensor data \\
+        SWaP & Size, Weight, and Power & Three of the most important metrics for considering the design of an embedded system \\
+        SCWaP & Size, Cost, Weight, and Power & Four of the most important metrics for considering the design of an embedded system \\
+        COTS & Commercial Off The Shelf & Components that can be routinely purchased from stores, retailers, suppliers, catalogs, etc. \\
+        API & Application Program Interface & A protocol that allows for standard interactions between different software packages \\
+        PCB & Printed Circuit Board & A (typically) fiberglass substrate with etched copper planes that condense electronics designs \\
+        IC & Integrated Circuit & A circuit that is integrated into a small board mountable package \\
+        DDS & Distributed Data Service & A method for sending messages between different software packages \\
+        ROS & Robot Operating System & A framework for handling DDS interactions between nodes in a software package \\
+        HAT & Hardware Attached on Top & A daughter board that can be attached onto a Raspberry Pi mini computer to expand its capability
+    % \end{tabular}
+\end{longtable}

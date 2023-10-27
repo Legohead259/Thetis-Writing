@@ -26,10 +26,10 @@ But, when the scope is expanded to encompass the entire body and the Earth's fra
 
 \begin{figure}
     \begin{fitbox}[frametitle=Aside: Notation and Nomenclature for Rotations]
-        Bodies on their own typically use the "X, Y, Z" notation that is ubiquitous for the Cartesian coordinate system.
+        Bodies on their own typically use the ``x, y, z'' notation that is ubiquitous for the Cartesian coordinate system.
         However, when referring to planetary bodies like the Earth, this nomenclature typically changes to North, East, and Down (NED).
         This occurs because on the surface of a large spherical body, we can assume the local area is a plane tangential to the surface.
-        To keep the broader scope in mind, we arbitrarily associate the X-axis with East, the Y-axis with North, and the Z-axis with Down towards the Earth's core (perpendicular to the surface).
+        To keep the broader scope in mind, we arbitrarily associate the x-axis with East, the y-axis with North, and the z-axis with Down towards the Earth's core (perpendicular to the surface).
 
         \caption{Illustration of the difference between the global and local reference frames}
         \labfig{global_frame}
@@ -45,15 +45,15 @@ The matrix is an $N \times N$ orthogonal matrix where $N$ is the number of dimen
 for a three dimensional vector, the rotation matrix to go from one coordinate frame to another would be a $3 \times 3$ matrix.
 
 \begin{figure}[h!]
-    \caption{Illustration of the rotation from a base coordinate frame to a local coordinate frame about the axis, $\pmb{r}$}
+    \caption[Illustration of rotation between coordinates frame about an axis]{Illustration of the rotation from a base coordinate frame to a local coordinate frame about the axis, $\pmb{r}$}
     \labfig{frame_rotation}
     \centering
-    \includegraphics[width=2.5in]{background/frame_rotation.png}
+    \includegraphics[height=1.75in]{background/frame_rotation.png}
 \end{figure}
 
 In Figure \ref{fig:frame_rotation}, we can see a base coordinate frame, $A$, and a different coordinate frame, $B$ that is rotated relative to the base frame about the axis, $\pmb{r}$.
 To express the rotation from the base to the local frame, we can borrow notation from Craig \cite{Craig:2022}.
-The "from" or "base" frame is the preceding superscript while the "to" or "local" frame is the preceding subscript, as shown below:
+The ``from'' or ``base'' frame is the preceding superscript while the ``to'' or ``local'' frame is the preceding subscript, as shown below:
 
 \begin{equation*}
     {}^A_B R = \left[
@@ -64,7 +64,7 @@ The "from" or "base" frame is the preceding superscript while the "to" or "local
         \end{matrix}
     \right] = \left[
         \begin{matrix}
-            {}^Ax_b & {}^Ay_B & {}^Az_B
+            {}^A_Bx & {}^A_By & {}^A_Bz
         \end{matrix}\right]
 \end{equation*}
 
@@ -98,59 +98,56 @@ For example, if we wanted to rotate from frame $A$ to frame $B$ using a yaw-pitc
 Then, we can rotate the vector from $A$ to $B$ via:
 
 \begin{equation*}
-    {}^A\vec{v}_B = {}^A_B R \cdot \vec{v}_A
+    {}^A_B\pmb{v} = {}^A_B R \cdot {}^A\pmb{v}
 \end{equation*}
 
 \paragraph*{Gimbal Lock} When two axes become parallel, Eulerian changes to either axis become irrelevant, ergo, the system loses a degree of freedom.
-This condition is called "gimbal lock".
+This condition is called ``gimbal lock''.
 When in gimbal lock, rotations yield discontinuities that need to be mitigated by changing the rotation order, or moving two or three axes at once.
 This can create strange pathways for the body and cause unexpected behavior.
 Monitoring for and breaking gimbal lock are also computationally expensive as the program must perform multiple matrix multiplications and then have logic to determine if a) it is in a gimbal lock condition and b) what rotation order would be required to break the condition.
 
 The figure below shows a body's rotation while in gimbal lock. The rotation order is roll-pitch-yaw.
-First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\langle0, 90, 0\rangle$ (Figure \ref{subfig:ship_009000}).
-If we then want it's orientation to be $\langle90, 0, 0\rangle$ (Figure \ref{subfig:ship_900000}), the body would be rolled left 90 degrees and pitched down 90 degrees.
-However, due to gimbal lock, the body ended up in the orientation $\langle0, 0, 90\rangle$ (Figure \ref{subfig:ship_000090})!
+First, it is pitched 90 degrees upwards to align the roll and yaw axes, $\lbrack 0, 90, 0 \rbrack$ (Figure \ref{subfig:ship_009000}).
+If we then want it's orientation to be $\lbrack 90, 0, 0 \rbrack$ (Figure \ref{subfig:ship_900000}), the body would be rolled left 90 degrees and pitched down 90 degrees.
+However, due to gimbal lock, the body ended up in the orientation $\lbrack 0, 0, 90 \rbrack$ (Figure \ref{subfig:ship_000090})!
 To break the gimbal lock and get to the correct orientation, the rotation order would have to be changed to pitch-yaw-roll, or the roll and yaw axes driven simultaneously.
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Start: $\langle0, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
-    \subfloat[$\langle0, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
-    \subfloat[$\langle90, 90, 0\rangle$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
-    \subfloat[End: $\langle0, 0, 90\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
-    \subfloat[Desired: $\langle90, 0, 0\rangle$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\label{subfig:ship_900000}}
+    \subfloat[Start: $\lbrack 0, 0, 0\rbrack$]{\includegraphics[width=0.25\textwidth]{background/ship_000000}\label{subfig:ship_000000}}\hskip3ex
+    \subfloat[$\lbrack 0, 90, 0 \rbrack$]{\includegraphics[height=1in]{background/ship_009000}\label{subfig:ship_009000}}\hskip10ex
+    \subfloat[$\lbrack 90, 90, 0 \rbrack$]{\includegraphics[height=1in]{background/ship_909000}\label{subfig:ship_909000}}\hskip5ex
+    \subfloat[End: $\lbrack 0, 0, 90 \rbrack$]{\includegraphics[width=0.25\textwidth]{background/ship_000090}\label{subfig:ship_000090}}
+    \subfloat[Desired: $\lbrack 90, 0, 0 \rbrack$]{\includegraphics[width=0.25\textwidth]{background/ship_900000}\label{subfig:ship_900000}}
     \caption[Gimbal lock demonstration]{Demonstration of gimbal lock on a rotating 3D body.
     Despite only pitching and rolling the body, the end result of the transformation is an effective yaw.
     This is because the first pitch aligns the roll and yaw axes, effectively making them the same.
     In the given rotation order, any roll rotation would be equivalent to a yaw rotation when the object is pitched 90$^{\circ}$.
-    \textit{3D model courtesy of "printable models" from Free3D.com.}}
+    3D model courtesy of ``printable models'' from Free3D.com.}
     \labfig{gimbal_lock}
 \end{figure}
 
 \subsection{Quaternions} \labsubsec{quaternions}
 In the 19th century, an Irish mathematician was contemplating the problem of Euler angles and analyzing three dimensional geometry.
-William Hamilton considered the problem from within the complex or imaginary space and found that a three dimensional vector could not be expressed with a complex triplet.
-Instead, Hamilton discovered that the problem could be solved with a complex quadruplet, called a quaternion \cite{Hamilton:1850}, which could be used as a more mathematically pure tool to understand three dimensional geometry.
+Sir William Hamilton considered the problem from within the complex or imaginary space and found that a three dimensional vector could not be expressed with a complex triplet.
+Instead, Hamilton discovered that the problem could be solved with a complex quadruplet, he called a quaternion \cite{Hamilton:1850}, which could be used as a more mathematically pure tool to understand three dimensional geometry.
 For more detailed notes, see Kuipers \cite{Kuipers:2002}
 
 A quaternion exists in four dimensional Hamiltonian space and has three complex and one real component in its vector. 
-Like a rotation matrix, it describes the rotation from one reference frame to another about some axis, $\vec{r}$, as shown in Figure \ref{fig:frame_rotation}.
+Like a rotation matrix, it describes the rotation from one reference frame to another about some axis, $\pmb{r}$, as shown in Figure \ref{fig:frame_rotation}.
 But, the quaternion is not susceptible to gimbal lock as when two of its axes align, it still retains three degrees of freedom.
-Additionally, it is not limited to the range of 0 to 360 (or -180 to 180) like Euler angles and therefore has no discontinuities.
+Additionally, it is not limited to the range of 0 to 360 (or -180 to 180) like Euler angles and therefore has no discontinuities when looping from one end of the range to the other.
 We can express the quaternion from frame $A$ to frame $B$ as:
 
 \begin{equation}
-    {}^A_B \vec{q} = \left[
-        \begin{matrix}
-            q_1 & q_2 & q_3 & q_4
-        \end{matrix}
-    \right] = 
-    \left[
-        \begin{matrix}
-            w & x & y & z
-        \end{matrix}
-    \right] = 
+    {}^A_B \pmb{q} =
+    \begin{bmatrix}
+        q_1 & q_2 & q_3 & q_4
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        w & x & y & z
+    \end{bmatrix} = 
     w + x\hat{i} + y\hat{j} + z\hat{k}
 \end{equation}
 
@@ -158,23 +155,23 @@ Since the quaternion is just a vector, this drastically simplifies any rotation 
 In order to rotate a vector using a quaternion, we need to set the quaternion to be a unit quaternion by:
 
 \begin{equation}
-    q = \frac{q}{|q|}
+    \pmb{q} = \frac{\pmb{q}}{\lVert\pmb{q}\rVert}
 \end{equation}
 
-Then, we can calculate the inverse quaternion, ${q}^{-1}$ (or conjugate $q^*=q^{-1}, \text{ if } |q|=1)$, using:
+Then, we can calculate the inverse quaternion, ${\pmb{q}}^{-1}$ (or conjugate $\pmb{q}^*=\pmb{q}^{-1}, \text{ if } \lVert\pmb{q}\rVert=1)$, using:
 
 \begin{equation}
-    q^{-1} = \frac{q_0 - q_1\hat{i} - q_2\hat{j} - q_3\hat{k}}{|q|^2}
+    \pmb{q}^{-1} = \frac{q_1 - q_2\hat{i} - q_3\hat{j} - q_4\hat{k}}{\lVert\pmb{q}\rVert^2}
 \end{equation}
 
-Then, we can rotate the vector using the equation:
+Then, we can rotate a three dimensional vector,${}^A\pmb{v}$, using the equation:
 
 \begin{equation}
-    {}^A_B \pmb{v} = {}^A_Bq \pmb{v}_A {}^A_Bq^{-1}
+    {}^A_B \pmb{v} = {}^A_B\pmb{q} \hspace{0.25em} {}^A\pmb{v} \hspace{0.25em} {}^A_B\pmb{q}^{-1}
 \end{equation}
 
-In an inertial measurement unit or attitude and heading reference system, we will need to rotate freely between readings taken in the body's local frame to that in the global frame, such as determining linear acceleration.
-Using the quaternion method above we can also relate body measurements to the global frame, which can be useful for other analyses.
+In an inertial measurement unit or attitude and heading reference system, we will need to rotate freely between readings taken in the body's local frame to that in the global frame, e.g. when calculating linear acceleration.
+Using the quaternion method above simplifies the calculation and can allow us to more easily determine body attitude from measurements.
 
 \section{Sensing} \labsec{sensing}
 Now that we have a basic understanding of some of the mathematical relationships present in inertial tracking, we need to start sensing our environment.
@@ -183,9 +180,9 @@ In order to answer this question, we must first examine the different sensors th
 
 \subsection{Magnetometer} \labsubsec{magnetometer}
 Magnetometers use magnetoresistive elements that change their effective resistance in the presence of a magnetic field \cite{Corke:2011}.
-Atoms within a magnetoresistive element change their orientations with the magnetic field.
+Atoms within a magnetoresistive element change their orientations with the local magnetic field.
 The new orientation can hinder or aid the path of free electrons moving through the element, thus changing the resistance.
-By measuring this value and correlating it to a measurement scale, the local magnetic field can be determined.
+By measuring this value and correlating it to a measurement scale, the local strength and direction of a magnetic field can be determined.
 
 \begin{figure}[h!]
     \caption[Magnetometer block diagram]{Basic block diagram of a single-axis magnetometer where electrons are flowing through the magnetoresistive material. The left diagram shows the condition when the magnetic field is aligned (minimal resistance); the right shows the non-aligned magnetic field condition which increases the resistance the electrons face passing through the material.}
@@ -199,7 +196,7 @@ A gyroscope is an inertial sensor that measures the angular velocity of a rotati
 MEMS-based gyroscopes measure this value by applying the Coriolis effect on a microscopic mass \cite{Corke:2011}.
 As shown in Figure \ref{fig:gyroscopes}, an oscillation is induced on the x-axis using a driving circuit.
 While oscillating, if an angular velocity ($\omega$) is imparted on the z-axis, the suspended mass will experience a force in the y-axis that is proportional to $\omega$ (Appendix \ref{chap:gyroscope_proof}).
-Since the mass is suspended on springs, Newton's Second Law can be applied again to directly correlate the force experienced to a displacement and therefore a change in resistance or capacitance.
+Newton's Second Law can be applied to directly correlate the force experienced to a displacement and therefore a change in resistance or capacitance.
 
 \begin{figure}[h!]
     \caption[Gyroscope block diagram]{Basic block diagram of a three-axis gyroscope where the masses are suspended from springs. The left diagram shows a single mass configuration; the right shows a tuning fork configuration which is twice as sensitive as the singular mass.}
@@ -211,8 +208,8 @@ Since the mass is suspended on springs, Newton's Second Law can be applied again
 \subsection{Accelerometer} \labsubsec{accelerometer}
 Accelerometers measure a change in velocity over time (acceleration).
 An accelerometer is comprised of a mass suspended in an axis of motion by springs of a known K-constant \cite{Corke:2011}.
-From Newton's Second Law, as applied to a spring-mass system, $\frac{-K}{m}x=a$, we can directly correlate the displacement of the mass to the magnitude of the acceleration along the measurement axis.
-Typically, this scale is electrically resistive or capacitative and creates an analog change in a driving (exciting) voltage which can be measured in a circuit using a Wheatstone Bridge and microcontroller.
+From Newton's Second Law as applied to a spring-mass system, $\frac{-K}{m}x=a$, we can directly correlate the displacement of the mass to the magnitude of the acceleration along the measurement axis.
+Typically, this scale is electrically resistive or capacitative and creates an analog change in a driving (exciting) voltage which can be measured in a circuit using a Wheatstone Bridge (Appendix \ref{chap:wheatstone_bridge}) and microcontroller.
 A basic representation of a three-axis accelerometer is shown in Figure \ref{fig:accelerometers}.
 
 \begin{figure}[h!]
@@ -226,7 +223,7 @@ A basic representation of a three-axis accelerometer is shown in Figure \ref{fig
 Now, with the basics of each sensor in mind, we can combine them into a single package, called a Magnetic, Angular Rate, and Gravity (MARG) array.
 Each of the above diagrams represent a single sensing axis, or Degree of Freedom (DOF).
 In order for a MARG array to be useful in a 3D environment, it needs to have three sensing axes orthogonal to each other.
-Each DOF will measure the X-, Y-, and Z-axis, respectively with the positive sensing direction according to the right hand rule.
+Each DOF will measure the x-, y-, and z-axis, respectively with the positive sensing direction according to the right hand rule.
 By combining multiple tri-axial arrays, we can define different types of Inertial Measurement Units (IMUs), as shown in Table \ref{tab:imu_dofs}.
 Typically, the more sensing axes, the more accurate the array will be (depending on the performance of the sensor fusion algorithm).
 Note that a MARG array is an IMU with an integrated tri-axial magnetometer .
@@ -239,7 +236,7 @@ Note that a MARG array is an IMU with an integrated tri-axial magnetometer .
         \hline
         DOFs & Accelerometer & Gyroscope & Magnetometer & Barometer \\
         \hline
-        3-DOF & 3-axis\footnote{can be either or} & 3-axis\footnotemark[\value{footnote}] & --- & --- \\
+        3-DOF & 3-axis\tablefootnote{can be either or, but not both.} & 3-axis\footnotemark[\value{footnote}] & --- & --- \\
         6-DOF & 3-axis & 3-axis & --- & --- \\
         9-DOF & 3-axis & 3-axis & 3-axis & --- \\
         10-DOF & 3-axis & 3-axis & 3-axis & 1-axis \\
@@ -268,15 +265,15 @@ Note that a MARG array is an IMU with an integrated tri-axial magnetometer .
     \end{fitbox}
 \end{figure}
 
-According to VectorNav \cite{VectorNav:2023}, a producer of industrial-grade IMUS, the cheapest, least precise, and least accurate IMUs are considered "consumer-grade".
+According to VectorNav \cite{VectorNav:2023}, a producer of industrial-grade IMUS, the cheapest, least precise, and least accurate IMUs are considered ``consumer-grade''.
 Every day smartphones, cheap commercial breakout boards, and even shipping crates have these devices on-board.
 Consumer-grade IMUs can be bought for cents, dollars, or tens of dollars per unit in bulk and are ideal for mass production spaces where quantity is king over quality.
-A step up from these sensors are "industrial-grade" IMUs. 
+A step up from these sensors are ``industrial-grade'' IMUs. 
 These are tens to hundreds of dollars per unit but are an order of magnitude more accurate and precise than their consumer counter parts.
 This makes them desirable for the automotive and industrial sectors as they can assist in automation, control, and monitoring of expensive unmanned systems.
-The "tactical-grade" sensors are even more robust and accurate than the previous tiers and have an appropriate military-industrial complex price tag to match. 
-These devices will typically be used in applications where war fighters need precise guidance for munitions, or need to navigate their way through hazardous and GNSS-denied terrain.
-Finally, the last major tier is the "navigation-grade" sensors. 
+The ``tactical-grade'' sensors are even more robust and accurate than the previous tiers and have an appropriate military-industrial complex price tag to match. 
+These devices will typically be used in applications where war fighters need precise guidance for munitions, or need to navigate their way through hazardous and/or GPS-denied terrain.
+Finally, the last major tier are the ``navigation-grade'' sensors. 
 These sensors are extremely precise, extremely accurate, and cost more than some middle-class families will make in a year.
 Primarily, these will be used in survey missions or on underwater vehicles where absolute precision and knowledge of their location is necessary.
 
@@ -285,7 +282,7 @@ The Global Position System, or GPS, is a constellation of high-altitude satellit
 First developed by the US military for large scale maneuvers on the battlefield, GPS is a ubiquitous technology that is available in almost every device from smartphones to cars.
 Each GPS satellite in orbit transmits the current time measured by their internal atomic clocks.
 A GPS receiver on the ground can synchronize its own internal clock to the GPS time and wait for a satellite's transmission.
-When the satellite time is received, the device can determine the difference between its clock and the satellite's report called the Time of Flight.
+When the satellite time is received, the device can determine the difference between its clock and the satellite's report called the Time of Flight (ToF).
 Since the Time of Flight can be assumed to be the constant speed of light, the GPS receiver can determine its distance to a satellite in a known orbit.
 Repeat for at least three satellites, and a GPS receiver can triangulate its position to a reasonable circle of error of about 3-meters.
 
@@ -303,7 +300,7 @@ An accelerometer can detect acceleration and determine pitch and roll using basi
 Data from a gyroscope can be integrated over time to determine the sensor's attitude, but this method will drift over time and accumulate errors, it also cannot detect movement.
 Magnetometers in a weak magnetic field, like Earth's, are not accurate enough to determine roll and pitch, but can easily provide heading.
 Finally, GPS readings will provide position and velocity vectors, but typically update slowly and have a large circle of error and cannot determine attitude.
-In order to make these sensors more effective for an inertial sensing application, we need to fuse the data feeds into a unified output that emphasizes the strength of each sensor, while mitigating their limitations.
+To make these sensors more effective for an inertial sensing application, we need to fuse the data feeds into a unified output that emphasizes the strength of each sensor, while mitigating their limitations.
 
 \subsection{Attitude and Heading Reference System} \labsubsec{ahrs}
 An Attitude and Heading Reference System (AHRS) is an IMU equipped with an accelerometer, gyroscope, and/or a magnetometer in all three axes.
@@ -328,46 +325,46 @@ This will improve the sensor fusion performance and accuracy of the resultant va
 From Madgwick \cite{Madgwick:dissertation}, in order to calibrate an IMU, we first need to create a model of the data. For the accelerometer and gyroscope, we can create an inertial model defined as:
 
 \begin{gather} \labeq{inertial_model}
-    \vec{i}_c=MS(\vec{i}_u-\vec{b}) \\
+    \pmb{i}_c=MS(\pmb{i}_u-\pmb{b}) \\
     \begin{aligned}
-        \text{where } & \vec{i}_C \text{ is the calibrated inertial measurements,} \\ 
+        \text{where } & \pmb{i}_C \text{ is the calibrated inertial measurements,} \\ 
         & M \text{ is the misalignment matrix,} \\
         & S \text{ is the sensitivity identity matrix,} \\
-        & \vec{i}_u \text{ is the uncalibrated inertial measurements, and} \\
-        & \vec{b} \text{ is the bias or offset vector}
+        & \pmb{i}_u \text{ is the uncalibrated inertial measurements, and} \\
+        & \pmb{b} \text{ is the bias or offset vector}
     \end{aligned} \notag
 \end{gather}
 
-The three calibration values, $M$, $S$, $b$, represent a set of correction factors that make the measured values more accurate. The inertial measurement is generalized here to represent either accelerometer or gyroscope data. Each sensor will have its own set of the calibration values.
+The three calibration values, $M$, $S$, and $\pmb{b}$, represent a set of correction factors that make the measured values more accurate. The inertial measurement is generalized here to represent either accelerometer or gyroscope data. Each sensor will have its own set of the calibration values.
 
-\paragraph*{Bias Vector} The bias, or offset, vector is the average of the inertial readings while the sensor is in a stable, known orientation. For example, when the gyroscope is at rest, we would expect the measurement output to be $[0,0,0] \text{ [deg/sec]}$. However, we may measure an average of $[0.89, -0.66, 0.31] \text{ [deg/sec]}$ instead. By subtracting this bias vector from the measurements, we eliminate any unintentional offset from our readings. The bias can be calculated using the equation below:
+\paragraph*{Bias Vector} The bias, or offset, vector is the average of the inertial readings while the sensor is in a stable, known orientation. For example, when the gyroscope is at rest, we would expect the measurement output to be $\lbrack 0,0,0 \rbrack$ [deg/sec]. However, we may measure an average of $\lbrack 0.89, -0.66, 0.31 \rbrack$ [deg/sec] instead. By subtracting this bias vector from the measurements, we eliminate any unintentional offset from our readings. The bias can be calculated using the equation below:
 
 \begin{gather} \labeq{gyroscope_bias}
-    \vec{b}_g = \frac{1}{N} \sum_{i=0}^N{\vec{g}_n} \\
+    \pmb{b}_g = \frac{1}{N} \sum_{n=0}^N{\pmb{g}_n} \\
     \begin{aligned}
-        \text{where } & \vec{b}_g \text{ is the bias vector,} \\
+        \text{where } & \pmb{b}_g \text{ is the bias vector,} \\
         & N \text{ is the number of collected samples to average, and} \\
-        & \vec{g}_n \text{ is the n-th uncalibrated gyroscope measurement vector in the dataset}
+        & \pmb{g}_n \text{ is the uncalibrated gyroscope measurement vector}
     \end{aligned} \notag
 \end{gather}
 
 For accelerometers, the bias is calculated differently. Each measurement axis must be exposed to ±1g of acceleration by placing the instrument vertical on each of the measurement axes in both the positive and negative directions. The bias for each axis can then be determined by taking the average value as shown below:
 
 \begin{gather} \labeq{accelerometer_bias}
-    \vec{b}_a = \frac{1}{2} \left[ \frac{1}{N}\sum_{n=0}^N{\vec{a}_{n,+g}} + \frac{1}{M}\sum_{m=0}^M{\vec{a}_{m_-g}} \right] \\\
+    b_a = \frac{1}{2} \left[ \frac{1}{N}\sum_{n=0}^N{a_{n,+g}} + \frac{1}{M}\sum_{m=0}^M{a_{m,-g}} \right] \\\
     \begin{aligned}
-        \text{where } & b_a \text{ is the bias vector,} \\
+        \text{where } & b_a \text{ is the bias for a measurement axis,} \\
         & N \text{ is the number of samples taken in the +1g orientation,} \\
-        & a_{+g} \text{ is the average axis measurement when exposed to +1g, and}\\
-        & M \text{ is the number of samples taken in the -1g orientation,} \\
+        & a_{+g} \text{ is the average axis measurement when exposed to +1g,}\\
+        & M \text{ is the number of samples taken in the -1g orientation, and} \\
         & a_{-g} \text{ is the average axis measurement when exposed to -1g}
     \end{aligned} \notag
 \end{gather}
 
-\paragraph*{Sensitivity Matrix} The sensitivity matrix is a diagonal matrix that accounts for minor errors with variations in process and material. 
-This can make each uniaxial sensor in a triaxial array sense the environment slightly differently. 
+\paragraph*{Sensitivity Matrix} The sensitivity matrix is a diagonal matrix that accounts for minor errors with variations in manufacturing process and sensor material. 
+These errors can make each uniaxial sensor in a triaxial array sense the environment slightly differently. 
 While bias covers this area when at rest or in specific orientations, the sensitivity error will change depending on the motion and orientation. 
-To account for this, we need to expose each sensor to a known reference stimulus and calculate a sensitivity value based on the average magnitude of the measurement vector during that time. 
+To account for this, we need to expose each sensor to a known reference stimulus and calculate the sensitivity based on the average magnitude of the measurement vector during that time. 
 For a gyroscope, this value can be an arbitrary, but constant, rotation rate, $\omega$. 
 For an accelerometer, this value will be ±1g. The equations for each gyroscope and accelerometer axis are provided below:
 
@@ -414,31 +411,32 @@ While this calibration value accounts for some of the intrinsic sensor error, it
 \paragraph*{Misalignment Matrix} The misalignment matrix is the final, but most complex, calibration value that we can calculate for the inertial sensors. It reduces error from multiple sources such as non-orthogonality between the measurement axes, the misalignment from the measurement axes to the actual sensor packaging, and misalignment from the package onto the application board. In order to calculate the misalignment matrix, we must consider it as the solution to a non-linear problem. First, we must define an objective function for the solution space. Since the goal of the misalignment matrix is to reduce error, then we can define the objective function as the Root Mean Square Error (RMSE) of the measurement vector, the misalignment vector, and the reference vector:
 
 \begin{gather} \labeq{misalignment_obj_func}
-    RMSE = \sqrt{\frac{1}{N}\sum_{n=0}^N{\|{\vec{i}_{n,u} \cdot M^* -\vec{i}_{n,ref}\|}^2}} \\
+    RMSE = \sqrt{\frac{1}{N}\sum_{n=0}^N{\|{\pmb{i}_{n,u} \cdot M^* -\pmb{i}_{n,\text{ref}}\|}^2}} \\
     \begin{aligned}
         \text{where } & N \text{ is the number of samples in the dataset,} \\
-        & \vec{i}_{n,u} \text{ is the n-th uncalibrated measurement vector with the bias removed,} \\
-        & M^* \text{ is the guessed 3-by-3 matrix that corrects $i_{n,u}$ to be near $i_{ref}$, and } \\
-        & \vec{i}_{ref} \text{ is the expected reference stimulus vector for the measurement}
+        & \pmb{i}_{n,u} \text{ is the uncalibrated measurement vector with the bias removed,} \\
+        & M^* \text{ is the guessed $3 \times 3$ matrix that corrects $\pmb{i}_{n,u}$ to be near $\pmb{i}_{\text{ref}}$, and } \\
+        & \pmb{i}_{\text{ref}} \text{ is the reference stimulus vector for the measurement}
     \end{aligned} \notag
 \end{gather}
 
-Then, given a dataset of measurement vectors and their expected reference vectors, we can use a non-liner solver to determine the value of $M^*$. This can be done using toolboxes\footnote{Like the \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html}{\lstinline{scipy.optimize.minimize} toolbox}}. 
+Then, given a dataset of measurement vectors and their expected reference vectors, we can use a non-liner solver\footnote{Like the \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html}{\lstinline{scipy.optimize.minimize} toolbox}} to determine the value of $M^*$ 
 Assuming the sensitivity was not removed from the measurement signal, the $M^*$ matrix happens to include it as its diagonal. 
 By extracting the diagonal and normalizing the original matrix, we are left with the sensitivity and misalignment matrix calibration values.
 
-\begin{equation} \labeq{sensitivity_and_misalignment}
+\begin{gather} \labeq{sensitivity_and_misalignment}
     S = \text{diag}(M^*) \\
-    M = M^* \cdot S^{-1}
-\end{equation}
+    M = M^* \cdot S^{-1} \notag
+\end{gather}
 
-We can now apply the misalignment matrix, sensitivity matrix, and bias vector to the sensor readings according to the model above. This should yield outputs that are close to the real values, which is examined in the next section.
+We can now apply the misalignment matrix, sensitivity matrix, and bias vector to the sensor readings according to the model in Equation \ref{eq:inertial_model}. 
+This should yield outputs that are close to the real values, which is examined in Chapter \ref{chap:calibration}.
 
 \subsection{Magnetic Calibration}
 The magnetometer in a MARG array needs a different sensor model than the inertial sensors because the ambient magnetic field introduces different errors. 
-There are two types: soft iron, $W$, and hard iron, $\vec{v}$. 
+There are two types: soft iron, $W$, and hard iron, $\pmb{v}$. 
 A hard iron distortion is introduced by magnetic materials placed near the sensor. 
-This can occur when the sensor is placed in a casing with magnetic fasteners or a speaker, as shown in Tuupola \cite{Tuupola:2018}. 
+This can occur when the sensor is placed in a casing with permanent magnets or near a speaker, as shown in Tuupola \cite{Tuupola:2018}. 
 Soft iron distortion is typically less severe than hard iron distortion and is caused by materials near the sensor that distort the local magnetic field. 
 The soft iron distortion can also account for misalignment and sensitivity errors. 
 The sensor model for a calibrated magnetometer is given below:
@@ -458,11 +456,11 @@ Due to the hard and soft iron distortions, this will rarely be the case.
 Hard iron distortion can be removed from the signal by determining the average of the minimum and maximum values of each axis, as shown below:
 
 \begin{equation} \labeq{hard_iron_offset}
-    \vec{v}=\frac{1}{2}
+    \pmb{v}=\frac{1}{2}
     \begin{bmatrix}
-        \max(v_x)+\min(v_x) \\
-        \max(v_y)+\min(v_y) \\
-        \max(v_z)+\min(v_z)
+        \max(m_x)+\min(m_x) \\
+        \max(m_y)+\min(m_y) \\
+        \max(m_z)+\min(m_z)
     \end{bmatrix}
 \end{equation}
 
@@ -482,40 +480,40 @@ However, these parameters must be recalibrated whenever the sensor enters a new 
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{background/mag_raw.png}
-        \caption[Raw Magnetometer Readings]{Example of hard iron distortion from a magnet near a magnetic sensor. Courtesy of Mike Tuupola \cite{Tuupola:2018}.}
+        \caption[Raw Magnetometer Readings]{Example of hard iron distortion from a magnet near a magnetic sensor. Courtesy of Tuupola \cite{Tuupola:2018}.}
         \label{subfig:mag_raw}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{background/mag_hid.png}
-        \caption[Hard Iron Distortion Removed]{Magnetometer calibration data with hard iron distortion removed. Courtesy of Mike Tuupola \cite{Tuupola:2018}}
+        \caption[Hard Iron Distortion Removed]{Magnetometer calibration data with hard iron distortion removed. Courtesy of Tuupola \cite{Tuupola:2018}}
         \label{subfig:mag_hid}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[width=\textwidth]{background/mag_sid.png}
-        \caption[Soft Iron Distortion Removed]{Magnetometer calibration data with soft and hard iron distortion removed. Courtesy of Ozyagcilar \cite{Ozyagcilar:2015}}
+        \caption[Soft Iron Distortion Removed]{Magnetometer calibration data with soft and hard iron distortion removed and fitted to a sphere. Courtesy of Ozyagcilar \cite{Ozyagcilar:2015}}
         \label{subfig:mag_sid}
     \end{subfigure}
-       \caption{Three simple graphs}
+       \caption{Correction of magnetic field readings by removing hard and soft iron distortion}
        \labfig{magnetometer_corrections}
 \end{figure}
 
 \subsection{Fast Complimentary Filter} \labsubsec{complimentary_filter}
 A complimentary filter take advantage of the problems inherent with the accelerometer and gyroscope measurements such they \textit{compliment} each other.
-By integrating gyroscopic measurements, we can quickly obtain the body's attitude but the errors in the gyroscope sensor cause this value to quickly drift away from the "true" value.
+By integrating gyroscopic measurements, we can quickly obtain the body's attitude but the errors in the gyroscope sensor cause this value to quickly drift away from the ``true'' value.
 Accelerometer measurements on the other can use trigonometry on the gravitational acceleration vector to determine pitch and roll (tilt).
-These measurements are affected by the body's motion and can drift over time as the body experiences other accelerations than gravity.
-An accelerometer also cannot report the yaw degree, so must be coupled with a tri-axial magnetometer which can also be influenced by external magnetic fields.
+These measurements are affected by the body's motion and can drift over time as the body experiences other accelerations besides gravity.
+An accelerometer also cannot report the yaw rotation, so must be coupled with a tri-axial magnetometer which can also be influenced by external magnetic fields.
 
 In the frequency space, we can consider the gyroscope attitude estimate to drift with a high frequency, and the accelerometer-magnetometer signal to drift with a low frequency.
 To compensate for these drifts, we can establish a complimentary or band-pass filter that attenuates the drift signal and outputs the best estimate of orientation.
 This filter typically uses a hyperparameter, $\gamma$, to control the attenuation of each of the drifts, i.e. the weight of each estimation like so:
 
 \begin{gather} \labeq{fcf}
-    {}^G_B\pmb{q}_{est} = (1-\gamma){}^G_B\pmb{q}_lf + \gamma {}^G_B\pmb{q}_hf \\
+    {}^G_B\pmb{q}_{est} = (1-\gamma){}^G_B\pmb{q}_{lf} + \gamma {}^G_B\pmb{q}_{hf} \\
     \begin{aligned}
         \text{where } &{}^G_B\pmb{q}_{est} \text{ is the best estimate of the body quaternion relative to the global frame,} \\
                       &\gamma \text{ is the controlling hyperparameter, } \\
@@ -540,11 +538,11 @@ The basic block diagram for the filter is in Figure \ref{fig:fcf_diagram}.
 
 \subsection{Kalman Filter} \labsubsec{kalman_filter}
 The Kalman Filter \cite{Kalman:1960} was introduced in the 1960's as a method to estimate and track a series of explicit and hidden states within a system.
-In a sensor fusion/AHRS application, the Kalman Filter can be used to estimate the orientation state (quaternion) of the system based on the gyroscope, accelerometer, and magnetometer readings.
+In a sensor fusion or AHRS application, the Kalman Filter can be used to estimate the orientation state (quaternion) of the system based on the gyroscope, accelerometer, and magnetometer readings.
 The Kalman Filter also estimates the uncertainty and noise associated with attitude estimate to give more insightful feedback on the usefulness of the estimate.
 At each timestep, the filter uses a built-in mathematical model of the system to predict the current system state and its associated uncertainty.
 Then, the filter can predict the state and uncertainty in the next time step and uses that to adjust a correction factor, called the Kalman Gain.
-With each iteration of the filter, the Kalman Gain converges on a minimum value and the uncertainty and accuracy of the estimates increase.
+With each iteration of the filter, the Kalman Gain converges on a minimum value and the estimate uncertainty decreases.
 The convergence speed and accuracy can be tuned using various hyper parameters like process noise and sensor uncertainty.
 The process for the Kalman Filter is shown in Figure \ref{fig:bkg_kalman_filter_process} and a more detailed explanation can be found in Appendix \ref{chap:kalman_filter}.
 
@@ -599,17 +597,17 @@ This estimate can be integrated over the sampling time to get the best estimated
 
 \subsection{Madgwick Filter} \labsubsec{madgwick_filter}
 The Madgwick Filter \cite{Madgwick:dissertation} considers body attitude as an optimization problem that can be solved by a gradient descent algorithm (GDA).
-The filter tries to optimize the difference (deviation) between a predefined reference vector in the global frame, $\pmb{v}_G = [0, v_x, v_y, v_z]$ with its corresponding measurement vector in the local frame, $\pmb{s}_B = [0, s_x, s_y, s_z]$.
+The filter tries to optimize the difference (deviation) between a predefined reference vector in the global frame, ${}^G\pmb{v} = [0, v_x, v_y, v_z]$ with its corresponding measurement vector in the local frame, ${}^B\pmb{s} = [0, s_x, s_y, s_z]$.
 This deviation is expressed in the objective function:
 
 \begin{equation} \labeq{madgwick_obj_func}
-    f(\pmb{q}, \pmb{v}_G, \pmb{s}_B) = \pmb{q} \pmb{v}_G \pmb{q}^{-1} - \pmb{s}_B
+    f(\pmb{q}, {}^G\pmb{v}, {}^B\pmb{s}) = \pmb{q} \hspace{0.25em} {}^G\pmb{v} \hspace{0.25em} \pmb{q}^{-1} - {}^B\pmb{s}
 \end{equation}
 
 The GDA can compute the solution to the objective function by utilizing an initial guess, ${}^G_B \pmb{q}_0$ and a step-size, $\mu$.
 This yields the estimate for the quaternion gradient, $\pmb{q}_{\nabla,t}$.
-The filter than calculates the time rate of change in the body quaternion, $\pmb{\dot{q}}_t$, as measured from the gyroscopes, $\pmb{q}_{\omega,t}$.
-By removing the gyroscope error, $\beta$ from the estimated quaternion error, $\pmb{\dot{q}}_{\epsilon, t}$ along the gradient and numerically integrating the value over the sampling interval, $\Delta t$, the filter yields a quaternion estimate via:
+The filter then calculates the time rate of change in the body quaternion, $\pmb{\dot{q}}_t$, as measured from the gyroscopes, $\pmb{q}_{\omega,t}$.
+By removing the gyroscope error, $\beta$, from the estimated quaternion error, $\pmb{\dot{q}}_{\epsilon, t}$ along the gradient, and numerically integrating the value over the sampling interval, $\Delta t$, the filter yields a quaternion estimate via:
 
 \begin{align} \labeq{madgwick_filter}
     \pmb{q}_t &= \pmb{q}_{t-1} + \pmb{\dot{q}}_t \Delta t \\
@@ -625,20 +623,20 @@ On low-power, embedded platforms this can cause performance issues that may not 
 \section{Project Management Techniques} \labsec{project_management}
 Any engineering project requires careful consideration to the design methodology and management structure.
 The methodology and structure dictates how quickly a project will progress and how flexible it is to changes.
-Over the course of this thesis, several questions were considered: "how will the project adjust to design changes?" and "how can the project be structured such that it can be easily picked up in the future?"
+Over the course of this thesis, several questions were considered: ``how will the project adjust to design changes?'' and ``how can the project be structured such that it can be easily picked up in the future?''
 
 \subsection{Version Control} \labsubsec{version_control}
 One of the first things considered was tracking changes in software and hardware using a version control system (VCS).
 Version control allows a team to track changes in source files and restore previous editions, or branch out to experiment with new features.
-Git \footnote{\url{https://docs.github.com/en/get-started/using-git/about-git}} is the industry standard VCS and was used extensively for the software and hardware of this project.
-Online services like GitHub allow developers to manage complex repositories of source code with version control, branches, issue tracking, and so much more.
-Typically, features could be introduced as an issue in the source repository, and then a specific branch created that implemented that feature.
-When completed and tested, the feature could then be re-introduced into the main code base\footnote
+Git\footnote{\url{https://docs.github.com/en/get-started/using-git/about-git}} is an industry standard VCS and was used extensively for the software and hardware of this project.
+Online services like GitHub allow developers to manage complex repositories of source code with version control, branches, issue tracking, and more.
+Typically, features are introduced as an issue ticket in the source repository, and then a specific branch is created to implement that feature.
+When completed and tested, the feature can then be introduced into the main code base by a pull request\footnote
 {\url{https://docs.github.com/en/repositories/creating-and-managing-repositories/best-practices-for-repositories}}.
 The same practice could be followed for bugs in the software, ensuring that everything is tracked and fixes did not balloon in size and break the working code.
-GitHub also provided a project planning tool\footnote{\url{https://github.blog/2022-02-11-getting-started-with-project-planning-on-github/}} that aided in building out firmware releases and testing.
+GitHub also provided a project planning tool\footnote{\url{https://github.blog/2022-02-11-getting-started-with-project-planning-on-github/}} that is able to plan out firmware releases and testing.
 
-The hardware was designed in Autodesk Fusion360 \footnote{\url{https://www.autodesk.com/products/fusion-360/overview?term=1-YEAR&tab=subscription}} which has a built-in version control system more simplistic than Git.
+The hardware was designed in Autodesk Fusion360\footnote{\url{https://www.autodesk.com/products/fusion-360/overview?term=1-YEAR&tab=subscription}} which has a built-in version control system more simplistic than Git.
 This was still utilized extensively and as a safety precaution, the final design revisions were also backed up to a GitHub repository.
 
 With version control, the project was able to manage many different versions of firmware that were developed over years and various hardware platforms.
@@ -652,9 +650,9 @@ At the beginning, these requirements start out broad and are best identified wit
 Then, it is up to a systems engineer to expand the overarching requirements into capabilities and then subsystem- and component-level requirements.
 
 \paragraph*{The V-Methodology} details a process from design to integration to verification and validation (Figure \ref{fig:v_method}).
-Each step on the left side of the "V" (the start of the project) is verified by the same steps on the right side (the end of the project).
-The idea is that by building good requirements at the start and verifying them at the end, the project will be "successful" with clear expectations outlined at the beginning and a traceability matrix (Appendix \ref{chap:traceability_matrix}) to track requirement progression and achievement.
-The engineering and management teams can following the "V" from left to right and ensure that their product is on-track while mitigating "feature-creep".
+Each step on the left side of the ``V'' (the start of the project) is verified by the same steps on the right side (the end of the project).
+The idea is that by building good requirements at the start and verifying them at the end, the project will be ``successful'' with clear expectations outlined at the beginning and a traceability matrix (Appendix \ref{chap:traceability_matrix}) to track requirement progression and achievement.
+The engineering and management teams can follow the V from left to right and ensure that their product is on-track while mitigating ``feature-creep''.
 As the product is developed, the design volleys between the left and right sides, slowly iterating back up to the top of the V shape.
 This process is described in more detail in Allouis et al \cite{Allouis:2013}.
 
@@ -669,7 +667,7 @@ This process is described in more detail in Allouis et al \cite{Allouis:2013}.
 \subsection{Agile Methodology}
 The Agile methodology is a relatively new concept introduced in the mid-1990's that provided a radical new method for doing software development.
 Instead of working in siloed teams based on a broad set of requirements and a large, expansive Gantt chart, programmers were encouraged to start working together in smaller teams to tackle smaller issues and constantly test and present their progress.
-Team leaders would have an easier time managing the smaller teams and workloads and project managers would have a better way of tracking product progress.
+Team leaders would have an easier time managing the smaller teams and workloads, and project managers would have a better way of tracking product progress.
 The scrum methodology was also introduced that radically changed the team dynamic and has evolved to improve efficiency in a wide variety of industries \cite{Sutherland:2014}.
 
 The Agile methodology was implemented on the project so that tasking loading remained light and features could be implemented sprint-by-sprint.
@@ -679,15 +677,15 @@ This meant the project could adapt quickly and provide a framework for new peopl
 \section{A Review of the State of the Art} \labsec{literature_review}
 Inertial sensing is not a new problem to be solved.
 Over the last few decades many solutions have been released with increasingly better performance and efficiency.
-The advent of MEMS technology drastically shrunk sensor sizes and made them cheaper for to use.
-We shall examine three different categories of solutions and compare solutions within those categories.
+The advent of MEMS technology drastically shrunk sensor sizes and made them cheaper to use.
+We shall examine two different categories of solutions and compare solutions within those categories.
 
 \subsection{Industrial Solutions} \labsubsec{industrial_solutions}
-Industrial solutions are providided by companies to customers that require performance and reliability for their sensors.
-They will typically be employed in the industrial robotics or automotive industries and integrated with a larger system.
+Industrial solutions are provided by companies to customers that require performance and reliability for their sensors.
+They will typically be employed in the industrial robotics or automotive industries and integrated within a larger system.
 Thus, they cannot provide standalone services, and do not satisfy the objectives for this thesis.
 But, they represent the cutting edge techniques for sensor fusion.
-These solutions also are the ``more affordable'' variants in order to limit the scope of the review.
+The following solutions also are the ``more affordable'' variants in order to limit the scope of the review.
 Even so, each solution is prohibitively expensive and therefore out of the scope of the thesis objectives.
 
 \paragraph*{Sparton AHRS-8} The first industrial sensor to consider is the Sparton AHRS-8 \cite{Sparton} and is one of the cheapest at \$1,350 per unit.
@@ -699,7 +697,7 @@ However, this sensor lacks GPS/GNSS integration, wireless features, and independ
     \centering
     \caption[Sparton AHRS-8]{Sparton AHRS-8.
     Courtesy of Sparton \cite{Sparton}}
-    \includegraphics[width=3in]{background/sparton_ahrs8.png}
+    \includegraphics[width=2in]{background/sparton_ahrs8.png}
     \labfig{sparton_ahrs8}
 \end{figure}
 
@@ -713,20 +711,20 @@ The unit boasts a sub 1-degree accurate orientation estimate over a range of tem
     \centering
     \caption[Xsens Mti-100]{The Xsens Mti-100 IMU.
     Courtesy of Movella \cite{Movella}.}
-    \includegraphics[width=3in]{background/xsens_mti100.png}
+    \includegraphics[width=2in]{background/xsens_mti100.png}
     \labfig{xsens_mti100}
 \end{figure}
 
-\paragraph*{VectorNav VN-200} From the VectorNav corporation comes the Vn-200 AHRS \cite{VectorNav:VN200}.
+\paragraph*{VectorNav VN-200} From the VectorNav corporation comes the VN-200 AHRS \cite{VectorNav:VN200}.
 The unit boasts a \textless 0.2-degree accurate attitude estimation and integrates GPS/GNSS.
-However, it relies on a USb or Serial interface and uses closed source and proprietary firmware for sensor fusion.
+However, it relies on a USB or Serial interface and uses closed source and proprietary firmware for sensor fusion.
 It also does not have wireless or independent data logging functionality and costs over \$3,000.
 
 \begin{figure}
     \centering
     \caption[VectorNav VN-200]{The VectorNav VN-200 IMU.
     Courtesy of VectorNav \cite{VectorNav:VN200}.}
-    \includegraphics[width=3in]{background/vn200.png}
+    \includegraphics[width=2in]{background/vn200.png}
     \labfig{vn200}
 \end{figure}
 
@@ -740,7 +738,7 @@ The firmware is also closed source and it costs \$5,795 per unit.
     \centering
     \caption[SwiftNav Duro]{The SwiftNav Duro Inertial.
     Courtesy of SwiftNav \cite{SwiftNav}.}
-    \includegraphics[width=3in]{background/swiftnav_duro.png}
+    \includegraphics[width=2in]{background/swiftnav_duro.png}
     \labfig{swiftnav_duro}
 \end{figure}
 
@@ -752,7 +750,7 @@ Like its cousins, this unit also does not have wireless connectivity or independ
     \centering
     \caption[Aceinna INS401]{The Aceinna INS401.
     Courtesy of Aceinna \cite{Aceinna}.}
-    \includegraphics[width=3in]{background/aceinna_ins401.png}
+    \includegraphics[width=2in]{background/aceinna_ins401.png}
     \labfig{aceinna_ins401}
 \end{figure}
 
@@ -763,7 +761,7 @@ The hobbyist solutions are much more in line with the objectives of the thesis a
 
 \paragraph*{Kauai Labs NavX2 Micro} The NavX2 micro is derived from the popular NavX board that is routinely used in the First Robotics Competition for high school robotics \cite{KauaiLabs}.
 The NavX2 micro shrinks the sensor down into a low SWaP and cost package that utilizes open source software.
-This makes it well-suited for its application in hobbyist robotics where even basic navigation ability is a coveted feature.
+This makes it well-suited for its application in hobbyist robotics where even basic inertial navigation is a coveted feature.
 The unit costs \$89 and can be integrated onto a larger platform via a USB or Serial interface.
 However, it does not have wireless connectivity or independent data logging.
 For these reasons, the NavX2 micro will not suit the objectives of this thesis.
@@ -772,28 +770,28 @@ For these reasons, the NavX2 micro will not suit the objectives of this thesis.
     \centering
     \caption[Kauai Labs NavX2 Micro]{The Kauai Labs NavX2 Micro.
     Courtesy of Kauai Labs \cite{KauaiLabs}.}
-    \includegraphics[width=3in]{background/navx2_micro.png}
+    \includegraphics[width=2in]{background/navx2_micro.png}
     \labfig{navx2_micro}
 \end{figure}
 
 \paragraph*{SparkFun OpenLog Artemis} The OpenLog Artemis (OLA) is a hobbyist solution offered by SparkFun for \$55 \cite{SparkFun}.
 It comes equipped with a 9-DOF IMU, battery integration, a real-time-clock, ADC, and an interface for easily integrating other sensors.
 The unit is pre-loaded with firmware that automatically begins logging when it is powered on and the software is open source and can be freely modified.
-It even has a BlueTooth interface that can be used to wireless monitor data.s
+It even has a BlueTooth interface that can be used to wireless monitor data.
 This solution meets the thesis objectives, but the code would have to be modified to perform sensor fusion for orientation estimation and an IP67-rated case would have to designed for it.
 
 \begin{figure}
     \centering
     \caption[SparkFun OpenLog Artemis]{The SparkFun OpenLog Artemis.
     Courtesy of SparkFun \cite{SparkFun}.}
-    \includegraphics[width=3in]{background/sparkfun_ola.png}
+    \includegraphics[width=2in]{background/sparkfun_ola.png}
     \labfig{sparkfun_ola}
 \end{figure}
 
 \paragraph*{Pixhawk FCU} The Pixhawk Flight Controller Unit (FCU) is designed for hobbyist robotics applications such as drones (UAVs) and remotely operated vehicles \cite{HolyBro}.
-It runs a sophisticated open source hardware stack that fuses a 9-DOF IMU with GPS data to get position and attitude with a reasonable degree of accuracy.
+It runs a sophisticated open source hardware and software stack that fuses a 9-DOF IMU with GPS data to get position and attitude with a reasonable degree of accuracy.
 The sensor fusion is performed with multiple Extended Kalman Filters and can be logged internally to a microSD card.
-By using a radio over the serial bus, data can be wirelessly transmitted to a ground station for monitoring and logging.
+By using a radio link over the serial bus, data can be wirelessly transmitted to a ground station for monitoring and logging.
 
 This solution fits the objectives of the thesis, however it is overkill for the intended application and the MAVlink interface used to communicate with it is not intuitive.
 Because data logging is only meant for post-flight analysis if the vehicle crashes or malfunctions, there are significant limitations on what can be logged or how fast.
@@ -803,7 +801,7 @@ For these reasons, the Pixhawk was not considered as a solution for the thesis.
     \centering
     \caption[Holybro Pixhawk 6X]{The Holybro Pixhawk 6X FCU.
     Courtesy of Holybro \cite{HolyBro}.}
-    \includegraphics[width=3in]{background/pixhawk_6x.png}
+    \includegraphics[width=2in]{background/pixhawk_6x.png}
     \labfig{pixhawk_6x}
 \end{figure}
 
@@ -822,6 +820,6 @@ We shall carefully consider this solution going forward and directly compare it 
     \centering
     \caption[x-io Technologies x-IMU3]{The x-io Technologies x-IMU3.
     Courtesy of x-io Technologies \cite{xioTechnologies}.}
-    \includegraphics[width=3in]{background/ximu3.png}
+    \includegraphics[width=2in]{background/ximu3.png}
     \labfig{ximu3}
 \end{figure}

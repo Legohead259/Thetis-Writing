@@ -1,5 +1,5 @@
 %%--------------------Chapter 3------------------------
-\chapter{How I Built It} \labchap{thetis_design}
+\chapter{How I Made It Work} \labchap{thetis_design}
 
 \section{Stakeholders} \labsec{stakeholders}
 As with any project, stakeholders are a crucial part of the design process.
@@ -9,7 +9,7 @@ However, some organizational-level stakeholders have also expressed interest in 
 A summary of the stakeholders is provided in Table \ref{tab:stakeholders}.
 
 \begin{table}
-	\caption{A summary of stakeholders of the Thetis device}
+	\caption{A summary of stakeholders for the Thetis device}
 	\labtab{stakeholders}
 	\centering
 	\begin{tabular}{|p{0.3\linewidth} | p{0.6\linewidth}|}
@@ -41,8 +41,8 @@ This tiny form factor allows it to be inconspicuously mounted to any floating bo
 
 \subsection{Problem Description} \labsubsec{problem_desc}
 I originally envisioned Thetis as the solution to a couple of problems I encountered during my undergraduate studies.
-For my fluid mechanics laboratory section, we conducted an experiment where we needed to track the rolling of a model pontoon boat as we adjusted its center of gravity.
-Because the lab lacked any way to directly measure the body's inertial movement, angle gauges were placed on the hull and the students had to conduct a time motion analysis from a video recording to plot the roll angle frame-by-frame.
+For my fluid mechanics laboratory section, we conducted an experiment where we needed to track the motion of a model pontoon boat as we adjusted its center of gravity.
+Because the lab lacked any way to directly measure the body's inertial movement, inclinometers were placed on the hull and the students had to conduct a time motion analysis from a video recording to plot the roll angle frame-by-frame.
 This was inefficient and made me start thinking about how this could be improved.
 
 The second problem occurred in a class the following semester where we deployed surf boards and pressure gauges into the ocean to monitor a surfer's ride along a wave.
@@ -55,7 +55,7 @@ These values assumed the sensor would be in the vertical position, and we used i
 Suffice to say, we were not using the Lowell properly and could not get reliable or useful information out of it for our analysis.
 
 The iPhones were much better suited as they had a full 9-DOF IMU sensor suite and a great data logger application to get the raw sensor values and sensor fusion results.
-However, since this was a class comprised of inexperienced undergraduates, we didn't often check that the seal on the phone cases were properly set before going into the water.
+However, since this was a class comprised of inexperienced undergraduates, we didn't check that the seal on the phone cases were properly set before going into the water.
 Within a matter of months, both iPhones were lost because students removed the case and did not replace the water-tight gasket, costing a large sum of money.
 
 Given my experience with these classes, it was clear to me that a low-cost inertial data logging solution could be valuable to the department as a teaching and laboratory instrument.
@@ -71,7 +71,7 @@ These overarching requirements were placed into a traceability matrix (Table \re
 	\centering
 	% \fontsize{10pt}{10pt}\selectfont
 	\renewcommand{\arraystretch}{1.75}
-	\caption[Stakeholder Traceability Matrix]{A slimmed down traceability matrix for the stakeholder requirements. Verification and Validation status is not shown here. The priority of each requirement is the relative weight of requirement compared with all others.}
+	\caption[Stakeholder traceability matrix]{A slimmed down traceability matrix for the stakeholder requirements. Verification and Validation status is not shown here. The priority of each requirement is the relative weight of requirement compared with all others.}
 	\begin{tabular}{|c | m{0.5\textwidth} | c | c | c |}
 		\hline
 		\textbf{ID} & \multicolumn{1}{c |}{\textbf{Description}} & \textbf{Weight} & \textbf{Priority} & \textbf{Status} \\
@@ -93,8 +93,8 @@ These overarching requirements were placed into a traceability matrix (Table \re
 \subsection{Risk Identification} \labsubsec{risk_identification}
 The following tables explore some of the larger risks associated with each of the stakeholder requirements.
 Risks are categorized into several types: Technical, Cost, Schedule, Organizational, and Operational.
-Each risk has an associated consequence on the project's development and a severity rating from "Low" to "High".
-With every risk, we can apply a mitigation to it to reduce the severity of the consequence.
+Each risk has an associated consequence on the project's development and a severity rating from ``Low'' to ``High''.
+With every risk, we can apply a mitigation strategy to reduce the severity of the consequence.
 
 \paragraph*{Technical Risks} These are risks that pose a technical challenge to the project such as sensor accuracies, programming difficulty, or component specifications. 
 These risks are likely to impede the development of Thetis by showing up during testing and forcing workarounds after the fact, rather than before.
@@ -230,11 +230,11 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Cost \newline Assessment & Small IP-67 rated enclosures are a niche item that may have to be custom-ordered and therefore expensive. & Enclosures may be prohibitively expensive and drive up program costs & \cellcolor{green} Low & Find reputable suppliers and order enclosures in bulk, if possible. & \cellcolor{green} Low \\
 	\hline
-	Schedule \newline Assessment & If the enclosures have to be custom ordered, there may be an extended lead time for delivery & Schedule orverruns & \cellcolor{yellow} Medium & Find reputable suppliers and order in bulk well ahead of time. \newline maintain a stock of several enclosures as spares. & \cellcolor{green} Low \\
+	Schedule \newline Assessment & If the enclosures have to be custom ordered, there may be an extended lead time for delivery & Schedule overruns & \cellcolor{yellow} Medium & Find reputable suppliers and order in bulk well ahead of time. \newline Maintain a stock of several enclosures as spares. & \cellcolor{green} Low \\
 	\hline
 	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
 	\hline
-	Operational \newline Assessment & IP-rating is not valid. \newline Enclosure is not fully sealed. \newline Operation exceeds rated limits & Chamber floods, damaging equipment, causing a potential fire hazard and data loss. & \cellcolor{red} High & Reputable supplier and traceable IP-rating. \newline End user vigilence to ensure enclosure is fully closed and sealed. & \cellcolor{yellow} Medium
+	Operational \newline Assessment & IP-rating is not valid. \newline Enclosure is not fully sealed. \newline Operation exceeds rated limits & Chamber floods, damaging equipment, causing a potential fire hazard and data loss. & \cellcolor{red} High & Reputable supplier and traceable IP-rating. \newline End user vigilence to ensure enclosure is fully closed and sealed properly. & \cellcolor{yellow} Medium
 	\label{tab:sr02_feasibility}
 \end{longtable}
 }
@@ -266,7 +266,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Device is not turned off before battery voltage is critically low & Battery is damaged and needs to be replaced; fire hazard & \cellcolor{yellow} Medium & Build the power regulator such that the device auto turns off before battery is damaged & \cellcolor{green} Low \\
+	Technical \newline Assessment & Device is not turned off before battery voltage is critically low & Battery is damaged and needs to be replaced; fire hazard & \cellcolor{yellow} Medium & Build the power regulator such that the device auto turns off before battery is damaged \newline Integrate battery monitoring and reporting & \cellcolor{green} Low \\
 	\hline
 	Cost \newline Assessment & Larger capacity batteries are more expensive. \newline Damaged batteries need to be replaced & Cost overruns & \cellcolor{green} Low & Order batteries in bulk and ensure spares are available & \cellcolor{green} Low \\
 	\hline
@@ -274,7 +274,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8} \\
 	\hline
-	Operational \newline Assessment & Battery does not have enough capacity to support a 4 hour deployment & Data is lost & \cellcolor{yellow} Medium & Conservative power analysis and choosing an oversized battery. \newline Battery monitoring circuit to force save and shutdown at low voltage levels. & \cellcolor{green} Low
+	Operational \newline Assessment & Battery does not have enough capacity to support a 4 hour deployment & Data is lost & \cellcolor{yellow} Medium & Conservative power analysis and choosing an oversized battery. \newline Implement a battery monitoring circuit to force save and shutdown at low voltage levels. & \cellcolor{green} Low
 	\label{tab:sr03_feasibility}
 \end{longtable}
 }
@@ -297,7 +297,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Stakeholder:} & \multicolumn{5}{|l|}{Thesis Committee} \\
 	\hline
-	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is designed to be a cheap, expendable unit so that, when damaged by students, it is financially feasible to replace it. It needs to be cheaper than comparable devices.} \\
+	\textbf{Rationale:} & \multicolumn{5}{|p{0.8\linewidth}|}{Thetis is designed to be a cheap, expendable unit so that when damaged it is financially feasible to replace it. It needs to be cheaper than comparable devices.} \\
 	\hline
 	\textbf{Fit Criterion:} & \multicolumn{5}{|p{0.8\linewidth}|}{The Bill of Materials for Thetis shall not exceed the required threshold.} \\
 	\hline
@@ -353,7 +353,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Schedule \newline Assessment & Parts are not available. \newline Small enclosure may have a long lead time & Development schedule should be delayed & \cellcolor{yellow} Medium & Order parts in bulk and ensure spares are available & \cellcolor{green} Low \\
 	\hline
-	Organizational \newline Assessment & The small enclosure may no longer be available from a commercial supplier & Forces a new design iteration to fit a new enclosure. \newline Forces end users to adapt to a new enclosure & \cellcolor{green} Low & Work with supplier to ensure supply chain; order in bulk. \newline 3D print older enclosure, if COTS is no longer available & \cellcolor{green} Low \\
+	Organizational \newline Assessment & The small enclosure may no longer be available from a commercial supplier & Forces a new design iteration to fit a new enclosure. \newline Forces end users to adapt to a new enclosure & \cellcolor{green} Low & Work with supplier to ensure supply chain; order in bulk. \newline 3D print enclosure, if COTS is no longer available & \cellcolor{green} Low \\
 	\hline
 	Operational \newline Assessment & N/A & N/A & \cellcolor[gray]{0.8} & N/A & \cellcolor[gray]{0.8}
 	\label{tab:sr05_feasibility}
@@ -388,7 +388,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	\textbf{Risk} & \textbf{Risk Issue} & \textbf{Risk Consequence} & \textbf{Initial Risk} & \textbf{Risk Mitigation} & \textbf{Risk \newline After \newline Mitigation} \\
 	\hline
-	Technical \newline Assessment & Designs are modified by students who unknowingly break functionality & Disabling or ``bricking'' Thetis, making it useless. \newline Loss of development history/``good'' designs & \cellcolor{green} Low & GitHub tracks all commits and history. \newline ``Good'' designs are published as release snapshots and cannot be lost. & \cellcolor{green} Low \\
+	Technical \newline Assessment & Designs are modified by students who unknowingly break functionality & Disabling or ``bricking'' Thetis, making it useless. \newline Loss of development history and/or ``good'' designs & \cellcolor{green} Low & GitHub tracks all commits and history. \newline ``Good'' designs are published as release snapshots and cannot be lost. \newline Only allow new features to be created through forks & \cellcolor{green} Low \\
 	\hline
 	Cost \newline Assessment & New design modifications require more investment & Program cost increases as students change the design & \cellcolor{green} Low & Ensure that any design modifications go through a design review and adds substantial value to Thetis & \cellcolor{green} Low \\
 	\hline
@@ -396,7 +396,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & Thetis design may not be patentable and commercialized & Thetis cannot be patented since it is published open source & \cellcolor{red} High & Thetis can still be commercialized by providing board assembly and support services & \cellcolor{green} Low \\
 	\hline
-	Operational \newline Assessment & Vulnerabilities are found and exploited by bad actors & User data can be compromised \newline WiFi capability opens an attack vector to local network & \cellcolor{green} Low & Avoid implementation of OTA software updates \newline Use proper WiFi network security techniques. & \cellcolor{green} Low
+	Operational \newline Assessment & Vulnerabilities are found and exploited by bad actors & User data can be compromised \newline WiFi capability opens an attack vector to local network & \cellcolor{green} Low & Avoid improper implementation of OTA software updates \newline Use proper WiFi network security techniques. & \cellcolor{green} Low
 	\label{tab:sr06_feasibility}
 \end{longtable}
 }
@@ -434,7 +434,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Schedule \newline Assessment & Settings implementation and API will need to be custom & Development time will need to be spent on a custom API and implementation & \cellcolor{yellow} Medium & Thorough background research to see if library solutions exist and can be adapted. & \cellcolor{green} Low \\
 	\hline
-	Organizational \newline Assessment & Selected ICs do not use a standard communication bus to transfer data to a microcontroller & Future developers will have to study the custom protocol layer in order to understand how to add features & \cellcolor{yellow} Medium & Read device datasheets carefully to ensure they use standard protocols & \cellcolor{green} Low \\
+	Organizational \newline Assessment & Students may not know how to edit or revert settings & Settings will not be able to be changed by future students & \cellcolor{green} Low & Extensively document API and provide a README or tutorial for editing settings & \cellcolor{green} Low \\
 	\hline
 	Operational \newline Assessment & Configurations are lost or not saved between deployments & Users may lose custom settings and need to reload. \newline Thetis may crash with corrupted configurations  & \cellcolor{yellow} Medium & Backup settings to data storage device. \newline Have default settings config that loads on issue to prevent instability & \cellcolor{green} Low
 	\label{tab:sr07_feasibility}
@@ -477,7 +477,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Organizational \newline Assessment & Some stakeholders may have electromagnetic emissions restrictions & To comply, WiFi functionality will need to be able to be disabled & \cellcolor{green} Low & Allow WiFi features to be disabled by uploading new firmware without those features. \newline Allow users to toggle this function on/off in runtime using a configuration file. & \cellcolor{green} Low \\
 	\hline
-	Operational \newline Assessment & Operators may not have device that can connect to the device over WiFi & Data cannot be offloaded easily in-situ. \newline Wireless monitoring not possible & \cellcolor{green} Low & Ensure that there is always a physical backup for offloading data. \newline Physical lights or other indictors to display system status & \cellcolor{green} Low
+	Operational \newline Assessment & Operators may not have a device that can connect to Thetis over WiFi & Data cannot be offloaded easily in-situ. \newline Wireless monitoring not possible & \cellcolor{green} Low & Ensure that there is always a physical backup for offloading data. \newline Physical lights or other indictors to display system status & \cellcolor{green} Low
 	\label{tab:sr08_feasibility}
 \end{longtable}
 }
@@ -512,7 +512,7 @@ This could mean substantial cost increases and schedule delays depending on the 
 	\hline
 	Technical \newline Assessment & Logger is not able to consistently achieve 64 Hz rate & Significant data loss on higher frequency oscillations & \cellcolor{yellow} Medium & Utilize fast storage mediums. \newline Implement proper sensor interrupt practices & \cellcolor{green} Low \\
 	\hline
-	Cost \newline Assessment & Small flash chips will not be sufficient to store the amount of data & More expensive data storage devices (micro SD cards) will have to be used; increase bill of materials cost & \cellcolor{yellow} & Purchase storage devices in bulk and at the minimum capacity. & \cellcolor{green} Low \\
+	Cost \newline Assessment & Small flash chips will not be sufficient to store the amount of data & More expensive data storage devices (micro SD cards) will have to be used; increase bill of materials cost & \cellcolor{yellow} Medium & Purchase storage devices in bulk and at the minimum capacity. & \cellcolor{green} Low \\
 	\hline
 	Schedule \newline Assessment & Optimizing the logging functionality will take significant development time to be consistently as fast as possible & Schedule overruns & \cellcolor{red} High & Proper programming practices to optimize code wherever possible; reduce refactors & \cellcolor{yellow} Medium \\
 	\hline
@@ -531,18 +531,18 @@ In engineering, there are a variety of customers that need to have their needs m
 These customers can be internal or external to the project and are described in Section \ref{sec:stakeholders}.
 To ensure that Thetis is designed with the stakeholders in mind, a Quality Functional Deployment (QFD) was performed.
 A QFD weighs the stakeholder requirements (the ``whats'') with the ``hows'', or engineering methods, in a weighted design matrix.
-The QFD analysis is designed to inform engineers what the highest priority methods are based on customer feedback.
+The QFD analysis is designed to inform engineers what are the highest priority methods, based on customer feedback.
 This gives stakeholders a direct influence on the design in a compact matrix format.
-The product created by a QFD analysis is the House of Quality (HOQ), which can be seen in Appendix \ref{tab:hoq}
+The product created by a QFD analysis is the House of Quality (HOQ), which can be seen in Table \ref{tab:hoq}
 
 \paragraph*{The left side} of the matrix defines the customer desires with an associated weight or priority for each.
 This data is collected by canvassing the stakeholders and getting their feedback on their priorities.
 
-\paragraph*{The middle} of the matrix is dedicated with the engineering methods.
+\paragraph*{The middle} of the matrix is dedicated to the engineering methods.
 Here, the design engineers add the methods they think are required to fulfill the projects requirements.
 The numbers throughout the matrix are the strength of the relationship between the requirement and method. 
-The scale is the Fibonacci sequence from 0-8\footnote{0, 1, 2, 3, 5, 8} with higher numbers indicating a stronger relationship.
-For example, SR-03 has a middling relationship with most of the engineering methods and a very strong (8) relationship with the "Battery Capacity" method.
+The scale is the Fibonacci sequence from 0 to 8\footnote{0, 1, 2, 3, 5, 8} with higher numbers indicating a stronger relationship.
+For example, SR-03 has a middling relationship with most of the engineering methods and a very strong (8) relationship with the ``Battery Capacity'' method.
 However, it does not correlate at all (0) with the storage capacity method.
 
 \paragraph*{The ``roof''} or top of the matrix is the inter-relationship between the different engineering methods.
@@ -574,11 +574,11 @@ This provides a quick breakdown of each product through the lense of the enginee
 
 \begin{gather}
 	\labeq{hoq_rel_importance}
-	RI = \frac{I_m}{\sum{\textbf{I}}} \\
+	RI = \frac{I_m}{\sum{\pmb{I}}} \\
 	\begin{aligned}
 		\text{where } &RI \text{ is the engineering method's relative importance} \\
 					  &I_m \text{ is the current method's importance} \\
-					  &\textbf{I} \text{ is the vector of all the method's importance} \\
+					  &\pmb{I} \text{ is the vector of all the method's importance} \\
 	\end{aligned} \notag
 \end{gather}
 
@@ -592,26 +592,26 @@ This provides a quick breakdown of each product through the lense of the enginee
 \end{landscape}
 
 \section{Concept of Operations} \labsec{conops}
-Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of body orientation and position in real-time at a low cost.
+Thetis is envisioned to be an all-in-one data logging solution that can provide real-time calculations of body orientation and position at a low cost.
 In a normal operating case, Thetis will be placed near the center of gravity of a body and turned on to begin recording.
 The user can then connect Thetis to a larger wireless network or use its local WiFi access point to monitor the system and adjust configuration settings.
 
-\section{capabilities} \labsec{capabilities}
+\section{Capabilities} \labsec{capabilities}
 Based on the stakeholder requirements and concept of operations, a series of capabilities were derived that influenced the subsystem and component-level requirements.
 These capabilities were organized into three categories:
 
 {
 \renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1}}
 \begin{description}
-    \item[Threshol:] The bare minimum features the system needs to be have to be considered ``successful'' or ``delivered''.
+    \item[Threshold:] The bare minimum features the system needs to be have to be considered ``successful'' or ``delivered''.
     
-    \item[Reach:] Features that enhance the product for the stakeholders and end users that require a moderate amount of effort above a threshold feature.						
+    \item[Reach:] Features that enhance the product for the stakeholders and end users but require a moderate amount of effort above a threshold feature.						
     
     \item[Stretch:] Features that would distinguish the project from competitors and add immense value for stakeholders and end users, but come at a steep development cost in terms of time and money.
 \end{description}
 }
 
-The capabilities were organized into a traceability matrix (more information in Appendix \ref{chap:traceability_matrix}), which is shown in Table \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities}.
+The capabilities were organized into a traceability matrix (more information in Appendix \ref{chap:traceability_matrix}), which is shown in Tables \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities}.
 
 % \includepdf[landscape=false, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisCapabilities.pdf}
 
@@ -682,14 +682,14 @@ The capabilities were organized into a traceability matrix (more information in 
 		105 & The system shall be able to store data locally for up to 4 hours continuously & 0.8 & 8 & TIP \\
 		106 & The system shall be able to be operate for up to 4 hours continuously & 0.8 & 8 & A \\
 		107 & The system shall have simple human interface mechanism for status and logging & 0.7 & 7 & D \\
-		108 & The system firmware shall be an open-architecture & 0.5 & 5 & A \\
+		108 & The system firmware shall be open-architecture & 0.5 & 5 & A \\
 		109 & The system will be fully documented & 1 & 10 & A \\
 		110 & The system shall use version control software to track changes & 1 & 10 & D \\
 		111 & The operator shall be able to offload data from the system & 1 & 10 & D \\
 		112 & The system shall be capable of being assembled by hand using basic soldering tools & 0.8 & 8 & D \\
 		\hline
 	\end{tabular}
-	\caption[Threshold Capabilities]{Thetis threshold capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Threshold capabilities]{Thetis threshold capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:threshold_capabilities}
 \end{table}
 }
@@ -711,7 +711,7 @@ The capabilities were organized into a traceability matrix (more information in 
 		206 & The sensor measurements shall incorporate a calibration model & 0.5 & 4 & TIP \\
 		\hline
 	\end{tabular}
-	\caption[Reach Capabilities]{Thetis reach capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Reach capabilities]{Thetis reach capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:reach_capabilities}
 \end{table}
 }
@@ -731,7 +731,7 @@ The capabilities were organized into a traceability matrix (more information in 
 		304 & The system shall be able to log in a burst mode for up to 24 hours & 0.05 & 0.4 & UR \\
 		\hline
 	\end{tabular}
-	\caption[Stretch Capabilities]{Thetis stretch capabilities organized in a traceability matrix without the verification and validation fields present.}
+	\caption[Stretch capabilities]{Thetis stretch capabilities organized in a traceability matrix without the verification and validation fields present.}
 	\label{tab:stretch_capabilities}
 \end{table}
 }
@@ -748,31 +748,29 @@ This is just an inevitability during field work, so keeping the cost down would 
 
 \subsection{System Requirements} \labsubsec{system_requirements}
 To guide Thetis' design, a series of system requirements were generated that would need to be met in order to declare the design as ``delivered''.
-These requirements were derived from the House of Quality (Table \ref{tab:hoq}) and the stakeholder requirements (Section \ref{ssec:stakeholder_reqs}).
+These requirements were derived from the House of Quality (Table \ref{tab:hoq}), the stakeholder requirements (Section \ref{ssec:stakeholder_reqs}), and the derived capabilities (Tables \ref{tab:threshold_capabilities} through \ref{tab:stretch_capabilities}).
 Each requirement is categorized into subsections and given a numerical designation.
-The requirement is then given as a clear statement of fact with only one consideration given per requirement.
+The requirement is then given as a clear statement of fact with only one consideration given per requirement \cite{SystemsEngineeringHandbook-AppendixC}.
 A comment may be associated with each requirement that provides additional context or relevant information.
-These requirements arranged within a traceability matrix, explained in-depth in Appendix \ref{chap:traceability_matrix}						
-
-Below is a table describing the system requirements for the Thetis instrumentation package.
+These requirements arranged within a traceability matrix, as shown in the following table.
 
 \includepdf[landscape=true, page=-, width=\textheight, offset=0 -0in, pagecommand={}]{../include/ThetisReqs.pdf}
 
 \subsection{Failure Mode, Effect, and Criticality Analysis} \labsubsec{fmeca}
 Since Thetis is intended to be used by end users who may not have a solid background in programming or electrical skills, it is important to identify potential flaws in the design and attempt to mitigate them.
-Each potential flaw is given a probability of occurrence and a weighting from 0 to 10 inclusive for its severity. 
+Each potential flaw is given a probability of occurrence and a weight from 0 to 10 inclusive for its severity. 
 By multiplying these two values together, a Risk Priority Number (RPN) is created that highlights the severity of a potential failure mode. The RPNs are categorized into three groupings:
 
 \paragraph*{LOW} These are RPNs with a value below 2.5 and represent little risk to the system. 
-These are denoted with green highlights in the FMECA chart below.
+These are denoted with green highlights in the FMECA chart.
 
-\paragraph*{MEDIUM} These are RPN's between 2.5 and 7.5 that are represented with yellow highlights below.
+\paragraph*{MEDIUM} These are RPN's between 2.5 and 7.5 that are represented with yellow highlights.
 Typically, these failure modes represent a noticeable threat to the system and the mitigations should be carefully implemented.
 
 \paragraph*{HIGH} These are the highest risk RPNs between 7.5 and 10 and are represented with red highlights.
 They are the most severe and should be mitigated at all cost during and after the product development cycle.
 
-The probabilities are generally conjured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
+The probabilities are generally conjectured from past experience, the failure ratings of parts, and other factors that are carefully mapped out and documented over time.
 However, since Thetis is using hobby-grade materials and failures are not generally well-documented for the parts, the probabilities represented herein are my best guess based on experience.
 The same applies for the criticality score for each potential failure.
 
@@ -802,12 +800,12 @@ The same applies for the criticality score for each potential failure.
 Factoring in the design principles of capability, manufacturability, and affordability, along with the stakeholder requirements listed in Section \ref{ssec:stakeholder_reqs}, a block diagram was constructed that integrated the crucial parts and drew out their interactions.
 This block diagram shows the data sharing relationships in blue and the power relationships in warm colors.
 Labels on the specific lines indicate the specific communication protocol or voltage level being used by the line.
-Explanations for these protocols and acronyms can be found in the Appendix.
+Explanations for these protocols and acronyms can be found in Appendix \ref{chap:digital_communications}.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=5in]{design/block_diagram.png}
-	\caption[Thetis RevF5 Block Diagram]{A block diagram representation of the Thetis RevF5 instrumentation board.}
+	\caption[Thetis RevF5 block diagram]{A block diagram representation of the Thetis Revision F5 instrumentation board.}
 	\labfig{thetis_block_diagram}
 \end{figure}
 
@@ -818,29 +816,34 @@ The code was designed to be modular and allow for new features to be quickly add
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=5in]{design/flow_diagram.png}
-	\caption[Base Firmware Flow Diagram]{A flow diagram representation of the base firmware of the Thetis instrumentation board.}
+	\caption[Base Firmware flow diagram]{A flow diagram representation of the base firmware of the Thetis instrumentation board.}
 	\labfig{thetis_flow_diagram}
 \end{figure}
 
 \section{Brief Revision History} \labsec{revision_history}
 
 After carefully considering all the design criteria from the stakeholder requirements and system requirements, Thetis began several design revisions.
-The first design revision, Rev F1, was a functional proof of concept.
+
+
+\subsection{Revision F1} \labsubsec{revision_f1}
+The first design revision, Revision F1, was a functional proof of concept.
 It incorporated many of the base design features of later Thetis revisions, but relied on a breakout board for the IMU mounted to the bottom of the board and had the battery placed on top.
 This forced the battery to be smaller than the desired capacity and overfilled the enclosure, causing excessive compression and stress when the enclosure was tightened and secured.
 
-\revisionfigure{f2}
+\revisionfigure{f1}
 
+\subsection{Revision F2} \labsubsec{revision_f2}
 The next revision, F2, changed to a new microcontroller version that simplified the circuit while providing the same capability of the previous revision.
-This version also switched from a Micro SD card receptacle to a soldered SMD flash memory chip.
+This version also switched from a micro SD card receptacle to a soldered SMD flash memory chip.
 This chip maintained the same capacity requirements from the stakeholders, but took up a fraction of the space on the board.
-However, since this chip was directly soldered to the board, the only way to offload date was through the microcontroller either through an FTP server, or through the USB interface.
-This is not ideal - especially in the early testing phases, as those features are more complex to implement programmatically and test data cannot be easily offloaded if there is an issue with the microcontroller.
+However, since this chip was directly soldered to the board, the only way to offload data was through the microcontroller either through an FTP server, or through the USB interface.
+This was not ideal - especially in the early testing phases, as those features are more complex to implement programmatically and test data cannot be easily offloaded if there is an issue with the microcontroller.
 There were also reliability issues which manifest in force on later revisions.
 This revision also kept the breakout board for the IMU on the back, giving it the same space constraint problem as its predecessor.
 
 \revisionfigure{f2}
 
+\subsection{Revision F3} \labsubsec{revision_f3}
 For Revision F3, some minor changes were made to the diagnostic LEDs and user inputs.
 Several discrete LEDs for logging, error notification, and low battery, were replaced by a single addressable RGB LED that could flash different colors and patterns to convey the system state or errors.
 The dedicated log enable button was also removed in favor of using the boot select button for both purposes.
@@ -850,6 +853,7 @@ Therefore, the entire design had to be scrapped due to this design flaw.
 
 \revisionfigure{f3}
 
+\subsection{Revision F4} \labsubsec{revision_f4}
 Revision F4 was the most radical design change of the series.
 It marked a migration to all SMD components (no breakout board for the IMU) and incorporated all of the design lessons from the previous revision.
 However, the IMU that was used in previous revisions, the Bosch BNO055\footnote{\url{https://www.digikey.com/en/products/detail/bosch-sensortec/BNO055/6136301}} was amongst the many IMUs affected by the Great Chip Shortage and was therefore unavailable.
@@ -860,38 +864,37 @@ Additionally, this design reintroduced the micro SD card receptacle, but this ti
 This provided the assembler to determine which storage system they wanted: easier to use micro SD, or more resilient SMD flash.
 Programmatically, these devices work the same, so the software cost was minimal while providing some flexibility.
 However, this design was also fundamentally flawed as the newly reintroduced log enable button was not integrated into the design properly and the chip select pin for the storage device was connected to an incorrect controller pin.
-This latter issue forced the microcontroller to crash and reset every time is tried to write to the external flash memory, necessitating a new board revision.
+The latter issue forced the microcontroller to crash and reset every time it tried to write to the external flash memory, necessitating a new board revision.
 
 \revisionfigure{f4}
 
 \section{Final Design} \labsec{final_design}
 Revision F5 is the latest version that realizes all the hardware features Thetis is meant to incorporate while being easy to assemble and use.
 The BNO055 was fully removed from the system in favor of adding a dedicated magnetometer, the STdevices LIS3MDL\footnote{\url{https://www.digikey.com/en/products/detail/stmicroelectronics/LIS3MDLTR/4309733}}.
-By reorganizing some components, the SMD flash ship and micro SD card receptacle were placed side-by-side enabling both primary and secondary storage services, enabling backups and improving reliability.
+By reorganizing the layout, the SMD flash chip and micro SD card receptacle were placed side-by-side enabling both primary and secondary storage services, enabling backups and improving reliability.
 Then, to improve the battery monitoring capabilities, a battery gauge IC was added.
 The MAX17048\footnote{\url{https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX17048G-T10/3758921}} is a monitoring IC that runs a mathematical model of the battery's discharge curve given its amp-hour capacity and current operating voltage.
-This data is reported to the microcontroller as the current battery percentage or life remaining - making this a crucial part of monitoring performance and operations of Thetis when deployed.
+This data is reported to the microcontroller as the current battery percentage, or life remaining - making this a crucial part of monitoring performance and operations of Thetis when deployed.
 Component types and placements were also streamlined to improve manufacturability and allow the potential for the device to be more easily assembled by a pick and place machine.
 This also allows students who have never assembled PCBs before to more easily take up the task and build these boards themselves.
 
 \revisionfigure{f5}
 
-The next sections detail the assembly process in more detail and provide the schematics and PCB layout for Revision F5.
-The schematics for the previous revisions can be found in the appendix.
+The next sections detail the assembly process and provide the schematics for Revision F5.
+The schematics for the previous revisions can be found in Appendix \ref{chap:revision_schematics}.
 
-% \includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \labsubsec{revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
-\schematic{F5}
+\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Schematic} \labsubsec{revf5_schematic}}]{../include/Thetis_RevF5_SCH.pdf}
 
 \subsection{Assembly Technique} \labsubsec{assembly_techniques}
 Thetis was designed with surface mount soldering as the primary assembly technique.
 This technique differs from traditional soldering as the components are so small that a soldering iron is more difficult to use to mount components to the board.
-Many of the ICs used on the final Thetis revision do not have exposed legs or pads that can be touched with an iron, so solder paste and hot air are required.
+Many of the ICs used on the final Thetis revision do not have exposed legs or pads that can be touched with an iron, so solder paste and reflow are required.
 In Figure \ref{fig:tht_vs_smt}, a comparison between through hole (``traditional'') and surface mount components is shown.
 The surface mount components are 0603 resistors, meaning they are 60 thousandths by 30 thousandths of an inch in size - about a quarter the size of a large grain of rice.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=5in]{design/tht_vs_smd.jpg}
+	\includegraphics[height=3in]{design/tht_vs_smd.jpg}
 	\caption[Comparison of through hole and SMT soldering]{A comparison between through hole (THT) (top) and surface mount (SMT) (bottom).
 	Retrieved from \href{https://www.yamanelectronics.com/wp-content/uploads/2022/05/through-hole-vs-smd-components.jpg}{Yaman Electronics}}
 	\labfig{tht_vs_smt}
@@ -899,14 +902,14 @@ The surface mount components are 0603 resistors, meaning they are 60 thousandths
 
 \paragraph*{Solder Deposition} First, the bare PCB is placed beneath a stencil and secured with tape.
 It is important that all of the pads on the PCB are aligned with the cutouts in the stencil as the solder paste must be evenly and thoroughly distributed on the board.
-When the PCB is in place, a line of paste is placed on one side and smoothly dragged along the cutouts with even pressure applied throughout.
+When the PCB is secured, a line of paste is placed on one side and smoothly dragged along the cutouts with even pressure applied throughout.
 When the stencil is removed, there should be a healthy deposit of solder paste on each pad as shown in of Figure \ref{subfig:assembly_pasted}
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Thetis placed into a jig, ready to put under the stencil.]{\includegraphics[height=1in]{design/assembly_jig}\label{subfig:assembly_jig}}\hskip3ex
-    \subfloat[Depositing the solder on the stencil and dragging it across.]{\includegraphics[height=1in]{design/assembly_paste.jpg}\label{subfig:assembly_paste}}\hskip10ex
-    \subfloat[Solder deposited on the PCB pads from the stencil]{\includegraphics[height=1in]{design/assembly_pasted.jpg}\label{subfig:assembly_pasted}}\hskip5ex
+    \subfloat[Thetis placed into a jig, ready to put under the stencil.]{\includegraphics[width=0.5\textwidth, angle=90, origin=c]{design/assembly_jig}\label{subfig:assembly_jig}}\hskip3ex
+    \subfloat[Depositing the solder on the stencil and dragging it across.]{\includegraphics[width=0.5\textwidth, angle=-90, origin=c]{design/assembly_paste.jpg}\label{subfig:assembly_paste}}\hskip3ex
+    \subfloat[Solder deposited on the PCB pads from the stencil]{\includegraphics[width=0.5\textwidth, angle=-90, origin=c]{design/assembly_pasted.jpg}\label{subfig:assembly_pasted}}
 	\caption[Solder deposition for stencil PCB assembly]{A series showing the process of putting solder paste onto a PCB from a stencil using Revision F5.}
 	\labfig{stencil_process}
 \end{figure}
@@ -925,10 +928,10 @@ The entire process from putting the board beneath the stencil to assembled and r
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Components being placed from inventory boxes onto the boards manually using tweezers]{\includegraphics[height=1in]{design/assembly_placing_components}\label{subfig:assembly_placing}}\hskip3ex
-    \subfloat[All in-stock components placed on the PCB.]{\includegraphics[height=1in]{design/assembly_placed_components.jpg}\label{subfig:assembly_placed}}\hskip10ex
-    \subfloat[PCB on a mini hotplate for solder reflow.]{\includegraphics[height=1in]{design/assembly_reflow.jpg}\label{subfig:assembly_reflow}}\hskip5ex
-	\caption[Component placement and reflow for a Thetis Revision F5 PCB]{A series showing the process of components onto a Revision F5 PCB from an inventory and using a hotplate for solder reflow.}
+    \subfloat[Components being placed from inventory boxes onto the boards manually using tweezers]{\includegraphics[width=0.5\textwidth, angle=-90, origin=c]{design/assembly_placing_components}\label{subfig:assembly_placing}}\hskip3ex
+    \subfloat[All in-stock components placed on the PCB.]{\includegraphics[width=0.5\textwidth, angle=-90, origin=c]{design/assembly_placed_components.jpg}\label{subfig:assembly_placed}}\hskip3ex
+    \subfloat[PCB on a mini hotplate for solder reflow.]{\includegraphics[width=0.5\textwidth, angle=-90, origin=c]{design/assembly_reflow.jpg}\label{subfig:assembly_reflow}}
+	\caption[Component placement and reflow for a Thetis Revision F5 PCB]{A series showing the process of placing components onto a Revision F5 PCB from an inventory and using a hotplate for solder reflow.}
 	\labfig{assembly_process}
 \end{figure}
 
@@ -937,19 +940,19 @@ The most common are solder bridges between pads that create undesired shorts and
 The inspection will also check that parts are in the correct locations and orientations and that no shorts exist between power rails and ground.
 A microscope and good multimeter are crucial to this process.
 
-If a soldering defect is discovered, the board can be placed onto a small heating plate to melt the solder and remove the part.
+If a soldering defect is discovered, the board can be placed onto a small heating plate to melt the solder.
 Then, the part can be removed and the pads on both the component and board are cleaned up using a soldering iron to ensure the proper amount of solder is present.
-Once the pads are cleaned, either hot air or the heating pad can be used to heat the afflicted area and remelt the solder so the part can be replaced on the board.
+Once the pads are cleaned, either hot air or a hot plate can be used to heat the afflicted area and remelt the solder so the part can be replaced on the board.
 The board is inspected again and if the issue is cleared, the board is ready for testing.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=5in]{design/assembly_inspection.jpg}
-	\caption{The Thetis Revision F5 PCB that was assembled is placed beneath a microscope for parts inspection.}
+	\includegraphics[height=2in, angle=-90, origin=c]{design/assembly_inspection.jpg}
+	\caption[PCB inspection after assembly]{The Thetis Revision F5 PCB that was assembled is placed beneath a microscope for parts inspection.}
 	\labfig{assembly_inspection}
 \end{figure}
 
-\paragraph*{Testing} When the board passes a visual inspection and there are no power shorts present, the board is plugged into a programming computer via the USB port.
+\paragraph*{Testing} When the board passes a visual inspection and there are no power shorts present, the board is plugged into a host computer via the USB port.
 The microcontroller is placed into the bootloader mode by holding the boot button and pressing the reset button.
 This should cause the microcontroller to show up as a USB device on the computer.
 From here, the latest Thetis firmware can be flashed to the new board.
@@ -960,8 +963,8 @@ The assembler will then need to do a deeper inspection to find the cause of the 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=5in]{design/assembly_testing.jpg}
-	\caption{The Thetis Revision F5 PCB that was inspected and cleaned up is connected to a host computer where the firmware is loaded onto it.}
+	\includegraphics[height=2in]{design/assembly_testing.jpg}
+	\caption[PCB firmware loading and testing after inspection]{The Thetis Revision F5 PCB that was inspected and cleaned up is connected to a host computer where the firmware is loaded onto it.}
 	\labfig{assembly_inspection}
 \end{figure}
 
@@ -969,7 +972,7 @@ Once the new board boots without issue, the board is ready for deployment and ca
 
 \section{Prototype Problems} \labsec{prototype_problems}
 Revision F5 was the most extensively tested revision of the Thetis instrumentation package.
-It has gone on several deployments to beaches inside surfboards and down to 20-feet of water on an ROV measuring vibrations.
+It has gone on several deployments to beaches inside surfboards and down to 20-feet of water on an ROV.
 Unfortunately, there was a serious flaw that plagued Revision F5 - it would not reliably or consistently record data.
 
 From testing with Revision F3, I initially thought that the SPI communication bus was faulty.
@@ -983,15 +986,15 @@ I increased the memory buffer within the SD card library to see if it was a memo
 I tried different SD card libraries and even tried dumping the data to the serial monitor and logging that way.
 No matter what I tried, the system worked fine, reported no errors, never detected a single fault, but would not log to the microSD card.
 
-After six months, I finally looked back at the design changed between Revisions F4 and F5.
-Though I did not experiment with Revision F4 extensively, the few tests I had done with it worked flawlessly, so what was different?
-Revision F5 introduced a single change to the SPI bus where the XTSD flash storage chip in parallel to the microSD card, rather than one or the other.
+After six months, I finally looked back at the design changes between Revisions F4 and F5.
+Though I did not experiment with Revision F4 extensively, the few tests I had done with it were flawless, so what was different?
+Revision F5 introduced a single change to the SPI bus where the XTSD flash storage chip was in parallel to the microSD card, rather than one or the other.
 When I removed the XTSD flash chip, logging to the microSD card worked flawlessly again!
 
 I surmise that I was not initializing the two SD storage devices properly and there was cross-talk or corruption in the SPI bus communications that prevented data from being written to the microSD card.
-This corruption was not consistent, so I could not consistently recreate the error which hindered teh debugging process.
+This corruption was not consistent, so I could not consistently recreate the error which hindered the debugging process.
 Additionally, this type of error is not well documented because two SD cards are not typically used in parallel, especially in any documented projects that I could find.
 This simple mistake held Thetis' development back by over six months and could have been avoided if I had checked the difference between the two revisions first.
 
-The lesson learned from this test: if something works and you change it and it stops working, check those changes and eliminate each one as the problem until you find what went wrong.
+The lesson learned from this exercise: if something works and you change it and it stops working, check those changes and eliminate each one as the problem until you find what went wrong.
 It works in software and hardware and can save months of work and heartache.

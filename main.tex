@@ -138,15 +138,10 @@
 \newcommand{\revisionfigure}[1]{
     \begin{figure}[H]
 		\labfig{thetis_rev_#1}
-        \caption{Thetis Revision \uppercase{#1} PCB render with call outs for important components.}
+        \caption[Thetis Revision \uppercase{#1} PCB render]{Thetis Revision \uppercase{#1} PCB render with call outs for important components.}
 		\centering
 		\includegraphics[width=5in]{design/revision_#1_labeled.png}
     \end{figure}
-}
-
-% Include schematic command
-\newcommand{\schematic}[1]{
-	\includepdf[landscape=true, width=\textheight, offset=-0in -0.25in, pagecommand={\subsection{Revision #1 Schematic} \labsubsec{rev#1_schematic}}]{../include/Thetis_Rev#1_SCH.pdf}
 }
 
 
@@ -157,10 +152,10 @@
 \GradDocumentType{thesis}
 
 % Change this to be the college or school you are part of. For Example \CollegeOrSchoolName{College of Engineering and Science}
-\CollegeOrSchoolName{College of Engineering and Sciences}
+\CollegeOrSchoolName{College of Engineering and Science}
 
 % Degree you are applying for, defaults to Master of Engineering
-\degree{Masters of Science}
+\degree{Master of Science}
 \dept{Ocean Engineering}
 
 % Your Previous Degree \\ University, year
@@ -170,30 +165,30 @@
 \copyrightyear{2023}
 
 % Define Committee Information
-\directorname{Dr. Stephen Wood, Ph.D., P.E.}
-\directortitle{Program Chair}
+\directorname{Stephen Wood, Ph.D.}
+\directortitle{Professor}
 \directordept{Ocean Engineering and Marine Sciences}
 
-% Third Committee Member
-\secondreadername{Dr. Hector Gutierrez, Ph. D., P.E.}
-\secondreadertitle{Professor}
-\secondreaderdept{Mechanical Engineering}
-
 % Second Committee Member / Outside Member
-\thirdreadername{Dr. Robert Weaver, Ph. D}
+\secondreadername{Hector Gutierrez, Ph.D.}
+\secondreadertitle{Professor}
+\secondreaderdept{Mechanical and Civil Engineering}
+
+% Third Committee Member
+\thirdreadername{Robert Weaver, Ph.D.}
 \thirdreadertitle{Associate Proffesor}
 \thirdreaderdept{Ocean Engineering and Marine Sciences}
 
 % Forth Committee Member
 \toggletrue{useforthreader}
-\forthreadername{Dr. Marius Silaghi, Ph.D.}
+\forthreadername{Marius Silaghi, Ph.D.}
 \forthreadertitle{Professor}
-\forthreaderdept{Comupter Engineering and Sciences}
+\forthreaderdept{Electrical Engineering and Computer Science}
 
 % Use Academic Unit Head
 \toggletrue{useacademicunithead}
-\academicunitheadname{Dr. Richard Aronson, Ph.D.}
-\academicunitheadtitle{Department Head}
+\academicunitheadname{Richard Aronson, Ph.D.}
+\academicunitheadtitle{Professor and Department Head}
 \academicunitheaddept{Ocean Engineering and Marine Sciences}
 
 
@@ -252,7 +247,7 @@
 % Do not split a reference between two pages, this should be taken care of in the style
 % \bibliographystyle{plain}
 % \bibliography{mybibliography}
-\printbibliography
+\printbibliography[heading=bibintoc, title=References]
 
 %% -----------Appendices----------------------------
 \appendix

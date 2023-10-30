@@ -3,50 +3,56 @@ A rotation matrix is a mathematic model for translating one body's inertial refe
 These are used for Eulerian transformations of vectors (i.e. using roll, pitch, and yaw).
 To begin deriving these matrices, let's start with a two dimensional rotation matrix:
 
-\begin{equation*}
+\begin{equation}
     R(\theta) = \left[
         \begin{matrix}
             \cos\theta & -\sin\theta \\
-            \sin\theta & cos\theta
+            \sin\theta & \cos\theta
         \end{matrix}\right]
-\end{equation*}
+\end{equation}
 
-If we rotate a vector, $\vec{v} = \langle x, y \rangle$ with a magnitude, $r$ by $\theta$ degrees about the Z-axis (as shown in Figure \ref{fig:2d_rot}), it will arrive at a new coordinate $\langle x^{\prime}, y^{\prime}\rangle$. 
-We can express $\vec{v}$ in polar form as:
+If we rotate a vector, $\pmb{v} = \left[ x, y \right]$ with a magnitude, $r$ by $\theta$ degrees about the z-axis (as shown in Figure \ref{fig:2d_rot}), it will arrive at a new coordinate $\left[ x^{\prime}, y^{\prime} \right]$. 
+We can express $\pmb{v}$ in polar form as:
 
 \begin{align}
+    \begin{split}
     x &= r\cos\phi \\
     y &= r\sin\phi
+    \end{split}
 \end{align}
 
-Similarly, the rotated vector, $\vec{v}^{\prime}$ in polar form is expressed as:
+Similarly, the rotated vector, $\pmb{v}^{\prime}$ in polar form is expressed as:
 
-\begin{align*}
+\begin{align} \labeq{rotated_vector_polar}
+    \begin{split}
     x^{\prime} &= r\cos(\phi+\theta) \\
     y^{\prime} &= r\sin(\phi+\theta)
-\end{align*}
+    \end{split}
+\end{align}
 
 \begin{figure}[h!]
     \caption{2 dimensional rotation of a vector, $A$, to a new set of coordinates, $A'$.}
     \labfig{2d_rot}
     \centering
-    \includegraphics[height=2.5in]{appendices/rotation_matrix/2d_rotation_plot.png}
+    \includegraphics[height=1.5in]{appendices/rotation_matrix/2d_rotation_plot.png}
 \end{figure}
 
-Expanding and using trigonometric identities:
+Expanding \ref{eq:rotated_vector_polar} and using trigonometric identities:
 
-\begin{align*}
+\begin{align}
+    \begin{split}
     x^{\prime} &= r(\cos\phi\cos\theta + \sin\phi\sin\theta) \\
                &= r\cos\phi\cos\theta + r\sin\phi\sin\theta \\
                &= x\cos\theta + y\sin\theta \\
     y^{\prime} &= r(\sin\phi\sin\theta + \cos\phi\sin\theta) \\
                &= r\sin\phi\cos\theta + r\cos\phi\sin\theta \\
                &= y\cos\theta + x\sin\theta
-\end{align*}
+    \end{split}
+\end{align}
 
 We can then express the resultant equations in the form of a $2 \times 2$ rotation matrix, $R$, yielding:
 
-\begin{equation*}
+\begin{equation}
     \left[
         \begin{matrix}
             x^{\prime} \\ 
@@ -73,12 +79,12 @@ We can then express the resultant equations in the form of a $2 \times 2$ rotati
             y
         \end{matrix}
     \right]
-\end{equation*}
+\end{equation}
 
-\paragraph*{Example} If we have a vessel moving in the a direction at some velocity and it encounters a current, $\vec{v}$ coming in from the starboard quarter, what is the current's influence on the vessel?
+\paragraph*{Example} If we have a vessel moving in the a direction at some velocity and it encounters a current, $\pmb{v}$ coming in from the starboard quarter, what is the current's influence on the vessel?
 
 \begin{figure}[h!]
-    \caption{A vessel encounters a current (orange), $\pmb{v}$, from the forward starboard quarter.}
+    \caption[A vessel encounters a current]{A vessel encounters a current (orange), $\pmb{v}$, from the forward starboard quarter.}
     \labfig{boat_current}
     \centering
     \includegraphics[height=2.5in]{appendices/rotation_matrix/boat_current.png}
@@ -91,8 +97,8 @@ Using a rotation matrix, we can determine that:
 \begin{equation*}
     \left[
         \begin{matrix}
-            v_x^{\prime} \\
-            v_y^{\prime}
+            v_x \\
+            v_y
         \end{matrix}
     \right] = 
     R(\theta) \left[
@@ -104,7 +110,7 @@ Using a rotation matrix, we can determine that:
 \end{equation*}
 
 \section{Three Dimensional Rotation Matrix} \labsec{3d_rot_mat}
-In three dimensional space, rotation can be performed about the X-, Y-, or Z-axis. A basic rotation that occurs around a single axis is defined as an "elementary rotation" and given by the following rotation matrices:
+In three dimensional space, rotation can be performed about the x-, y-, or z-axis. A basic rotation that occurs around a single axis is defined as an ``elementary rotation'' and given by the following rotation matrices:
 
 \begin{align*}
     R_x(\phi) &= \left[
@@ -131,63 +137,53 @@ In three dimensional space, rotation can be performed about the X-, Y-, or Z-axi
 \end{align*}
 
 To rotate a three dimensional vector from one frame to another, we must select the order of the axes to be rotated about, then multiply the rotation matrices and vector together.
-\paragraph*{Example} What are the components of gravitational acceleration, $a_G$ that affect an airplane in flight at some arbitrary roll ($\phi$), pitch ($\theta$), and yaw ($\psi$)?
+\paragraph*{Example} What are the components of gravitational acceleration, ${}^G\pmb{a}$ that affect an airplane in flight at some arbitrary roll ($\phi$), pitch ($\theta$), and yaw ($\psi$)?
 
 \begin{figure}[h!]
-    \caption{A plane rotated at some arbitrary roll (red), $\phi$, pitch (blue), $\theta$, and yaw (green), $\psi$, experiences gravitational acceleration in all three axes.}
+    \caption[A plane experiences gravitational acceleration while at some attitude]{A plane rotated at some arbitrary roll (red), $\phi$, pitch (blue), $\theta$, and yaw (green), $\psi$, experiences gravitational acceleration in all three axes.}
     \labfig{airplane_rotation}
     \centering
     \includegraphics[height=2.5in]{appendices/rotation_matrix/airplane_rotation.png}
 \end{figure}
 
-First, we define the gravitational acceleration vector as existing in the global North-East-Down (NED) reference frame, $a_G = \langle a_N, a_E, a_D \rangle = \langle 0, 0, 1 \rangle$.
+First, we define the gravitational acceleration vector as existing in the global North-East-Down (NED) reference frame, ${}^G\pmb{a} = \left[ a_N, a_E, a_D \right] = \left[ 0, 0, 1 \right]$.
 We will also assume that all of the rotations of the plane are relative to the same NED frame.
-We can then perform a yaw-pitch-roll rotation of $a_G$ to get the gravitational acceleration in terms of the plane's coordinate frame, ${}^G_B a$:
+We can then perform a yaw-pitch-roll rotation of ${}^G\pmb{a}$ to get the gravitational acceleration in terms of the plane's coordinate frame, ${}^G_B\pmb{a}$:
 
-\begin{align*}
-    {}^G_B a &= R_z(\psi) R_y(\theta) R_x(\phi) a_G \\
+\begin{align}
+    \begin{split}
+    {}^G_B\pmb{a} &= R_z(\psi) R_y(\theta) R_x(\phi) a_G \\
     &= 
-    \left[
-        \begin{matrix}
-            \cos\psi & -\sin\psi & 0 \\
-            \sin\psi & \cos\psi & 0 \\
-            0 & 0 & 1
-        \end{matrix}
-    \right]
-    \left[
-        \begin{matrix}
-            \cos\theta & 0 & \sin\theta \\
-            0 & 1 & 0 \\
-            -\sin\theta & 0 & \cos\theta
-        \end{matrix}
-    \right]
-    \left[
-        \begin{matrix}
-            1 & 0 & 0 \\
-            0 & \cos\phi & -\sin\phi \\
-            0 & \sin\phi & \cos\phi 
-        \end{matrix}
-    \right] 
-    \left[
-        \begin{matrix}
-            0 \\
-            0 \\
-            1
-        \end{matrix}
-    \right]\\
-    {}^G_B a &= 
-    \left[
-        \begin{matrix}
-            \cos\psi\cos\theta & \cos\psi\sin\theta\sin\phi-\sin\psi\cos\theta & \cos\psi\sin\theta\cos\phi+\sin\psi\sin\phi \\
-            \sin\psi\cos\theta & \sin\psi\sin\theta\sin\phi+\cos\psi\cos\phi & \sin\psi\sin\theta\cos\phi-\cos\psi\sin\phi \\
-            -\sin\theta & \cos\theta\sin\phi & \cos\theta\cos\phi
-        \end{matrix}
-    \right]
-    \left[
-        \begin{matrix}
-            0 \\
-            0 \\
-            1
-        \end{matrix}
-    \right]
-\end{align*}
+    \begin{bmatrix}
+        \cos\psi & -\sin\psi & 0 \\
+        \sin\psi & \cos\psi & 0 \\
+        0 & 0 & 1
+    \end{bmatrix}
+    \begin{bmatrix}
+        \cos\theta & 0 & \sin\theta \\
+        0 & 1 & 0 \\
+        -\sin\theta & 0 & \cos\theta
+    \end{bmatrix}
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & \cos\phi & -\sin\phi \\
+        0 & \sin\phi & \cos\phi 
+    \end{bmatrix}
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        1
+    \end{bmatrix}\\
+    {}^G_B \pmb{a} &= 
+    \begin{bmatrix}
+        \cos\psi\cos\theta & \cos\psi\sin\theta\sin\phi-\sin\psi\cos\theta & \cos\psi\sin\theta\cos\phi+\sin\psi\sin\phi \\
+        \sin\psi\cos\theta & \sin\psi\sin\theta\sin\phi+\cos\psi\cos\phi & \sin\psi\sin\theta\cos\phi-\cos\psi\sin\phi \\
+        -\sin\theta & \cos\theta\sin\phi & \cos\theta\cos\phi
+    \end{bmatrix}
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        1
+    \end{bmatrix}
+    \end{split}
+\end{align}

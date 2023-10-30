@@ -4,19 +4,19 @@ The primary purpose is to give a Lead Systems Engineer other other team member q
 Each matrix has eight columns that contain information about the requirement:
 
 \paragraph*{ID} This is the identification number for the requirement.
-Stakeholder requirements will start with the prefix: "SR".
-Capabilities will be triple-digit numbers with 100-level being "threshold", 200-level being "reach", and 300-level being "stretch" capabilities.
-Component-level requirements will be divided into sections and subsections in the format "X.X.X.X" depending on the section and depth of the requirement.
-For example, the first requirement in the first section, first subsection of the component-level matrix will have the ID "1.1.1".
+Stakeholder requirements will start with the prefix: ``SR''.
+Capabilities will be triple-digit numbers with 100-level being ``threshold'', 200-level being ``reach'', and 300-level being ``stretch'' capabilities.
+Component-level requirements will be divided into sections and subsections in the format ``X.X.X.X'' depending on the section and depth of the requirement.
+For example, the first requirement in the first section, first subsection of the component-level matrix will have the ID ``1.1.1''.
 
 \paragraph*{Description} Each requirement and capability needs to have a brief, single sentence description that details the feature.
-The description should follow the guidelines laid out by NASA\footnote{\url{https://www.nasa.gov/seh/appendix-c-how-to-write-a-good-requirement}}.
+The description should follow the guidelines laid out by NASA \cite{SystemsEngineeringHandbook-AppendixC}.
 They should be unambiguous, testable, verifiable, and consistent in both terminology and can either be functional or non-functional.
 Functional requirements directly drive a feature of the product, whereas a non-functional requirement drives an aesthetic or interface choice.
 
 \paragraph*{Weight} The requirements and capabilities should all have a weight associated with them.
 These can be based on stakeholder preferences, developer capabilities, technology limitations, etc.
-The weight is a number greater than 0, but less than 1 and typically only expressed as a single decimal.
+The weight is a number greater than 0, but less than 1 and typically only expressed to two decimal places.
 
 \paragraph*{Priority} Derived from the weight, the priority is the relative importance of a particular requirement or capability to others.
 It is calculated using Equation \ref{eq:priority}. 
@@ -37,11 +37,11 @@ This individual should also be the one tracking and updating the requirement or 
 
 \paragraph*{Verified?} The verification of a requirement or capability requires an inspection to ensure that it is present.
 Component-level requirements will have a test number that should also be tracked in the traceability artifact to describe what test was performed that verified the requirement.
-Until a requirement or capability is successfully inspected, the answer to the column header is, "No", but can be changed to "Yes" once verified.
+Until a requirement or capability is successfully inspected, the answer to the column header is, ``No'', but can be changed to ``Yes'' once verified.
 A requirement can be subject to a variety of methods to verify it is implemented:
 
 {
-\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1}}
+\renewcommand{\descriptionlabel}[1]{\hspace{\parindent}\textbf{#1}}
 \begin{description}
     \item[Inspection:] The nondestructive examination of a product or system using one or more of the five senses (visual, auditory, olfactory, tactile, taste). 
     It may also include simple physical manipulation and measurements.
@@ -58,7 +58,7 @@ A requirement can be subject to a variety of methods to verify it is implemented
 
 \paragraph*{Validated?} Validation of a capability or requirement occurs when the feature is fully integrated to the system and tested.
 It is not enough that it is present, rather it must also contribute to the system as designed without impinging on another feature.
-This is another "Yes"/"No" column depending on if the feature has been fully integrated to the system.
+This is another ``Yes'' or ``No'' column depending on if the feature has been fully integrated to the system.
 
 \paragraph*{Status} The last major column to consider in the matrix is the status column.
 This lets the reader know if the capability or requirement has been reviewed or rejected, is undergoing testing, delivered, etc.
@@ -84,17 +84,17 @@ The value of this column is pulled from Table \ref{tab:req_status} based on the 
     \labtab{req_status}
 \end{table}
 
-\section{Requirement Lifecylce}
+\section{Requirement Lifecycle}
 Requirements are initially created at the start of the project and are expected to be monitored and have their status updated as the project continues.
-Once a requirement is written, it is up the Lead Systems Engineer, or other team members, to review the requirement and determine if it is suitible for the project.
-The major considerations are 1) "is the requirement relevant?", 2) "is the requirement unambiguous?", 3) "is the requirement testable?", and 4) "is the requirement complete?"
+Once a requirement is written, it is up the Lead Systems Engineer, or other team members, to review the requirement and determine if it is suitable for the project.
+The major considerations are 1) ``is the requirement relevant?'', 2) ``is the requirement unambiguous?'', 3) ``is the requirement testable?'', and 4) ``is the requirement complete?''
 If the requirement does not meet any of these criteria, it can be rejected for re-writing by its owner.
 Once the requirement is accepted, development for it can begin.
 It is up to the owner to ensure that the feature detailed by the requirement is properly designed and integrated into the larger system.
-When the owner verifies the feature and is ready to validate it with the system, they can begin the testing process ad update the status to "TIP" in the traceability matrix.
+When the owner verifies the feature and is ready to validate it with the system, they can begin the testing process and update the status to ``TIP'' in the traceability matrix.
 If the test was successful, the requirement status should reflect this; same for a test failure.
 If the validation fails, the requirement may need to be re-written or re-tested in a different system configuration.
-Finally, when the feature is fully integrated with the product and released, the status can be set to "delivered" and the feature can be considered fully completed.
+Finally, when the feature is fully integrated with the product and released, the status can be set to ``delivered'' (D) and the feature can be considered fully completed.
 
 \begin{figure}
     \centering

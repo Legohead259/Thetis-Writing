@@ -1,6 +1,7 @@
 \chapter{Kalman Filter} \labchap{kalman_filter}
+
 \section{Introduction} 
-The Kalman Filter is a recursive algorithm introduced in the 1960's as a method to track, estimate, and predict the state of a system and corresponding uncertainties.
+The Kalman Filter is a recursive algorithm introduced in the 1960's as a method to track, estimate, and predict the state of a system and corresponding uncertainties \cite{Kalman:1960}.
 This filter integrates a dynamic (linear) model of the system, control inputs, measurements, and biases/uncertainties into a single algorithm.
 This effectively fuses together system inputs and responses and extrapolates what the system is currently doing and expected to do.
 One key advantage of this algorithm is that it only requires the guess of the previous state to estimate the current state. 
@@ -9,10 +10,6 @@ However, it does have some limitations when the sensor data is noisy or the cont
 Random errors in the sensor data may cause the filter to behave unpredictably and non-linearity prevents proper fusion entirely.
 This problem can be solved using an Extended Kalman Filter, but that is out of scope for now.
 
-This section will discuss the Kalman filter in a higher-order method.
-Many resources around with Internet can discuss the in-depth mathematics governing this filter and you are free to browse them at your leisure. 
-For this guide, my primary concern is to get you acquainted with the Kalman filter and its broader practical applications.
-
 \section{Kalman Filter in One Dimension}
 The uni-dimensional Kalman filter is a special, idealized case for the Kalman filter.
 It is more convenient as a teaching tool as it does not include the complex matrix and vector operations the general multi-dimensional Kalman filter requires.
@@ -20,9 +17,9 @@ However, this only makes this type useful for tracking and estimating a single v
 
 Multiple uni-dimensional Kalman filters can be run in parallel or chained together to mimic a multi-dimensional filter, however, this will unnecessarily increase the computational resources required for the calculations and will reduce the quality of the filtering overall.
 
-\subsection{The Kalman Gain} In a Kalman filter, the $\alpha-\beta-\gamma$ parameters are calculated at every filter iteration.
-These parameters are combined together into the Kalman Gain, denoted as $K_n$, which is the third Kalman equation.
-The Kalman gain is bounded by: $0 <= Kn <= 1$.
+\subsection{The Kalman Gain} 
+In a Kalman filter, the Kalman Gain, denoted as $K_n$, is calculated at each iteration of the filter.
+The Kalman gain is bounded by: $0 <= Kn <= 1$ and prioritizes predictions of the system state from the estimation or the measurement, based on related uncertainties\footnote{\textbf{Important note:} When measurement uncertainty is very large, and the estimate uncertainty is small, $K_n << 1$, hence big weight to the estimate and small weight to the measurement. When the opposite is true, $K_n -> 1$, meaning a large weight to the measurement and a small weight to the estimate. This is how the Kalman filter can regulate and smooth out noisy data by knowing the uncertainties.}.
 
 \begin{equation} \labeq{kalman_gain}
     \begin{aligned}
@@ -31,7 +28,7 @@ The Kalman gain is bounded by: $0 <= Kn <= 1$.
     \end{aligned}
 \end{equation}
 
-If we refresh the State Update Equation with the Kalman gain, we get:
+We can then define the State Update Equation for a system where $\hat{x}$ is the predicted state and $z$ is the measured state:
 
 \begin{equation} \labeq{kalman_state_update}
     \begin{aligned}
@@ -39,9 +36,6 @@ If we refresh the State Update Equation with the Kalman gain, we get:
                         &= (1-K_n)\hat{x}_{n,n-1} + K_n z_n \\
     \end{aligned}
 \end{equation}
-
-In the above equation, $K_n$ is the weight (importance) given to the measurement.
-Conversely, $(1-K_n)$ is the weight given to the estimate. \footnote[1]{\textbf{Important note:} When measurement uncertainty is very large, and the estimate uncertainty is small, $K_n << 1$, hence big weight to the estimate and small weight to the measurement. When the opposite is true, $K_n -> 1$, meaning a large weight to the measurement and a small weight to the estimate. This is how the Kalman filter can regulate and smooth out noisy data by knowing the uncertainties.}
 
 \subsection{The Estimate Uncertainty Update Equation} 
 The estimate uncertainty or covariance update equation predicts the uncertainty associated with the current estimate.
@@ -60,15 +54,16 @@ Basically, the more precise your measurements are, the faster the Kalman filter 
 \end{gather}
 
 \subsection{The Estimate Uncertainty Extrapolation Equation} 
-Another Kalman equation is how the filter predicts future uncertainties and is called the \textit{Estimate Uncertainty Extrapolation Equation} or the \textit{Estimate Covariance Extrapolation Equation}.
+Another Kalman equation is how the filter predicts future uncertainties and is called the Estimate Uncertainty Extrapolation Equation or the Estimate Covariance Extrapolation Equation.
 Like with the State Extrapolation Equations, this is done with dynamic models and will be unique to every example.
-We can define the Estimate Uncertainty Extrapolation Equations in a kinematic model example as:
+FOr a moving vehicle, one example might be:
 
-\begin{gather}
-    \labeq{covariance_extrapolation}
+\begin{gather} \labeq{covariance_extrapolation}
+    p_{n+1,n}^x = p_{n,n}^x + \Delta t p_{n,n}^{\dot{x}} \\
+    p_{n+1,n}^{\dot{x}} = p_{n,n}^{\dot{x}} \\
     \begin{aligned}
-        p_{n+1,n}^x &= p_{n,n}^x + \Delta t p_{n,n}^{\dot{x}} \\
-        p_{n+1,n}^{\dot{x}} &= p_{n,n}^{\dot{x}}
+    \text{where } &x \text{ is the vehicle displacement, and} \\
+                  &\dot{x} \text{ is the vehicle velocity}
     \end{aligned}
 \end{gather}
 
@@ -92,7 +87,7 @@ This process repeats for every measurement with $n$ incrementing every time.
 \begin{fitbox}[frametitle=Example]
     In this example, we will be estimating the depth of an ROV using a 1D Kalman filter.
     We will be assuming the ROV depth remains constant and its location in space does not matter or change.
-    For example's sake, we know for an absolute fact that the ROV is at a depth of 50-meters ($x=50 \text{ m}$).
+    For example's sake, we shall know for an absolute fact that the ROV is at a depth of 50-meters ($x=50 \text{ m}$).
     We will also assume that our depth sensor has a standard deviation of 5-meters ($\sigma=5 \text{ m}$), therefore we will have a measurement variance or uncertainty of 25-meters ($r=25 \text{ m}^2$)
 
     \paragraph*{Iteration 0}
@@ -110,7 +105,7 @@ This process repeats for every measurement with $n$ incrementing every time.
         \begin{aligned}
             1 &: \text{Measure depth: } z_1 = \textbf{48.54 m} \\
                 &: \text{Measurement uncertainty: } r_1 = \textbf{25 m}^2 \\
-            2 &: \text{Kalman gain} K_1 = \frac{p_{1,0}}{p_{1,0}+r_1} = \frac{255}{255 + 25} = \textbf{0.9} \\
+            2 &: \text{Kalman gain } K_1 = \frac{p_{1,0}}{p_{1,0}+r_1} = \frac{255}{255 + 25} = \textbf{0.9} \\
                 &: \text{Estimated depth: } \hat{x}_{1,1} = \hat{x}_{1,0} + K_1(z_1 - \hat{x}_{1,0}) = 60 + 0.9(48.54-60) = \textbf{49.69 m} \\
                 &: \text{Estimate uncertainty: } p_{1,1} = (1-K_1)p_{1,0} = (1-0.9)225 = \textbf{22.5 m}^2 \\
             3 &: \text{Predicted depth: } \hat{x}_{2,1} = \hat{x}_{1,1} = \textbf{49.69 m} \\
@@ -123,7 +118,7 @@ This process repeats for every measurement with $n$ incrementing every time.
         \begin{aligned}
             1 &: \text{Measure depth: } z_2 = \textbf{47.11 m} \\
                 &: \text{Measurement uncertainty: } r_2 = \textbf{25 m}^2 \\
-            2 &: \text{Kalman gain} K_2 = \frac{p_{2,1}}{p_{2,1}+r_2} = \frac{22.5}{22.5 + 25} = \textbf{0.47} \\
+            2 &: \text{Kalman gain } K_2 = \frac{p_{2,1}}{p_{2,1}+r_2} = \frac{22.5}{22.5 + 25} = \textbf{0.47} \\
                 &: \text{Estimated depth: } \hat{x}_{2,2} = \hat{x}_{2,1} + K_2(z_2 - \hat{x}_{2,1}) = 49.69 + 0.47(47.11-49.69) = \textbf{48.47 m} \\
                 &: \text{Estimate uncertainty: } p_{2,2} = (1-K_2)p_{2,1} = (1-0.47)22.5 = \textbf{11.84 m}^2 \\
             3 &: \text{Predicted depth: } \hat{x}_{3,2} = \hat{x}_{2,2} = \textbf{48.47 m} \\
@@ -139,7 +134,7 @@ This process repeats for every measurement with $n$ incrementing every time.
         n & $z_n$ & $r_n$ & $K_n$ & $\hat{x}_{n,n}$ & $ p_{n,n} $ & $ \hat{x}_{n+1,n}$ & $ p_{n+1,n} $ \\
         \midrule
 
-        0  & ---- & -- & ---- & 60.0 & 225  & 60.0 & 225  \\
+        0  & ---  & -- & ---  & 60.0 & 225  & 60.0 & 225  \\
         1  & 48.5 & 25 & 0.90 & 49.7 & 22.5 & 49.7 & 22.5 \\
         2  & 47.1 & 25 & 0.47 & 48.4 & 11.8 & 48.4 & 11.8 \\
         3  & 55.0 & 25 & 0.32 & 50.6 & 8.03 & 50.6 & 8.03 \\
@@ -169,8 +164,8 @@ This process repeats for every measurement with $n$ incrementing every time.
 \subsection{Process Noise} In the real world, there are uncertainties in the system's dynamic model.
 Uncertainty is caused by unanticipated changes in the system due to external factors.
 This can be drift caused by ocean current, wind blowing a rocket to the side, drag, friction, even time dilation in extreme cases.
-Generally, these uncertainties can be combined into the Process Noise gain denoted by "$q$"
-To account for process noise, it must be included in the Covariance Extrapolation Equation (Equation \ref{eq:covariance_extrapolation})
+Generally, these uncertainties can be combined into the Process Noise gain denoted by $q$.
+To account for process noise, it must be included in the Covariance Extrapolation Equation (Equation \ref{eq:covariance_extrapolation}).
 
 If the model is not known to be good or is very noisy, we can increase the process noise gain to reduce the lag error.
 
@@ -179,4 +174,4 @@ If the model is not known to be good or is very noisy, we can increase the proce
 \end{equation}
 
 \subsection*{Further Reading}
-The book \textit{Kalman Filter: From the Ground Up} [CITE - Kalman Filter Textbook] provides an excellent resource on the intuitive understanding of the Kalman Filter and some of its more advanced applications like multi-variate Kalman Filters, Extended Kalman Filters, and applying Kalman Filters in sensor fusion applications.
+The book \textit{Kalman Filter: From the Ground Up} \cite{Becker:2023} provides an excellent resource on the intuitive understanding of the Kalman Filter and some of its more advanced applications like multi-variate Kalman Filters, Extended Kalman Filters, and applying Kalman Filters in sensor fusion applications.

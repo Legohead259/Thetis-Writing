@@ -27,7 +27,7 @@ The inertial velocity of the mass is given by the positional derivative and the 
 
 The inertial acceleration is the next derivative given by:
 
-\begin{equation}
+\begin{equation} \labeq{inertial_acceleration}
     \ddot{B_c} = 
     \begin{bmatrix}
         \ddot{x} \\
@@ -44,7 +44,7 @@ The inertial acceleration is the next derivative given by:
     \end{bmatrix}
 \end{equation}
 
-The first element in $(3)$ represents the acceleration experienced by the x-axis (driven axis). This axis is actively controlled by the gyroscope driving circuit. The second element is that of the sensing axis (y-axis). Recall Newton’s Second Law of Motion, $F=ma$:
+The first element in \ref{eq:inertial_acceleration} represents the acceleration experienced by the x-axis (driven axis). This axis is actively controlled by the gyroscope driving circuit. The second element is that of the sensing axis (y-axis). Recall Newton’s Second Law of Motion, $F=ma$, which for the y-axis yields:
 
 \begin{equation}
     F_y=mB_{\ddot{c}, y} = m(\ddot{y}+2\omega\dot{x}-\omega^2y)

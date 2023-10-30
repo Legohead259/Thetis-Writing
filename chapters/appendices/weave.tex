@@ -1,6 +1,6 @@
-\chapter{Wave Estimating Algorithm for Vessels Experiment (WEAVE)} \label{chap:weave}
+\chapter{Wave Estimating Algorithm for Vessels Experiment (WEAVE)} \labchap{weave}
 
-\section{Introduction} \label{sec:weave_intro}
+\section{Introduction} \labsec{weave_intro}
 
 As a buoy is floats on top of waves, it experiences an acceleration proportional to the hydrodynamic forces exerted on it by $\pmb{F} = m\pmb{a}$. 
 As a result, the buoy is displaced by a measurable amount as a wave passes through it. 
@@ -14,14 +14,14 @@ By double integrating the signal with respect to time via the following equation
 Where $a_z(t)$ is the vertical acceleration time series, $\Delta t$ is the time since the last value update, and $e$ is the measurement error introduced by the sensor errors and integration errors (more on this later).
 
 The equation shows that the error is multiplied over time, causing the reading to drift. 
-Industry standard buoys like the [DataWell WaveRider 4](https://datawell.nl/products/directional-waverider-4/) use high precision, regularly-calibrated sensors to minimize and account for the measurement error.
+Industry standard buoys like the DataWell WaveRider 4\footnote{https://datawell.nl/products/directional-waverider-4/} use high precision, regularly-calibrated sensors to minimize and account for the measurement error.
 
 These types of uni-axial measurement buoys also rely on the measurement axis always being parallel to the Earth vertical axis. 
 While the WaveRider 4 buoy accomplishes this by suspending the accelerometer on a platform in a fluid specifically tuned to act as a massive dampener, this comes at an increase to size and cost. 
 Additionally, should this platform become misaligned to the global vertical axis, the measurements will always be of a component of the vertical acceleration and therefore introduce a bias in the calculations.
 
 In this document, a procedure to use body frame coordinate rotation will be introduced that will eliminate the error and bias of a misaligned vertical axis measurement. 
-The procedure will be implemented in two different ways: 1) a spectral analysis using the procedure laid out in Longuet-Higgins, 1963 and used by the WaveRider 4 buoy, 2) a novel oscillatory motion analysis based upon the work of Madgwick, 2013 that provides an instantaneous estimate of the wave height and direction.
+The procedure will be implemented in two different ways: 1) a spectral analysis using the procedure laid out in Longuet-Higgins \cite{Longuet-Higgins:1963} and used by the WaveRider 4 buoy, 2) a novel oscillatory motion analysis based upon the work of Madgwick \cite{Gait-Tracking} that provides an instantaneous estimate of the wave height and direction.
 
 \section{Background}
 Inertial Measurement Units (IMUs) consist of an array of sensors that measure inertial forces acting on a body. 
@@ -40,14 +40,21 @@ Therefore, this algorithm will be used exclusively during this study for sensor 
 The crux of Madgwick’s filter is a gradient descent estimation of the body quaternion. 
 The quaternion is a 4-dimensional representation of orientation that is free from infinite discontinuities found in 3-dimensional counterpart, Euler angles. 
 The quaternion represents a 3D coordinate frame’s rotation about a unit vector in the base coordinate frame. 
-his is represented graphically in the Figure \ref{fig:weave_frame_rot} where the mutually orthogonal axes, $A_x$, $A_y$, $A_z$, $B_x$, $B_y$, $B_z$ represent the 3D frames $A$ and $B$, respectively.
+his is represented graphically in the Figure \ref{fig:weave_frame_rotation} where the mutually orthogonal axes, $A_x$, $A_y$, $A_z$, $B_x$, $B_y$, $B_z$ represent the 3D frames $A$ and $B$, respectively.
 When frame $B$ is rotated by some angle, $\theta$, about the unit vector, ${}^A \pmb{r}$, it now has an orientation relative to frame $A$ that can be expressed as the quaternion:
 
 \begin{equation}
     {}^A_B\textbf{q} = \begin{bmatrix} q_1 & q_2 & q_3 & q_4 \end{bmatrix} = \begin{bmatrix} \cos\frac{\theta}{2} & -r_x\sin\frac{\theta}{2} & -r_y\sin\frac{\theta}{2} & -r_z\sin\frac{\theta}{2} \end{bmatrix}
 \end{equation}
 
-Note that we adopt the notation introduced by Craig, 2005. 
+\begin{figure}[h!]
+    \caption[Illustration of rotation between coordinates frame about an axis]{Illustration of the rotation from a base coordinate frame to a local coordinate frame about the axis, $\pmb{r}$}
+    \labfig{weave_frame_rotation}
+    \centering
+    \includegraphics[height=1.5in]{background/frame_rotation.png}
+\end{figure}
+
+Note that we adopt the notation introduced by Craig \cite{Craig:2022}. 
 The preceding superscript denotes the ``base'' or ``from'' coordinate frame and the preceding subscript denotes the ``derived'' or ``to'' coordinate frame. 
 In the previous example, ${}_B^Aq$ is the quaternion representing the rotation \textit{from} frame $A$ \textit{to} frame $B$.
 
@@ -67,7 +74,7 @@ This will yield the body linear accelerations, ${}^B\pmb{a}_l$, defined as:
     {}^B\pmb{a}_l = {}^B\pmb{a} - {}^G_B\pmb{a}
 \end{gather}
 
-Again, using the notation from Craig, 2005 to denote the ``from'' and ``to'' frames, respectively. Also note that ${}^G_B\pmb{q}^{-1}$ is the inverse quaternion as defined by:
+Again, using the notation from Craig to denote the ``from'' and ``to'' frames, respectively. Also note that ${}^G_B\pmb{q}^{-1}$ is the inverse quaternion as defined by:
 
 \begin{equation*}
     {}^G_B\pmb{q}^{-1} = \begin{bmatrix} -q_1 & -q_2 & -q_3 & -q_4 \end{bmatrix}
@@ -84,7 +91,7 @@ By convention, the global coordinate frame is typically referred to as North-Eas
 
 \section{Spectral Analysis Theory}
 
-For the spectral analysis, the work by Longuet-Higgins, 1963 will be heavily utilized. 
+For the spectral analysis, the work by Longuet-Higgins will be heavily utilized. 
 The displacement vector should be subsampled to 2.56 Hz. 
 Over a 200-second interval, a total of $N=512$ samples are collected. 
 We can then obtain a frequency spectrum via the Fast Fourier Transform (FFT). 
@@ -96,7 +103,7 @@ The FFT yields Fourier coefficients via:
 \end{equation}
 
 Where $f_l=\frac{1}{N\Delta t}$ and $= 0 \ldots N-1$ and the $w_k$ element is a windowing function. 
-Datawell uses a Hann windowing function which attenuates signals in the higher frequency domains:
+Datawell uses a Hann windowing function \cite{WaveRider4UserManaul} which attenuates signals in the higher frequency domains:
 
 \begin{equation}
     w_k = \frac{1}{2} [1-\cos{\frac{2\pi k}{N}}] \text{ where } k=0 \ldots N-1
@@ -108,7 +115,8 @@ We can normalize these coefficients via:
     w_{norm} = \sqrt{f_s \sum_{k=0}^{N-1}w_k^2}
 \end{equation}
 
-Since we have time series data for all three axes, we can take the spectra for each series. Each series contains a vector of coefficients and can be expressed in vector notation as:
+Since we have time series data for all three axes, we can take the spectra for each series. 
+Each series contains a vector of coefficients and can be expressed in vector notation as:
 
 \begin{align}
     a_N &= \alpha_N + i\beta_N \\
@@ -138,7 +146,7 @@ Then, we can arrange them into 3 by 3 matrices to obtain the final definition of
     \end{bmatrix}
 \end{gather}
 
-Note that by definition, $Q_{NN}=Q{EE}=Q_{DD}=0$ and $Q_EN$ and $Q_NE$ represent eddy currents and are not considered.
+Note that by definition, $Q_{NN}=Q_{EE}=Q_{DD}=0$ and $Q_{EN}$ and $Q_{NE}$ represent eddy currents and are not considered.
 
 These spectra can represent different wave parameters such as wave direction, direction spread, wave ellipticity, and power spectral density (PSD). 
 The wave direction, $\theta_0$, is defined as the angle from which the waves are approaching relative to geographic north.
@@ -186,7 +194,7 @@ The zeroth spectral moment, $m_0$, can tell us a lot of information such as the 
 
 \section{Oscillitory Motion Tracking Theory}
 
-The spectral analysis method is the industry standard and recommended by NOAA in the [NDBC Technical Document 96-01](https://www.ndbc.noaa.gov/wavemeas.pdf). 
+The spectral analysis method is the industry standard and recommended by NOAA \cite{NOAAWaveMeasure}. 
 However, the spectra needs to be analyzed over time. 
 The accuracy of the spectral analysis directly correlates with its sample interval; instantaneous intervals will never be completely representative whereas infinite intervals will be 100\% accurate.
 The above methodology offers a balance of accuracy and reporting time. 
@@ -236,9 +244,9 @@ With these values, different bode plots for Chebyshev Type I (Figure \ref{subfig
 
 \begin{figure}[h!]
     \centering
-    \subfloat[Chebyshev Type I filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/chebyshev_1.png}\label{subfig:chebyshev_1}}\hskip3ex
-    \subfloat[Chebyshev Type II filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/chebyshev_2.png}\label{subfig:chebyshev_2}}\hskip3ex
-    \subfloat[Elliptic filter]{\includegraphics[width=0.25\textwidth]{appendices/weave/elliptic.png}\label{subfig:elliptic}}\hskip3ex
+    \subfloat[Chebyshev Type I filter]{\includegraphics[height=1.5in]{appendices/weave/chebyshev_1.png}\label{subfig:chebyshev_1}}\hskip3ex
+    \subfloat[Chebyshev Type II filter]{\includegraphics[height=1.5in]{appendices/weave/chebyshev_2.png}\label{subfig:chebyshev_2}}\hskip3ex
+    \subfloat[Elliptic filter]{\includegraphics[height=1.5in]{appendices/weave/elliptic.png}\label{subfig:elliptic}}\hskip3ex
     \caption[Digital filter bode plots]{Bode plots for Chebyshev and Elliptical filters using a low-stop frequency of 0.025 Hz, a low-pass freuqnecy of 0.05 Hz, a high-stop frequency of 2.0 Hz, a high-pass frequency of 0.25 Hz, a stop attenuation of 100 dB, and a pass attenuation of 0.1 dB.}
     \labfig{filter_bode_plots}
 \end{figure}
@@ -249,7 +257,7 @@ We will therefore be using the Chebyshev Type I filter for our analysis.
 
 \section{Methodology}
 The two wave analysis techniques will be performed in post-processing after a data collection period. 
-Data will be collected using the Thetis inertial datalogger and the [x-IMU3 datalogger](https://x-io.co.uk/x-imu3/). 
+Data will be collected using the Thetis inertial datalogger and the x-IMU3 datalogger \cite{xioTechnologies}. 
 The devices will be rigidly attached to the top of a Datawell WaveRider4 buoy and will be accepted as the ground truth for the experiment and used to validate the spectral analysis procedure.
 
 The devices will be deployed for a total of six hours on five different days since the batteries have to be recharged after that length of deployment. 
@@ -321,7 +329,7 @@ The analysis of all these windows yields wave statistics that we can compare bet
 \end{algorithm}
 
 This method is not flawless as statistically insignificant up-crossings called, false peaks, will be detected and recorded. 
-We can filter out the false peaks by following the methodology laid out in Coats et al., 2007. 
+We can filter out the false peaks by following the methodology laid out in Coats \cite{Coats:2013}. 
 We can compute the root mean square of the wave heights using the equation below. 
 Then, we can filter out all of the waves which height fall below the arbitrary threshold $0.1H_{\text{rms}}$.
 
@@ -330,7 +338,7 @@ Then, we can filter out all of the waves which height fall below the arbitrary t
 \end{equation}
 
 Additionally, we can remove false peaks by examining the time between them. 
-From Rayleigh, we can be confident that the wave period will not be faster than 4-seconds, nor slower than 20-seconds. 
+From Rayleigh \cite{DeanAndDalrymple}, we can be confident that the wave period will not be faster than 4-seconds, nor slower than 20-seconds. 
 Therefore, any peaks that occur within 4-seconds of or 20-seconds after another can be discarded. 
 After we remove all the false peaks, the array of waves must be sorted in descending order according to their height.
 
@@ -343,7 +351,3 @@ From the wave-by-wave analysis, we can determine the significant wave height by 
 If we want to directly compare to the previous methods, we need to window our waves in the same time periods as the spectral analysis. 
 We can compute the significant wave height for that window using the above equation and determine the peak period by creating a distribution of periods (that is, time between upcrossings) in that window; the peak wave period would be that with the most counts in its bin. 
 As before, we can compare the inertial data loggers to each other via per cent difference, and to the wave buoy via the RMSE method.
-
-\section{References} \labsec{weave_references}
-
-[TODO: weave references using biblatex?]

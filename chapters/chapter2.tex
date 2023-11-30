@@ -754,6 +754,45 @@ Like its cousins, this unit also does not have wireless connectivity or independ
     \labfig{aceinna_ins401}
 \end{figure}
 
+\paragraph*{x-io Technologies x-IMU3} Recently released in June 2023, the x-IMU3 has almost the exact same capabilities as the solution presented in this thesis \cite{xioTechnologies}.
+This device was designed by the author of the Madgwick algorithm, and is the third iteration of his IMU data loggers.
+The x-IMU3 has a very low SWaP and comes in a IP67-rated enclosure with a USB and button interface.
+The USB interface can be used to directly link the device and offload files, or it can be used with external peripherals.
+Similarly, the x-IMU3 has extensive wireless support and can stream data back to a host application over WiFi (via TCP or UDP) or over BlueTooth.
+
+The x-IMU3 and the thesis were developed independently, but the final products are near to each other in both cost and capability.
+In fact, the x-IMU3 was a major influence on the final firmware revision for the thesis and helped implement key features.
+The creator, Dr. Sebastian Madgwick, has also been helpful in critiquing the thesis design and offered key insights over multiple interviews \cite{Duffy:2023}.
+We shall carefully consider this solution going forward and directly compare it to the thesis product in Chapter \ref{chap:verification_validation}.
+
+\begin{figure}
+    \centering
+    \caption[x-io Technologies x-IMU3]{The x-io Technologies x-IMU3.
+    Courtesy of x-io Technologies \cite{xioTechnologies}.}
+    \includegraphics[width=2in]{background/ximu3.png}
+    \labfig{ximu3}
+\end{figure}
+
+\begin{table}[ht!]
+    \centering
+    \fontsize{10pt}{10pt}\selectfont
+    \renewcommand{\arraystretch}{1.5} % Set row height
+    \begin{tabular}{| m{0.12\textwidth} | M{0.12\textwidth} | M{0.12\textwidth} | M{0.12\textwidth} | M{0.12\textwidth} | M{0.12\textwidth} | M{0.12\textwidth} |}
+        \hline
+         & \textbf{Sparton AHRS-8} & \textbf{Xsens Mti-G-710} & \textbf{VectorNav VN-200} & \textbf{SwiftNav Duro} & \textbf{Aceinna INS401} & \textbf{x-IMU3} \\
+        \hline
+        \textbf{Cost} & \$1,350 & \$5,766 & \$3,050 & \$5,795 & Unknown & \$410 \\
+        \textbf{Attitude Accuracy} & \textless 1\textdegree RMS & \textless 1\textdegree RMS & \textless 0.2\textdegree RMS & \textless 1\textdegree RMS & \textless 0.1\textdegree RMS & \textless 1\textdegree RMS \\
+        \textbf{GPS} & & \checkmark & \checkmark & \checkmark & \checkmark & \\
+        \textbf{On-Board Storage} & & & & & & \checkmark \\
+        \textbf{Wireless} & & & & & & \checkmark \\
+        \textbf{Standalone} & & & & & & \checkmark \\
+        \hline
+    \end{tabular}
+    \caption[Industry Solutions Comparison]{A comparison of the industrial solutions discussed above.}
+    \labtab{industry_solutions}
+\end{table}
+
 \subsection{Hobbyist Solutions}
 Stepping down an order of magnitude in pricing and performance are the hobbyist sensors.
 These can be purchased by companies such as Adafruit and SparkFun and HobbyBro for tens, if not a couple hundred of dollars per unit, making it much more reasonable for the average consumer to use on their projects.
@@ -803,23 +842,4 @@ For these reasons, the Pixhawk was not considered as a solution for the thesis.
     Courtesy of Holybro \cite{HolyBro}.}
     \includegraphics[width=2in]{background/pixhawk_6x.png}
     \labfig{pixhawk_6x}
-\end{figure}
-
-\paragraph*{x-io Technologies x-IMU3} Recently released in June 2023, the x-IMU3 has almost the exact same capabilities as the solution presented in this thesis \cite{xioTechnologies}.
-This device was designed by the author of the Madgwick algorithm, and is the third iteration of his IMU data loggers.
-The x-IMU3 has a very low SWaP and comes in a IP67-rated enclosure with a USB and button interface.
-The USB interface can be used to directly link the device and offload files, or it can be used with external peripherals.
-Similarly, the x-IMU3 has extensive wireless support and can stream data back to a host application over WiFi (via TCP or UDP) or over BlueTooth.
-
-The x-IMU3 and the thesis were developed independently, but the final products are near to each other in both cost and capability.
-In fact, the x-IMU3 was a major influence on the final firmware revision for the thesis and helped implement key features.
-The creator, Dr. Sebastian Madgwick, has also been helpful in critiquing the thesis design and offered key insights over multiple interviews \cite{Duffy:2023}.
-We shall carefully consider this solution going forward and directly compare it to the thesis product in Chapter \ref{chap:verification_validation}.
-
-\begin{figure}
-    \centering
-    \caption[x-io Technologies x-IMU3]{The x-io Technologies x-IMU3.
-    Courtesy of x-io Technologies \cite{xioTechnologies}.}
-    \includegraphics[width=2in]{background/ximu3.png}
-    \labfig{ximu3}
 \end{figure}
